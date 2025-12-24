@@ -1,10 +1,10 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import Login from "./pages/Login.jsx";
-import Home from "./pages/homePage.jsx";
+import Login from "./pages/user/Login.jsx";
+import Home from "./pages/user/homePage.jsx";
 
-import AdminLayout from "./admin/pages/AdminLayout.jsx";
-import RegisterUser from "./admin/pages/RegisterUser.jsx";
-import Profile from "./admin/pages/Profile.jsx";
+import AdminLayout from "./pages/admin/AdminLayout.jsx";
+import RegisterUser from "./pages/admin/RegisterUser.jsx";
+import Profile from "./pages/admin/Profile.jsx";
 
 function App() {
   return (

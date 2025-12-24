@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/Login.css";
-import loginImage from "../assets/login.png";
+import "../../styles/user/Login.css";
+import loginImage from "../../assets/login.png";
 
 const Login = () => {
   const navigate = useNavigate();

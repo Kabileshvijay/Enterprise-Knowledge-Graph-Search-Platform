@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../styles/registerUser.css";
+import "../../styles/admin/registerUser.css";
 
 const teams = [
   "Frontend Team",
