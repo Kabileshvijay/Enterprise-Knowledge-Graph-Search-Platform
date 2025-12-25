@@ -5,6 +5,7 @@ import loginImage from "../../assets/login.png";
 
 const Login = () => {
   const navigate = useNavigate();
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,24 +19,17 @@ const Login = () => {
       return;
     }
 
-    /* 🔹 ADMIN LOGIN (FRONTEND ONLY) */
-    if (email === "admin@gmail.com" && password === "123") {
-      localStorage.setItem("role", "ADMIN");
-      navigate("/admin");
-      return;
-    }
-
-    /* 🔹 EMPLOYEE LOGIN */
     setLoading(true);
 
     try {
       const response = await fetch(
-        "http://localhost:8080/api/employees/login",
+        `${API_BASE_URL}/api/employees/login`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include", // 🔐 REQUIRED FOR COOKIES
           body: JSON.stringify({ email, password }),
         }
       );
@@ -44,16 +38,18 @@ const Login = () => {
         throw new Error("LOGIN_FAILED");
       }
 
-      const employee = await response.json();
+      // 🔹 Only non-sensitive data
+      const data = await response.json();
 
-      localStorage.setItem("role", "EMPLOYEE");
-      localStorage.setItem("employeeName", employee.name);
-      localStorage.setItem("employeeEmail", employee.email);
-
-      navigate("/home");
+      // 🔀 Navigate based on role
+      if (data.role === "ADMIN") {
+        navigate("/admin");
+      } else {
+        navigate("/home");
+      }
     } catch (error) {
       alert(
-        "You are not an employee of the organisation. Please contact admin."
+        "Invalid credentials or you are not authorised. Please contact admin."
       );
     } finally {
       setLoading(false);
@@ -62,7 +58,6 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      {/* Left Section */}
       <div className="login-left">
         <h2 className="logo">EntroGraph</h2>
         <img
@@ -72,7 +67,6 @@ const Login = () => {
         />
       </div>
 
-      {/* Right Section */}
       <div className="login-right">
         <h2 className="login-title">USER LOGIN</h2>
 
@@ -97,13 +91,6 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-          </div>
-
-          <div className="options">
-            <label>
-              <input type="checkbox" /> Remember
-            </label>
-            <a href="#">Forgot password?</a>
           </div>
 
           <button type="submit" className="login-btn" disabled={loading}>
