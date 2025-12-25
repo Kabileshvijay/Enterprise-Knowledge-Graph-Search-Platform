@@ -28,14 +28,14 @@ public class EmployeeController {
         this.jwtUtil = jwtUtil;
     }
 
-    /* ================= REGISTER (UNCHANGED) ================= */
+    /* ================= REGISTER ================= */
 
     @PostMapping("/register")
     public Employee registerEmployee(@RequestBody EmployeeRequest request) {
         return service.saveEmployee(request);
     }
 
-    /* ================= LOGIN (UPDATED: JWT + COOKIE) ================= */
+    /* ================= LOGIN (JWT + COOKIE) ================= */
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
@@ -64,7 +64,7 @@ public class EmployeeController {
                 ));
     }
 
-    /* ================= GET LOGGED-IN USER (NEW) ================= */
+    /* ================= GET LOGGED-IN USER ================= */
 
     @GetMapping("/me")
     public ResponseEntity<?> getLoggedInUser(Authentication authentication) {
@@ -81,14 +81,14 @@ public class EmployeeController {
         );
     }
 
-    /* ================= GET EMPLOYEE BY EMAIL (UNCHANGED) ================= */
+    /* ================= GET EMPLOYEE BY EMAIL ================= */
 
     @GetMapping("/by-email")
     public Employee getEmployeeByEmail(@RequestParam String email) {
         return service.getEmployeeByEmail(email);
     }
 
-    /* ================= LOGOUT (NEW) ================= */
+    /* ================= LOGOUT ================= */
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout() {

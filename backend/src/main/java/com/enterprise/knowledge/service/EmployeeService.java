@@ -33,10 +33,10 @@ public class EmployeeService {
         employee.setTeam(request.getTeam());
         employee.setSkills(request.getSkills());
 
-        // 🔐 Encrypt password (updated)
+        // 🔐 Encrypt password
         employee.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        // 🔹 Default role (added)
+        // 🔹 Default role
         employee.setRole("EMPLOYEE");
 
         return repository.save(employee);
@@ -50,7 +50,7 @@ public class EmployeeService {
                 .orElseThrow(() ->
                         new RuntimeException("EMPLOYEE_NOT_FOUND"));
 
-        // 🔐 Validate password (updated)
+        // 🔐 Validate password
         if (!passwordEncoder.matches(request.getPassword(), employee.getPassword())) {
             throw new RuntimeException("INVALID_PASSWORD");
         }
