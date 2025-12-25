@@ -1,0 +1,189 @@
+.profile-page {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.profile-page h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.profile-card {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  margin-bottom: 40px;
+}
+
+.profile-card p {
+  margin: 10px 0;
+  font-size: 1.1em;
+}
+
+.profile-page h3 {
+  margin: 30px 0 20px;
+  color: #444;
+}
+
+/* ================= DOCUMENT CARD ================= */
+
+.doc-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border: 1px solid #eaeaea;
+}
+
+.doc-content {
+  flex: 1;
+}
+
+.doc-content h4 {
+  margin: 0 0 10px;
+  color: #222;
+}
+
+/* ================= STATUS BADGE ================= */
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 0.8em;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  background: #e2e3e5;
+  color: #383d41;
+}
+
+.status-badge.PUBLISHED {
+  background: #d1e7dd;
+  color: #0f5132;
+}
+
+.status-badge.DRAFT {
+  background: #e7f1ff;
+  color: #0d6efd;
+}
+
+/* ================= DOCUMENT CONTENT ================= */
+
+.doc-content p {
+  color: #555;
+  line-height: 1.5;
+  margin: 10px 0;
+}
+
+.doc-time {
+  font-size: 0.9em;
+  color: #888;
+}
+
+/* ================= ACTION BUTTONS ================= */
+
+.doc-actions {
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.edit-btn,
+.delete-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.edit-btn {
+  background: #007bff;
+  color: white;
+}
+
+.edit-btn:hover {
+  background: #0056b3;
+}
+
+.delete-btn {
+  background: #dc3545;
+  color: white;
+}
+
+.delete-btn:hover {
+  background: #c82333;
+}
+
+/* ================= FILTER BUTTONS ================= */
+
+.doc-filter {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.filter-btn {
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+  background: #f3f4f6;
+}
+
+.filter-btn.active {
+  background: #e7f1ff;
+  border-color: #0d6efd;
+  color: #0d6efd;
+}
+
+.filter-btn.active:first-child {
+  background: #d1e7dd;
+  border-color: #0f5132;
+  color: #0f5132;
+}
+
+/* ================= NO DOCUMENTS ================= */
+
+.no-documents {
+  text-align: center;
+  padding: 40px 20px;
+  margin-top: 20px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #6b7280;
+  background: #f9fafb;
+  border: 1px dashed #d1d5db;
+  border-radius: 8px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 600px) {
+  .doc-card {
+    flex-direction: column;
+  }
+
+  .doc-actions {
+    margin-left: 0;
+    margin-top: 15px;
+    flex-direction: row;
+  }
+}

@@ -1,10 +1,10 @@
-import "../styles/sidebar.css";
+import "../../styles/user/sidebar.css";
 import { FaHome, FaChartBar, FaBook, FaTools } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const Sidebar = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+  const location = useLocation(); 
 
   return (
     <aside className="wiki-sidebar">
@@ -34,9 +34,15 @@ const Sidebar = () => {
 
         <p className="wiki-sidebar-title">SPACE SHORTCUTS</p>
 
-        <div className="wiki-sidebar-item">
+        {/* ✅ SAVE FOR LATER */}
+        <div
+          className={`wiki-sidebar-item ${
+            location.pathname === "/saved" ? "active" : ""
+          }`}
+          onClick={() => navigate("/saved")}
+        >
           <FaBook />
-          <span>Browse Spaces</span>
+          <span>Save For Later</span>
         </div>
 
         <div className="wiki-sidebar-item">
@@ -46,7 +52,7 @@ const Sidebar = () => {
 
         <div className="wiki-sidebar-info">
           See incorrect, stale, or missing information on a page?
-          Share feedback by clicking <b>Give Feedback</b> on the right side of the screen.
+          Share feedback by clicking <b>Give Feedback</b> on the home page.
         </div>
       </div>
 

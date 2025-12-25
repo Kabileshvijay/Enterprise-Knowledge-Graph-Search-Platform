@@ -2,19 +2,40 @@ import { FaSearch, FaBell, FaUserCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import SearchPanel from "./SearchPanel";
-import "../styles/navbar.css";
+import "../../styles/user/navbar.css"; 
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
+  const [user, setUser] = useState(null);
   const menuRef = useRef();
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-  const handleLogout = () => {
-    localStorage.clear();
+  /* ================= FETCH LOGGED-IN USER ================= */
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/api/employees/me`, {
+      credentials: "include",
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Not logged in");
+        return res.json();
+      })
+      .then((data) => setUser(data))
+      .catch(() => navigate("/login"));
+  }, [API_BASE_URL, navigate]);
+
+  /* ================= LOGOUT ================= */
+  const handleLogout = async () => {
+    await fetch(`${API_BASE_URL}/api/employees/logout`, {
+      method: "POST",
+      credentials: "include",
+    });
+
     navigate("/");
   };
 
+  /* ================= CLOSE DROPDOWN ON OUTSIDE CLICK ================= */
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -22,8 +43,7 @@ const Navbar = () => {
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
-    return () =>
-      document.removeEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
@@ -38,8 +58,6 @@ const Navbar = () => {
             <li>Spaces</li>
             <li>People</li>
             <li>Engineering Guide</li>
-
-            {/* ✅ ANALYTICS NAVIGATION */}
             <li onClick={() => navigate("/analytics")}>Analytics</li>
           </ul>
         </div>
@@ -71,7 +89,7 @@ const Navbar = () => {
             {showMenu && (
               <div className="profile-dropdown">
                 <p className="profile-name">
-                  {localStorage.getItem("employeeName")}
+                  {user ? user.name : "Loading..."}
                 </p>
 
                 <button onClick={() => navigate("/profile")}>

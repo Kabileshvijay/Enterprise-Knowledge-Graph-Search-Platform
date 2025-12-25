@@ -1,0 +1,14 @@
+.app-layout {
+  margin-top: 64px; 
+}
+
+.main-content {
+  margin-left: 280px;             
+  padding: 24px 32px;
+  background: #f4f5f7;
+  min-height: calc(100vh - 64px);  
+  overflow-y: auto;
+}
+
+
+

@@ -1,3 +1,12 @@
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
 .content-area {
   padding: 24px 32px;
   background-color: #f4f5f7;
@@ -8,77 +17,67 @@
   margin: 0;
 }
 
-/* ================= ACTION BAR ================= */
-.content-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.actions-left {
-  display: flex;
-  gap: 15px;
-  align-items: center;
-  font-size: 14px;
-  color: #5e6c84;
-}
-
-.actions-right {
-  display: flex;
-  gap: 10px;
-}
-
-.actions-right button {
-  padding: 6px 12px;
-  border: 1px solid #dfe1e6;
-  background-color: #ffffff;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  color: #42526e;
-}
-
-.actions-right button:hover {
-  background-color: #f4f5f7;
-}
-
 /* ================= WELCOME CARD ================= */
+.welcome-hero {
+  min-height: 350px;
+  background-image: url("../../assets/welcomeBanner.png");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  margin-bottom: 40px;
+  border-radius: 10px;
+}
+
+/* CARD */
 .welcome-card {
-  background: linear-gradient(135deg, #0052cc 0%, #0747a6 100%);
-  color: white;
-  padding: 40px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  color: #1f2937;
+  padding: 40px 50px;
   border-radius: 8px;
-  margin-bottom: 24px;
   text-align: center;
+  max-width: 720px;
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
+
+/* TITLE */
 .welcome-card h1 {
-  font-size: 34px;
+  font-size: 28px;
   margin-bottom: 12px;
+  font-weight: 700;
 }
 
+/* DESCRIPTION */
 .welcome-card p {
-  font-size: 17px;
-  margin-bottom: 22px;
-  opacity: 0.9;
+  font-size: 16px;
+  margin-bottom: 25px;
+  color: #4b5563;
+  line-height: 1.6;
 }
 
+/* BUTTON */
 .primary-cta {
-  background-color: #ffffff;
-  color: #0052cc;
+  background-color: #2563eb;
+  color: #ffffff;
   border: none;
-  padding: 12px 22px;
+  padding: 12px 24px;
   border-radius: 4px;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.25s ease, transform 0.15s ease;
 }
 
 .primary-cta:hover {
-  background-color: #f4f5f7;
+  background-color: #1e40af;
+  transform: translateY(-1px);
 }
 
 /* ================= LINK CARDS ================= */

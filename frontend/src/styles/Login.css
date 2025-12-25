@@ -14,12 +14,12 @@ body, html {
   min-height: 100vh;
   width: 100%;
   background: #f8f9fb;
-  transform: translateX(90px);
+  /* transform: translateX(90px); */
 }
 
 /* Left Section */
 .login-left {
-  flex: 0 0 62%;
+  flex: 0 0 50%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -57,7 +57,6 @@ body, html {
   }
 }
 
-/* Reduce animation for users who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .login-image {
     animation: none;
@@ -74,7 +73,7 @@ body, html {
 
 /* Right Section */
 .login-right {
-  flex: 0 0 38%;
+  flex: 0 0 50%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -94,7 +93,7 @@ body, html {
 
 .login-form {
   width: 100%;
-  max-width: 450px;
+  max-width: 400px;
 }
 
 .input-group {
@@ -179,7 +178,6 @@ body, html {
   text-decoration: underline;
 }
 
-/* Add focus styles for links */
 .options a:focus-visible {
   outline: 2px solid #667eea;
   outline-offset: 2px;
@@ -211,13 +209,11 @@ body, html {
   transform: translateY(0);
 }
 
-/* Add focus styles for button */
 .login-btn:focus-visible {
   outline: 3px solid #667eea;
   outline-offset: 2px;
 }
 
-/* Add disabled state */
 .login-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
@@ -278,7 +274,7 @@ body, html {
 
   .input-group input {
     padding: 14px 14px 14px 45px;
-    font-size: 16px; /* Keep at 16px to prevent zoom on iOS */
+    font-size: 16px; 
   }
   
   .input-group .icon {
