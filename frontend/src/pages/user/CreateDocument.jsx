@@ -4,7 +4,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import Image from "@tiptap/extension-image";
-import "../styles/createDocument.css";
+import "../../styles/user/createDocument.css";
 
 const DEFAULT_TAGS = [
   "documentation",
