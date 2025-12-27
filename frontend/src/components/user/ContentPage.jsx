@@ -1,9 +1,13 @@
 import "../../styles/user/content.css";
 import { useState } from "react";
 import SearchPanel from "./SearchPanel";
+import FeedbackModal from "./FeedbackModal";
+import AboutModal from "./AboutModal";
 
 const ContentPage = () => {
   const [openSearch, setOpenSearch] = useState(false);
+  const [openFeedback, setOpenFeedback] = useState(false);
+  const [openAbout, setOpenAbout] = useState(false);
 
   return (
     <main className="content-area">
@@ -26,24 +30,44 @@ const ContentPage = () => {
         </div>
 
         <div className="content-links">
-          <div className="link-card">
+          {/* ENGINEERING GUIDE */}
+          <div
+            className="link-card"
+            onClick={() => setOpenAbout(true)} 
+          >
             <h3>Read about Enterprise Engineering</h3>
             <span>Engineering Guide →</span>
           </div>
 
+          {/* SPACE DIRECTORY */}
           <div className="link-card">
             <h3>Browse all wiki spaces</h3>
             <span>Space Directory →</span>
           </div>
 
-          <div className="link-card">
+          {/* FEEDBACK */}
+          <div
+            className="link-card"
+            onClick={() => setOpenFeedback(true)}
+          >
             <h3>Give Feedback</h3>
             <span>Share your thoughts →</span>
           </div>
         </div>
       </div>
 
-      {openSearch && <SearchPanel onClose={() => setOpenSearch(false)} />}
+      {/* MODALS */}
+      {openSearch && (
+        <SearchPanel onClose={() => setOpenSearch(false)} />
+      )}
+
+      {openFeedback && (
+        <FeedbackModal onClose={() => setOpenFeedback(false)} />
+      )}
+
+      {openAbout && (
+        <AboutModal onClose={() => setOpenAbout(false)} />
+      )}
     </main>
   );
 };
