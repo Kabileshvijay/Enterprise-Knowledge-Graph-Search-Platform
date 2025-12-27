@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/user/Login.jsx";
 import Home from "./pages/user/homePage.jsx";
 import CreateDocument from "./pages/user/CreateDocument.jsx";
+import SavedDocuments from "./pages/user/SavedDocuments.jsx";
 
 import UserLayout from "./components/user/layout/UserLayout.jsx";
 
@@ -22,6 +23,7 @@ function App() {
 
       {/* Standalone pages (NO layout) */}
       <Route path="/create" element={<CreateDocument />} />
+      <Route path="/saved" element={<SavedDocuments />} />
       
       {/* Admin Pages */}
       <Route path="/admin" element={<AdminLayout />}>
