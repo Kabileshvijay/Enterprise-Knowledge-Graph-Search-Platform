@@ -7,6 +7,8 @@ import com.enterprise.knowledge.repository.EmployeeRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EmployeeService {
 
@@ -33,10 +35,10 @@ public class EmployeeService {
         employee.setTeam(request.getTeam());
         employee.setSkills(request.getSkills());
 
-        // 🔐 Encrypt password
+        // 🔐 Encrypt password (updated)
         employee.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        // 🔹 Default role
+        // 🔹 Default role (added)
         employee.setRole("EMPLOYEE");
 
         return repository.save(employee);
@@ -50,7 +52,7 @@ public class EmployeeService {
                 .orElseThrow(() ->
                         new RuntimeException("EMPLOYEE_NOT_FOUND"));
 
-        // 🔐 Validate password
+        // 🔐 Validate password (updated)
         if (!passwordEncoder.matches(request.getPassword(), employee.getPassword())) {
             throw new RuntimeException("INVALID_PASSWORD");
         }
@@ -65,4 +67,13 @@ public class EmployeeService {
                 .orElseThrow(() ->
                         new RuntimeException("EMPLOYEE_NOT_FOUND"));
     }
+
+    public List<Employee> getAllEmployees() {
+        return repository.findAll();
+    }
+
+    public void deleteByEmail(String email) {
+        repository.deleteByEmail(email);
+    }
+
 }

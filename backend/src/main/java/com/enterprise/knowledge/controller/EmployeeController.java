@@ -28,14 +28,14 @@ public class EmployeeController {
         this.jwtUtil = jwtUtil;
     }
 
-    /* ================= REGISTER ================= */
+    /* ================= REGISTER (UNCHANGED) ================= */
 
     @PostMapping("/register")
     public Employee registerEmployee(@RequestBody EmployeeRequest request) {
         return service.saveEmployee(request);
     }
 
-    /* ================= LOGIN (JWT + COOKIE) ================= */
+    /* ================= LOGIN (UPDATED: JWT + COOKIE) ================= */
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
@@ -64,7 +64,7 @@ public class EmployeeController {
                 ));
     }
 
-    /* ================= GET LOGGED-IN USER ================= */
+    /* ================= GET LOGGED-IN USER (NEW) ================= */
 
     @GetMapping("/me")
     public ResponseEntity<?> getLoggedInUser(Authentication authentication) {
@@ -81,14 +81,14 @@ public class EmployeeController {
         );
     }
 
-    /* ================= GET EMPLOYEE BY EMAIL ================= */
+    /* ================= GET EMPLOYEE BY EMAIL (UNCHANGED) ================= */
 
     @GetMapping("/by-email")
     public Employee getEmployeeByEmail(@RequestParam String email) {
         return service.getEmployeeByEmail(email);
     }
 
-    /* ================= LOGOUT ================= */
+    /* ================= LOGOUT (NEW) ================= */
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout() {
@@ -102,5 +102,20 @@ public class EmployeeController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, deleteCookie.toString())
                 .body("LOGOUT_SUCCESS");
+    }
+
+    /* ================= ADMIN: GET ALL EMPLOYEES ================= */
+
+    @GetMapping
+    public ResponseEntity<?> getAllEmployees() {
+        return ResponseEntity.ok(service.getAllEmployees());
+    }
+
+    /* ================= ADMIN: DELETE EMPLOYEE ================= */
+
+    @DeleteMapping("/{email}")
+    public ResponseEntity<?> deleteEmployee(@PathVariable String email) {
+        service.deleteByEmail(email);
+        return ResponseEntity.ok("DELETED");
     }
 }

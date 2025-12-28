@@ -27,7 +27,8 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
-        return path.startsWith("/api/employees/login")
+        return request.getMethod().equalsIgnoreCase("OPTIONS")
+                || path.startsWith("/api/employees/login")
                 || path.startsWith("/api/employees/register")
                 || path.startsWith("/api/employees/logout");
     }
@@ -39,7 +40,6 @@ public class JwtFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        // ✅ If already authenticated, do nothing
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             filterChain.doFilter(request, response);
             return;
@@ -47,7 +47,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String token = null;
 
-        // 🔐 Extract JWT from HTTP-only cookie
+        // 🔐 Extract JWT from HttpOnly cookie
         if (request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
                 if ("jwt".equals(cookie.getName())) {
@@ -57,7 +57,6 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
 
-        // ❌ No token → let Spring Security decide
         if (token == null || !jwtUtil.validateToken(token)) {
             filterChain.doFilter(request, response);
             return;
@@ -65,7 +64,18 @@ public class JwtFilter extends OncePerRequestFilter {
 
         // 🔐 Extract identity
         String email = jwtUtil.extractUsername(token);
-        String role = jwtUtil.extractRole(token); // MUST be ROLE_*
+        String role = jwtUtil.extractRole(token);
+
+        // 🔍 DEBUG (keep for now)
+        System.out.println("JWT EMAIL = " + email);
+        System.out.println("JWT ROLE (from token) = " + role);
+
+        // 🔥 Spring Security requires ROLE_ prefix
+        if (!role.startsWith("ROLE_")) {
+            role = "ROLE_" + role;
+        }
+
+        System.out.println("JWT ROLE (used by Spring) = " + role);
 
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(
@@ -74,7 +84,6 @@ public class JwtFilter extends OncePerRequestFilter {
                         List.of(new SimpleGrantedAuthority(role))
                 );
 
-        // ✅ Set authentication ONCE
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         filterChain.doFilter(request, response);

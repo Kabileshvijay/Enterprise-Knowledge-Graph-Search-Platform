@@ -3,6 +3,7 @@ package com.enterprise.knowledge.controller;
 import com.enterprise.knowledge.dto.DocumentRequest;
 import com.enterprise.knowledge.entity.Document;
 import com.enterprise.knowledge.service.DocumentService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -50,8 +51,26 @@ public class DocumentController {
 
     /* ================= LIKE DOCUMENT ================= */
     @PutMapping("/{id}/like")
-    public ResponseEntity<Document> likeDocument(@PathVariable Long id) {
-        return ResponseEntity.ok(service.likeDocument(id));
+    public ResponseEntity<?> likeDocument(
+            @PathVariable Long id,
+            Authentication authentication
+    ) {
+        String email = authentication.getName();
+
+        try {
+            Document doc = service.likeDocument(id, email);
+            return ResponseEntity.ok(doc);
+
+        } catch (RuntimeException e) {
+
+            if ("ALREADY_LIKED".equals(e.getMessage())) {
+                return ResponseEntity
+                        .status(HttpStatus.CONFLICT)
+                        .body(Map.of("message", "Already liked"));
+            }
+
+            throw e;
+        }
     }
 
     /* ================= SAVE / UNSAVE DOCUMENT ================= */
@@ -76,7 +95,7 @@ public class DocumentController {
         return ResponseEntity.ok(service.getSavedDocuments(email));
     }
 
-    /* ================= GET MY DOCUMENTS (PROFILE PAGE) ================= */
+    /* ================= GET MY DOCUMENTS ================= */
     @GetMapping("/my")
     public ResponseEntity<List<Document>> getMyDocuments(
             Authentication authentication

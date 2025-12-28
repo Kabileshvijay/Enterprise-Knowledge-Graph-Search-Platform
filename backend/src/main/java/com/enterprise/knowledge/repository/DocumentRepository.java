@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface DocumentRepository extends JpaRepository<Document, Long> {
 
-    // ✅ Existing (Profile page)
+    // (Profile page)
     List<Document> findByAuthorEmail(String authorEmail);
 
-    // ✅ NEW (Search functionality)
+    // NEW (Search functionality)
     List<Document> findByTitleContainingIgnoreCase(String keyword);
 }

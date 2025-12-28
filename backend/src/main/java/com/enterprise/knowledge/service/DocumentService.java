@@ -8,6 +8,7 @@ import com.enterprise.knowledge.repository.DocumentRepository;
 import com.enterprise.knowledge.repository.EmployeeRepository;
 import com.enterprise.knowledge.repository.SavedDocumentRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class DocumentService {
     public DocumentService(
             DocumentRepository repository,
             SavedDocumentRepository savedRepo,
-            EmployeeRepository employeeRepository
+            EmployeeRepository employeeRepository,
     ) {
         this.repository = repository;
         this.savedRepo = savedRepo;
@@ -33,13 +34,12 @@ public class DocumentService {
     public Document createDocument(DocumentRequest request, String authorEmail) {
 
         Employee employee = employeeRepository.findByEmail(authorEmail)
-                .orElseThrow(() ->
-                        new RuntimeException("AUTHOR_NOT_FOUND"));
+                .orElseThrow(() -> new RuntimeException("AUTHOR_NOT_FOUND"));
 
         Document doc = new Document();
         doc.setTitle(request.getTitle());
-        doc.setAuthorName(employee.getName());   // ✅ from backend
-        doc.setAuthorEmail(authorEmail);          // ✅ from JWT
+        doc.setAuthorName(employee.getName());
+        doc.setAuthorEmail(authorEmail);
         doc.setCategory(request.getCategory());
         doc.setContent(request.getContent());
         doc.setStatus(request.getStatus());
@@ -72,8 +72,7 @@ public class DocumentService {
     public Document updateDocument(Long id, DocumentRequest request) {
 
         Document doc = repository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("DOCUMENT_NOT_FOUND"));
+                .orElseThrow(() -> new RuntimeException("DOCUMENT_NOT_FOUND"));
 
         doc.setTitle(request.getTitle());
         doc.setCategory(request.getCategory());
@@ -90,24 +89,11 @@ public class DocumentService {
         repository.deleteById(id);
     }
 
-    /* ================= LIKE DOCUMENT ================= */
-
-    public Document likeDocument(Long id) {
-
-        Document doc = repository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("DOCUMENT_NOT_FOUND"));
-
-        doc.setLikes(doc.getLikes() + 1);
-        return repository.save(doc);
-    }
-
     /* ================= GET DOCUMENT BY ID ================= */
 
     public Document getDocumentById(Long id) {
         return repository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("DOCUMENT_NOT_FOUND"));
+                .orElseThrow(() -> new RuntimeException("DOCUMENT_NOT_FOUND"));
     }
 
     /* ================= SAVE / UNSAVE DOCUMENT ================= */

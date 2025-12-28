@@ -1,6 +1,9 @@
 package com.enterprise.knowledge.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -24,6 +27,10 @@ public class Employee {
     )
     @Column(name = "skill")
     private List<String> skills;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
 
     // ================= GETTERS & SETTERS =================
 
@@ -72,5 +79,8 @@ public class Employee {
     }
     public void setSkills(List<String> skills) {
         this.skills = skills;
+    }
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 }
