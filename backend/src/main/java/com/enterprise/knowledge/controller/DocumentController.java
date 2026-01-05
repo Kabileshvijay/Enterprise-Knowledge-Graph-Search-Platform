@@ -1,6 +1,7 @@
 package com.enterprise.knowledge.controller;
 
 import com.enterprise.knowledge.dto.DocumentRequest;
+import com.enterprise.knowledge.dto.DocumentSearchResponse;
 import com.enterprise.knowledge.entity.Document;
 import com.enterprise.knowledge.service.DocumentService;
 import org.springframework.http.HttpStatus;
@@ -41,12 +42,28 @@ public class DocumentController {
         return ResponseEntity.ok(service.getAllDocuments());
     }
 
-    /* ================= SEARCH DOCUMENTS ================= */
+    /* =====================================================
+       🔍 SEARCH + FILTER + PAGINATION (BACKEND DRIVEN)
+       ===================================================== */
     @GetMapping("/search")
-    public ResponseEntity<List<Document>> searchDocuments(
-            @RequestParam String keyword
+    public ResponseEntity<DocumentSearchResponse> searchDocuments(
+            @RequestParam(required = false) String q,
+            @RequestParam(required = false) String space,
+            @RequestParam(required = false) String contributor,
+            @RequestParam(required = false) String tags,
+            @RequestParam(required = false) String date,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
     ) {
-        return ResponseEntity.ok(service.searchDocuments(keyword));
+        return ResponseEntity.ok(
+                service.search(q, space, contributor, tags, date, page, size)
+        );
+    }
+
+    /* ================= NEW: GET CONTRIBUTORS ================= */
+    @GetMapping("/contributors")
+    public ResponseEntity<List<String>> getContributors() {
+        return ResponseEntity.ok(service.getAllContributors());
     }
 
     /* ================= LIKE DOCUMENT ================= */
@@ -62,13 +79,11 @@ public class DocumentController {
             return ResponseEntity.ok(doc);
 
         } catch (RuntimeException e) {
-
             if ("ALREADY_LIKED".equals(e.getMessage())) {
                 return ResponseEntity
                         .status(HttpStatus.CONFLICT)
                         .body(Map.of("message", "Already liked"));
             }
-
             throw e;
         }
     }

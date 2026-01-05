@@ -3,11 +3,11 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 70px; 
+  height: 70px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 24px; 
+  padding: 0 24px;
   background-color: #fff;
   border-bottom: 1px solid #e0e0e0;
   z-index: 1000;
@@ -16,11 +16,11 @@
 .nav-left {
   display: flex;
   align-items: center;
-  gap: 35px; 
+  gap: 35px;
 }
 
 .nav-logo {
-  font-size: 24px; 
+  font-size: 24px;
   font-weight: bold;
   color: #0052cc;
 }
@@ -28,7 +28,7 @@
 .nav-menu {
   display: flex;
   list-style: none;
-  gap: 25px; 
+  gap: 25px;
   margin: 0;
   padding: 0;
 }
@@ -46,16 +46,16 @@
 .nav-right {
   display: flex;
   align-items: center;
-  gap: 18px; 
+  gap: 18px;
 }
 
 .nav-search {
   display: flex;
   align-items: center;
   background-color: #f4f5f7;
-  padding: 8px 14px; 
+  padding: 8px 14px;
   border-radius: 4px;
-  gap: 10px; 
+  gap: 10px;
 }
 
 .nav-search input {
@@ -63,12 +63,12 @@
   background: transparent;
   outline: none;
   width: 220px;
-  font-size: 14px; 
+  font-size: 14px;
 }
 
 .search-icon {
   color: #5e6c84;
-  font-size: 16px; 
+  font-size: 16px;
 }
 
 .create-btn {
@@ -79,7 +79,7 @@
   border-radius: 4px;
   cursor: pointer;
   font-weight: 500;
-  font-size: 15px; 
+  font-size: 15px;
 }
 
 .create-btn:hover {
@@ -87,7 +87,7 @@
 }
 
 .nav-icon {
-  font-size: 22px; 
+  font-size: 22px;
   color: #42526e;
   cursor: pointer;
 }
@@ -100,44 +100,212 @@
   font-size: 32px;
 }
 
+/* ================= PROFILE WRAPPER ================= */
 
-
-
-/* Profile dropdown */
 .profile-wrapper {
   position: relative;
 }
 
+/* ================= PROFILE DROPDOWN ================= */
+
 .profile-dropdown {
   position: absolute;
   right: 0;
-  top: 40px;
-  background: #fff;
-  border: 1px solid #ddd;
+  top: calc(100% + 10px);
+  background: #ffffff;
   width: 160px;
-  border-radius: 6px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  z-index: 1000;
+
+  /* Hidden state */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.25s ease;
 }
+
+/* Show via React state */
+.profile-dropdown.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* ================= PROFILE NAME ================= */
+
+.profile-name {
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #333;
+  background: #fafafa;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* ================= BUTTONS ================= */
 
 .profile-dropdown button {
   width: 100%;
-  padding: 10px;
+  padding: 0.75rem 1rem;
   border: none;
-  background: none;
+  background: transparent;
   cursor: pointer;
   text-align: left;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #333;
+  font-family: inherit;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
+/* Normal button hover (BLUE) */
 .profile-dropdown button:hover {
-  background: #f5f5f5;
+  background: rgba(39, 77, 143, 0.12);
+  color: #274d8f;
 }
+
+/* ================= LOGOUT BUTTON (RED OVERRIDE) ================= */
 
 .logout-btn {
-  color: red;
+  color: #d32f2f;
 }
 
-.profile-name {
-  padding: 10px;
-  font-weight: bold;
-  border-bottom: 1px solid #eee;
+/* 🔥 FORCE RED on hover */
+.logout-btn:hover {
+  background: rgba(211, 47, 47, 0.15) !important;
+  color: #b71c1c !important;
+}
+
+/* ================= OPTIONAL ARROW ================= */
+
+.profile-dropdown::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  right: 16px;
+  width: 12px;
+  height: 12px;
+  background: #ffffff;
+  transform: rotate(45deg);
+  border-left: 1px solid rgba(0, 0, 0, 0.06);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* ================= WRAPPER ================= */
+
+.notification-wrapper {
+  position: relative;
+}
+
+/* ================= BADGE ================= */
+
+.notification-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #dc2626;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 999px;
+  line-height: 1;
+}
+
+/* ================= DROPDOWN ================= */
+
+.notification-dropdown {
+  position: absolute;
+  top: 42px;
+  right: 0;
+  width: 320px;
+  max-height: 380px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
+  border: 1px solid #e5e7eb;
+  z-index: 3000;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* ================= SCROLLBAR ================= */
+
+.notification-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.notification-dropdown::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 10px;
+}
+
+.notification-dropdown::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* ================= HEADER ================= */
+
+.notification-dropdown h4 {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 12px 14px;
+  margin: 0;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* ================= ITEMS ================= */
+
+.notification-item {
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.notification-item:hover {
+  background: #f9fafb;
+}
+
+/* UNREAD */
+.notification-item.unread {
+  background: #eff6ff;
+}
+
+.notification-item.unread p {
+  font-weight: 600;
+}
+
+/* READ */
+.notification-item.read {
+  opacity: 0.8;
+}
+
+/* MESSAGE */
+.notification-item p {
+  font-size: 13px;
+  margin: 0 0 4px;
+  color: #111827;
+}
+
+/* TIME */
+.notification-item span {
+  font-size: 11px;
+  color: #6b7280;
+}
+
+/* ================= EMPTY STATE ================= */
+
+.no-notifications {
+  padding: 16px;
+  text-align: center;
+  font-size: 13px;
+  color: #6b7280;
 }

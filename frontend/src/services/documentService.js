@@ -4,30 +4,45 @@ const BASE_URL = "http://localhost:8080/api/documents";
 /* ================= GET ALL DOCUMENTS ================= */
 export const getAllDocuments = async () => {
   const res = await fetch(BASE_URL, {
-    credentials: "include"
+    credentials: "include",
   });
 
   if (!res.ok) throw new Error("Failed to fetch documents");
   return res.json();
 };
 
-/* ================= SEARCH DOCUMENTS ================= */
-export const searchDocuments = async (keyword) => {
-  const res = await fetch(
-    `${BASE_URL}/search?keyword=${encodeURIComponent(keyword)}`,
-    {
-      credentials: "include"
-    }
-  );
+/* =====================================================
+   🔍 BACKEND SEARCH + FILTER + PAGINATION
+   ===================================================== */
+export const searchDocumentsBackend = async (params) => {
+  const queryString = new URLSearchParams(
+    Object.entries(params).filter(
+      ([_, value]) => value !== null && value !== ""
+    )
+  ).toString();
+
+  const res = await fetch(`${BASE_URL}/search?${queryString}`, {
+    credentials: "include",
+  });
 
   if (!res.ok) throw new Error("Search failed");
+  return res.json();
+};
+
+/* ================= GET CONTRIBUTORS ================= */
+export const getContributors = async () => {
+  const res = await fetch(`${BASE_URL}/contributors`, {
+    credentials: "include",
+  });
+
+  if (!res.ok) throw new Error("Failed to fetch contributors");
   return res.json();
 };
 
 /* ================= GET DOCUMENT BY ID ================= */
 export const getDocumentById = async (id) => {
   const res = await fetch(`${BASE_URL}/${id}`, {
-    credentials: "include"
+    credentials: "include",
   });
 
   if (!res.ok) throw new Error("Document not found");
@@ -38,7 +53,7 @@ export const getDocumentById = async (id) => {
 export const likeDocument = async (id) => {
   const res = await fetch(`${BASE_URL}/${id}/like`, {
     method: "PUT",
-    credentials: "include"
+    credentials: "include",
   });
 
   if (!res.ok) throw new Error("Like failed");
@@ -49,16 +64,17 @@ export const likeDocument = async (id) => {
 export const saveDocument = async (id) => {
   const res = await fetch(`${BASE_URL}/${id}/save`, {
     method: "PUT",
-    credentials: "include"
+    credentials: "include",
   });
 
   if (!res.ok) throw new Error("Save failed");
+  return res.json();
 };
 
 /* ================= GET SAVED DOCUMENTS ================= */
 export const getSavedDocuments = async () => {
   const res = await fetch(`${BASE_URL}/saved`, {
-    credentials: "include"
+    credentials: "include",
   });
 
   if (!res.ok) throw new Error("Failed to fetch saved documents");
@@ -67,12 +83,6 @@ export const getSavedDocuments = async () => {
 
 /* ================= CHECK IF DOCUMENT IS SAVED ================= */
 export const checkIfSaved = async (id) => {
-  const res = await fetch(`${BASE_URL}/saved`, {
-    credentials: "include"
-  });
-
-  if (!res.ok) return false;
-
-  const docs = await res.json();
+  const docs = await getSavedDocuments();
   return docs.some((d) => d.id === Number(id));
 };

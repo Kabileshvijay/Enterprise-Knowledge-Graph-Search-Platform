@@ -2,179 +2,115 @@ import { FaTimes } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  getAllDocuments,
-  searchDocuments,
+  searchDocumentsBackend,
+  getContributors
 } from "../../services/documentService";
-import "../../styles/user/SearchPanel.css";
+import "../../styles/user/searchPanel.css";
 
 const SearchPanel = ({ onClose }) => {
   const navigate = useNavigate();
 
+  // SEARCH & FILTER STATES
   const [query, setQuery] = useState("");
-  const [allDocs, setAllDocs] = useState([]);
-  const [visibleDocs, setVisibleDocs] = useState([]);
-
-  // FILTER STATES
+  const [selectedSpace, setSelectedSpace] = useState("");
+  const [selectedContributor, setSelectedContributor] = useState("");
   const [dateFilter, setDateFilter] = useState("all");
+
   const [tagInput, setTagInput] = useState("");
   const [selectedTags, setSelectedTags] = useState([]);
-  const [contributors, setContributors] = useState([]);
-  const [selectedContributor, setSelectedContributor] = useState("");
-  const [selectedSpace, setSelectedSpace] = useState("");
 
-  // PAGINATION STATES
+  // RESULTS
+  const [documents, setDocuments] = useState([]);
+  const [contributors, setContributors] = useState([]);
+
+  // PAGINATION
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const itemsPerPage = 10;
 
-  /* ================= LOAD ALL DOCUMENTS ================= */
+  /* ================= LOAD CONTRIBUTORS (ONCE) ================= */
   useEffect(() => {
-    const fetchAll = async () => {
+    const fetchContributors = async () => {
       try {
-        const data = await getAllDocuments();
-        const docs = Array.isArray(data) ? data : [];
-
-        setAllDocs(docs);
-        setVisibleDocs(docs);
-
-        const uniqueContributors = [
-          ...new Set(docs.map((doc) => doc.authorName).filter(Boolean)),
-        ];
-        setContributors(uniqueContributors);
+        const data = await getContributors();
+        setContributors(data);
       } catch (err) {
-        console.error("Failed to load documents", err);
-        navigate("/");
+        console.error("Failed to load contributors", err);
       }
     };
 
-    fetchAll();
-  }, [navigate]);
+    fetchContributors();
+  }, []);
 
-  /* ================= APPLY SEARCH + FILTERS ================= */
+  /* ================= FETCH SEARCH RESULTS ================= */
   useEffect(() => {
-    const applyFilters = async () => {
-      let docs = [];
-
-      // SEARCH
-      if (query.trim() !== "") {
-        try {
-          const results = await searchDocuments(query);
-          docs = Array.isArray(results) ? results : [];
-        } catch {
-          docs = allDocs;
-        }
-      } else {
-        docs = [...allDocs];
-      }
-
-      // SPACE FILTER
-      if (selectedSpace) {
-        docs = docs.filter((doc) => doc.category === selectedSpace);
-      }
-
-      // DATE FILTER
-      if (dateFilter !== "all") {
-        const now = new Date();
-
-        docs = docs.filter((doc) => {
-          if (!doc.createdAt) return false;
-
-          const created = new Date(
-            doc.createdAt.replace(" ", "T").split(".")[0]
-          );
-
-          const diffDays = (now - created) / (1000 * 60 * 60 * 24);
-
-          if (dateFilter === "day") return diffDays <= 1;
-          if (dateFilter === "week") return diffDays <= 7;
-          if (dateFilter === "month") return diffDays <= 30;
-
-          return true;
+    const fetchResults = async () => {
+      try {
+        const data = await searchDocumentsBackend({
+          q: query || null,
+          space: selectedSpace || null,
+          contributor: selectedContributor || null,
+          tags: selectedTags.length ? selectedTags.join(",") : null,
+          date: dateFilter !== "all" ? dateFilter : null,
+          page: currentPage - 1,
+          size: itemsPerPage,
         });
+
+        setDocuments(data.content || []);
+        setTotalPages(data.totalPages || 0);
+      } catch (err) {
+        console.error("Search failed", err);
       }
-
-      // TAG FILTER
-      if (selectedTags.length > 0) {
-        docs = docs.filter((doc) => {
-          if (!doc.tags) return false;
-
-          const docTags = doc.tags
-            .split(",")
-            .map((t) => t.trim().toLowerCase());
-
-          return selectedTags.every((tag) =>
-            docTags.includes(tag.toLowerCase())
-          );
-        });
-      }
-
-      // CONTRIBUTOR FILTER
-      if (selectedContributor) {
-        docs = docs.filter((doc) => doc.authorName === selectedContributor);
-      }
-
-      setVisibleDocs(docs);
-      setCurrentPage(1);
     };
 
-    applyFilters();
+    fetchResults();
   }, [
     query,
     selectedSpace,
-    dateFilter,
-    selectedTags,
     selectedContributor,
-    allDocs,
+    selectedTags,
+    dateFilter,
+    currentPage,
   ]);
 
   /* ================= TAG HANDLERS ================= */
   const handleTagKeyDown = (e) => {
     if (e.key === "Enter" && tagInput.trim()) {
       e.preventDefault();
-
       if (!selectedTags.includes(tagInput.trim())) {
         setSelectedTags([...selectedTags, tagInput.trim()]);
       }
-
       setTagInput("");
+      setCurrentPage(1);
     }
   };
 
-  const removeTag = (tagToRemove) => {
-    setSelectedTags(selectedTags.filter((t) => t !== tagToRemove));
+  const removeTag = (tag) => {
+    setSelectedTags(selectedTags.filter((t) => t !== tag));
+    setCurrentPage(1);
   };
 
   /* ================= CLEAR FILTERS ================= */
   const clearFilters = () => {
     setQuery("");
     setSelectedSpace("");
+    setSelectedContributor("");
     setDateFilter("all");
     setSelectedTags([]);
     setTagInput("");
-    setSelectedContributor("");
-    setVisibleDocs(allDocs);
     setCurrentPage(1);
   };
 
-  const hasActiveFilters = () => {
-    return (
-      selectedSpace ||
-      dateFilter !== "all" ||
-      selectedTags.length > 0 ||
-      selectedContributor ||
-      query.trim()
-    );
-  };
+  const hasActiveFilters = () =>
+    query.trim() ||
+    selectedSpace ||
+    selectedContributor ||
+    selectedTags.length ||
+    dateFilter !== "all";
 
-  /* ================= PAGINATION LOGIC ================= */
-  const totalPages = Math.ceil(visibleDocs.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentDocs = visibleDocs.slice(startIndex, endIndex);
-
+  /* ================= PAGINATION ================= */
   const goToPage = (page) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
-    }
+    if (page >= 1 && page <= totalPages) setCurrentPage(page);
   };
 
   const getPageNumbers = () => {
@@ -224,17 +160,17 @@ const SearchPanel = ({ onClose }) => {
           placeholder="Search"
           autoFocus
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setCurrentPage(1);
+          }}
         />
 
         <div className="search-body">
           <div className="filters">
             <p>FILTER BY</p>
 
-            <select
-              value={selectedSpace}
-              onChange={(e) => setSelectedSpace(e.target.value)}
-            >
+            <select value={selectedSpace} onChange={(e) => setSelectedSpace(e.target.value)}>
               <option value="">Space</option>
               <option value="Engineering">Engineering</option>
               <option value="Analytics">Analytics</option>
@@ -244,20 +180,21 @@ const SearchPanel = ({ onClose }) => {
 
             <select
               value={selectedContributor}
-              onChange={(e) => setSelectedContributor(e.target.value)}
+              onChange={(e) => {
+                setSelectedContributor(e.target.value);
+                setCurrentPage(1);
+              }}
             >
               <option value="">Contributor</option>
-              {contributors.map((name) => (
-                <option key={name} value={name}>
-                  {name}
-                </option>
+              {contributors.map((c) => (
+                <option key={c} value={c}>{c}</option>
               ))}
             </select>
 
-            <select
-              value={dateFilter}
-              onChange={(e) => setDateFilter(e.target.value)}
-            >
+            <select value={dateFilter} onChange={(e) => {
+              setDateFilter(e.target.value);
+              setCurrentPage(1);
+            }}>
               <option value="all">Date</option>
               <option value="day">Past 24 hours</option>
               <option value="week">Past week</option>
@@ -296,53 +233,47 @@ const SearchPanel = ({ onClose }) => {
               {hasActiveFilters() ? "SEARCH RESULTS" : "RECENTLY VISITED"}
             </p>
 
-            {currentDocs.length > 0 ? (
+            {documents.length > 0 ? (
               <>
-                {currentDocs
-                  .filter((doc) => doc.status === "PUBLISHED")
-                  .map((doc) => (
-                    <div
-                      key={doc.id}
-                      className="search-result-item"
-                      onClick={() => {
-                        onClose();
-                        navigate(`/documents/${doc.id}`);
-                      }}
-                    >
-                      <p className="result-title">{doc.title}</p>
-                      <p className="result-space">{doc.category}</p>
-                    </div>
-                  ))}
+                {documents.map((doc) => (
+                  <div
+                    key={doc.id}
+                    className="search-result-item"
+                    onClick={() => {
+                      onClose();
+                      navigate(`/documents/${doc.id}`);
+                    }}
+                  >
+                    <p className="result-title">{doc.title}</p>
+                    <p className="result-space">{doc.category}</p>
+                  </div>
+                ))}
 
                 {totalPages > 1 && (
                   <div className="pagination">
                     <button
                       className="pagination-btn"
-                      onClick={() => goToPage(currentPage - 1)}
                       disabled={currentPage === 1}
+                      onClick={() => goToPage(currentPage - 1)}
                     >
                       Previous
                     </button>
 
-                    {getPageNumbers().map((page, index) => (
+                    {getPageNumbers().map((p, i) => (
                       <button
-                        key={index}
-                        className={`pagination-btn ${
-                          page === currentPage ? "active" : ""
-                        }`}
-                        onClick={() =>
-                          typeof page === "number" && goToPage(page)
-                        }
-                        disabled={page === "..."}
+                        key={i}
+                        className={`pagination-btn ${p === currentPage ? "active" : ""}`}
+                        disabled={p === "..."}
+                        onClick={() => typeof p === "number" && goToPage(p)}
                       >
-                        {page}
+                        {p}
                       </button>
                     ))}
 
                     <button
                       className="pagination-btn"
-                      onClick={() => goToPage(currentPage + 1)}
                       disabled={currentPage === totalPages}
+                      onClick={() => goToPage(currentPage + 1)}
                     >
                       Next
                     </button>

@@ -3,6 +3,7 @@ package com.enterprise.knowledge.config;
 import com.enterprise.knowledge.jwt.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -31,7 +32,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                // 🔹 Disable default auth
+                // 🔹 Disable defaults
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
 
@@ -44,20 +45,37 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
 
-                // 🔹 Authorization rules (FIXED)
+                // 🔹 Authorization rules
                 .authorizeHttpRequests(auth -> auth
 
-                        // PUBLIC
+                        // ALLOW PREFLIGHT REQUESTS (REQUIRED FOR FILE UPLOAD)
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                        // ✅ PUBLIC
                         .requestMatchers(
                                 "/api/employees/login",
                                 "/api/employees/register",
-                                "/api/employees/logout"
+                                "/api/employees/logout",
+                                "/uploads/**",
+                                "/ws/**",
+                                "/error"
                         ).permitAll()
 
-                        // ✅ DOCUMENT APIs → any logged-in user
-                        .requestMatchers("/api/documents/**").authenticated()
+                        // ✅ AUTHENTICATED USER
+                        .requestMatchers(
+                                "/api/employees/me",
+                                "/api/documents/**",
+                                "/api/feedback/**",
+                                "/api/analytics/**",
+                                "/api/comments/**",
+                                "/api/notifications/**",
+                                "/api/ai/**"
+                        ).authenticated()
 
-                        // ADMIN only
+                        // 🔐 ADMIN ONLY
+                        .requestMatchers("/api/employees/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/feedback").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/api/feedback/*/solve").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
                         // everything else
@@ -76,7 +94,7 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // 🌍 CORS (cookies)
+    // 🌍 CORS (cookies + multipart)
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 

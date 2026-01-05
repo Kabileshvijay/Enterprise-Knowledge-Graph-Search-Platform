@@ -7,7 +7,7 @@ import AboutModal from "./AboutModal";
 const ContentPage = () => {
   const [openSearch, setOpenSearch] = useState(false);
   const [openFeedback, setOpenFeedback] = useState(false);
-  const [openAbout, setOpenAbout] = useState(false);
+  const [openAbout, setOpenAbout] = useState(false); // 👈 NEW
 
   return (
     <main className="content-area">
@@ -20,10 +20,7 @@ const ContentPage = () => {
               onboarding documentation here.
             </p>
 
-            <button
-              className="primary-cta"
-              onClick={() => setOpenSearch(true)}
-            >
+            <button className="primary-cta" onClick={() => setOpenSearch(true)}>
               Start with the Engineering Guide →
             </button>
           </div>
@@ -31,10 +28,7 @@ const ContentPage = () => {
 
         <div className="content-links">
           {/* ENGINEERING GUIDE */}
-          <div
-            className="link-card"
-            onClick={() => setOpenAbout(true)} 
-          >
+          <div className="link-card" onClick={() => setOpenAbout(true)}>
             <h3>Read about Enterprise Engineering</h3>
             <span>Engineering Guide →</span>
           </div>
@@ -46,10 +40,7 @@ const ContentPage = () => {
           </div>
 
           {/* FEEDBACK */}
-          <div
-            className="link-card"
-            onClick={() => setOpenFeedback(true)}
-          >
+          <div className="link-card" onClick={() => setOpenFeedback(true)}>
             <h3>Give Feedback</h3>
             <span>Share your thoughts →</span>
           </div>
@@ -57,17 +48,11 @@ const ContentPage = () => {
       </div>
 
       {/* MODALS */}
-      {openSearch && (
-        <SearchPanel onClose={() => setOpenSearch(false)} />
-      )}
+      {openSearch && <SearchPanel onClose={() => setOpenSearch(false)} />}
 
-      {openFeedback && (
-        <FeedbackModal onClose={() => setOpenFeedback(false)} />
-      )}
+      {openFeedback && <FeedbackModal onClose={() => setOpenFeedback(false)} />}
 
-      {openAbout && (
-        <AboutModal onClose={() => setOpenAbout(false)} />
-      )}
+      {openAbout && <AboutModal onClose={() => setOpenAbout(false)} />}
     </main>
   );
 };

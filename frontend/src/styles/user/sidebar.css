@@ -83,3 +83,71 @@
 .wiki-sidebar-bottom:hover {
   background-color: #3a4f6c;
 }
+
+
+.space-tools-popup {
+  position: absolute;
+  bottom: 70px;
+  left: 20px;
+  width: 200px;
+
+  background: rgba(31, 41, 55, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border-radius: 12px;
+  padding: 10px;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  animation: popupFadeIn 0.25s ease-out;
+  z-index: 10000;
+}
+
+/* Smooth entrance animation */
+@keyframes popupFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.space-tools-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 12px;
+  border-radius: 8px;
+
+  color: #e5e7eb;
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.space-tools-item:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(96, 165, 250, 0.15),
+    rgba(59, 130, 246, 0.15)
+  );
+  transform: translateX(4px);
+}
+
+.space-tools-item svg {
+  font-size: 16px;
+  color: #60a5fa;
+}
+
+.space-tools-item:active {
+  transform: scale(0.97);
+}

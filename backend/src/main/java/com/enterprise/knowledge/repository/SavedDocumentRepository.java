@@ -10,6 +10,6 @@ public interface SavedDocumentRepository extends JpaRepository<SavedDocument, Lo
     // ✅ Get all saved docs for a user
     List<SavedDocument> findByUserEmail(String userEmail);
 
-    // ✅ Check if already saved
+    // ✅ Check if already saved (IMPORTANT)
     boolean existsByDocumentIdAndUserEmail(Long documentId, String userEmail);
 }

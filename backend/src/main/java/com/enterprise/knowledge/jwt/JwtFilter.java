@@ -70,7 +70,7 @@ public class JwtFilter extends OncePerRequestFilter {
         System.out.println("JWT EMAIL = " + email);
         System.out.println("JWT ROLE (from token) = " + role);
 
-        // 🔥 Spring Security requires ROLE_ prefix
+        // 🔥 CRITICAL FIX: Spring Security requires ROLE_ prefix
         if (!role.startsWith("ROLE_")) {
             role = "ROLE_" + role;
         }

@@ -2,11 +2,19 @@ import { Link, useNavigate } from "react-router-dom";
 import "../../styles/admin/navbar.css";
 
 const Navbar = () => {
-
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    navigate("/");
+  const handleLogout = async () => {
+    try {
+      await fetch("http://localhost:8080/api/employees/logout", {
+        method: "POST",
+        credentials: "include" 
+      });
+    } catch (err) {
+      console.error("Logout failed", err);
+    } finally {
+      navigate("/"); 
+    }
   };
 
   return (

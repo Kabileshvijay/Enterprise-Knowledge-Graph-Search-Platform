@@ -1,0 +1,45 @@
+.documents-page {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.documents-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.documents-title span {
+  color: #2563eb;
+}
+
+.documents-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.document-card {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.document-card:hover {
+  transform: translateY(-2px);
+}
+
+.category {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.doc-meta {
+  margin-top: 10px;
+  display: flex;
+  gap: 16px;
+  font-size: 14px;
+}

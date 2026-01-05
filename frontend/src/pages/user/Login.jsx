@@ -29,7 +29,7 @@ const Login = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          credentials: "include", // 🔐 REQUIRED FOR COOKIES
+          credentials: "include",
           body: JSON.stringify({ email, password }),
         }
       );
@@ -43,7 +43,7 @@ const Login = () => {
 
       // 🔀 Navigate based on role
       if (data.role === "ADMIN") {
-        navigate("/admin");
+        navigate("/admin/dashboard");
       } else {
         navigate("/home");
       }

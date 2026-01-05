@@ -1,4 +1,4 @@
-import "../../styles/user/feedbackModal.css";
+import "../../styles/user/feedbackModal.css"; 
 
 const AboutModal = ({ onClose }) => {
   return (

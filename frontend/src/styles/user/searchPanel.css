@@ -136,7 +136,7 @@
 
 /* Tag input */
 .tag-input {
-  width: calc(100% - 20px);
+  width: 100%;
   padding: 8px 10px;
   font-size: 14px;
   border: 1px solid #dfe1e6;

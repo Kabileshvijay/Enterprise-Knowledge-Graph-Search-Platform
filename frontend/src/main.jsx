@@ -1,13 +1,18 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
 import { BrowserRouter } from "react-router-dom";
-import "./index.css";
-import App from "./App.jsx";
+import { SnowProvider } from "./context/SnowContext";
+import SnowLayer from "./effects/SnowLayer.jsx";
+import Snowfall from "react-snowfall";
 
-createRoot(document.getElementById("root")).render(
-  <StrictMode>
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <SnowProvider>
+        <SnowLayer />
+        <App />
+      </SnowProvider>
     </BrowserRouter>
-  </StrictMode>
+  </React.StrictMode>
 );
