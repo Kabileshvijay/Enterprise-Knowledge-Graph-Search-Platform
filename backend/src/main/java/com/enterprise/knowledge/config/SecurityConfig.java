@@ -63,15 +63,7 @@ public class SecurityConfig {
                                 "/ws/**"
                         ).permitAll()
 
-                        // ADMIN ONLY
-                        .requestMatchers(
-                                "/api/employees/**",
-                                "/api/feedback/**",
-                                "/api/admin/**",
-                                "/api/analytics/**"
-                        ).hasRole("ADMIN")
-
-                        // AUTHENTICATED USERS
+                        // ✅ AUTHENTICATED USERS (MUST COME BEFORE /api/employees/**)
                         .requestMatchers(
                                 "/api/employees/me",
                                 "/api/documents/**",
@@ -79,6 +71,14 @@ public class SecurityConfig {
                                 "/api/notifications/**",
                                 "/api/ai/**"
                         ).authenticated()
+
+                        // 🔐 ADMIN ONLY
+                        .requestMatchers(
+                                "/api/employees/**",
+                                "/api/feedback/**",
+                                "/api/admin/**",
+                                "/api/analytics/**"
+                        ).hasRole("ADMIN")
 
                         .anyRequest().authenticated()
                 )
@@ -103,8 +103,7 @@ public class SecurityConfig {
 
         config.setAllowedOrigins(List.of(
                 "http://localhost:5173",
-                "https://enterprise-knowledge-graph-search.onrender.com",
-                "https://entrograph.vercel.app/"
+                "https://entrograph.vercel.app"
         ));
 
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
