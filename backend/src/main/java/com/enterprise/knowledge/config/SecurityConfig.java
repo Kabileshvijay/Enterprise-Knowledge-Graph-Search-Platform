@@ -32,36 +32,38 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                // 🔹 Disable defaults
+                // Disable default auth
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
 
-                // 🔹 CORS & CSRF
+                // CORS & CSRF
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
 
-                // 🔹 Stateless JWT
+                // Stateless JWT
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
 
-                // 🔹 Authorization rules
+                // Authorization rules
                 .authorizeHttpRequests(auth -> auth
 
-                        // ALLOW PREFLIGHT REQUESTS (REQUIRED FOR FILE UPLOAD)
+                        // 🔓 Preflight requests
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // ✅ PUBLIC
+                        // 🔓 PUBLIC ENDPOINTS
                         .requestMatchers(
+                                "/",                     // ✅ FIXED
+                                "/error",
+                                "/actuator/health",
                                 "/api/employees/login",
                                 "/api/employees/register",
                                 "/api/employees/logout",
                                 "/uploads/**",
-                                "/ws/**",
-                                "/error"
+                                "/ws/**"
                         ).permitAll()
 
-                        // ✅ AUTHENTICATED USER
+                        // 🔐 AUTHENTICATED USERS
                         .requestMatchers(
                                 "/api/employees/me",
                                 "/api/documents/**",
@@ -73,33 +75,36 @@ public class SecurityConfig {
                         ).authenticated()
 
                         // 🔐 ADMIN ONLY
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/employees/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/feedback").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/api/feedback/*/solve").hasAuthority("ROLE_ADMIN")
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
-                        // everything else
                         .anyRequest().authenticated()
                 )
 
-                // 🔹 JWT Filter
+                // JWT Filter
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-    // 🔐 Password encoder
+    // Password Encoder
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // 🌍 CORS (cookies + multipart)
+    // 🌍 CORS CONFIG (LOCAL + PROD)
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:5173"));
+
+        config.setAllowedOrigins(List.of(
+                "http://localhost:5173"    // local dev
+        ));
+
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
