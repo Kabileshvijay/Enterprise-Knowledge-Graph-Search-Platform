@@ -9,12 +9,14 @@ function FeedBack() {
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 5;
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   useEffect(() => {
     fetchFeedbacks();
   }, []);
 
   const fetchFeedbacks = async () => {
-    const res = await fetch("http://localhost:8080/api/feedback", {
+    const res = await fetch(`${API_BASE_URL}/api/feedback`, {
       credentials: "include",
     });
 
@@ -28,11 +30,11 @@ function FeedBack() {
     );
 
     setFeedbacks(sorted);
-    setCurrentPage(1); 
+    setCurrentPage(1);
   };
 
   const markAsSolved = async (id) => {
-    await fetch(`http://localhost:8080/api/feedback/${id}/solve`, {
+    await fetch(`${API_BASE_URL}/api/feedback/${id}/solve`, {
       method: "PUT",
       credentials: "include",
     });
@@ -41,8 +43,8 @@ function FeedBack() {
 
   // 📊 STATS
   const total = feedbacks.length;
-  const solved = feedbacks.filter(f => f.status === "SOLVED").length;
-  const unsolved = feedbacks.filter(f => f.status === "UNSOLVED").length;
+  const solved = feedbacks.filter((f) => f.status === "SOLVED").length;
+  const unsolved = feedbacks.filter((f) => f.status === "UNSOLVED").length;
 
   // 🔢 PAGINATION LOGIC
   const totalPages = Math.ceil(feedbacks.length / ITEMS_PER_PAGE);
@@ -88,7 +90,10 @@ function FeedBack() {
 
         <tbody>
           {currentItems.map((f) => (
-            <tr key={f.id} className={f.status === "UNSOLVED" ? "row-unsolved" : ""}>
+            <tr
+              key={f.id}
+              className={f.status === "UNSOLVED" ? "row-unsolved" : ""}
+            >
               <td>{f.name}</td>
               <td>{f.email}</td>
               <td>{f.type}</td>
@@ -131,7 +136,7 @@ function FeedBack() {
         <div className="pagination">
           <button
             disabled={currentPage === 1}
-            onClick={() => setCurrentPage(p => p - 1)}
+            onClick={() => setCurrentPage((p) => p - 1)}
           >
             Prev
           </button>
@@ -148,7 +153,7 @@ function FeedBack() {
 
           <button
             disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage(p => p + 1)}
+            onClick={() => setCurrentPage((p) => p + 1)}
           >
             Next
           </button>
@@ -160,7 +165,7 @@ function FeedBack() {
         <div className="image-overlay" onClick={() => setSelectedImage(null)}>
           <div className="image-modal">
             <img
-              src={`http://localhost:8080${selectedImage}`}
+              src={`${API_BASE_URL}${selectedImage}`}
               alt="Screenshot"
             />
             <button onClick={() => setSelectedImage(null)}>Close</button>

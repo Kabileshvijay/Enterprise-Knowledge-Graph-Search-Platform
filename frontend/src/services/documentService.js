@@ -1,5 +1,5 @@
 // ✅ BASE URL
-const BASE_URL = "http://localhost:8080/api/documents";
+const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/api/documents`;
 
 /* ================= GET ALL DOCUMENTS ================= */
 export const getAllDocuments = async () => {

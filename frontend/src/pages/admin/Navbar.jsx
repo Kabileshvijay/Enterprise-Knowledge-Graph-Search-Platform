@@ -4,16 +4,18 @@ import "../../styles/admin/navbar.css";
 const Navbar = () => {
   const navigate = useNavigate();
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   const handleLogout = async () => {
     try {
-      await fetch("http://localhost:8080/api/employees/logout", {
+      await fetch(`${API_BASE_URL}/api/employees/logout`, {
         method: "POST",
-        credentials: "include" 
+        credentials: "include",
       });
     } catch (err) {
       console.error("Logout failed", err);
     } finally {
-      navigate("/"); 
+      navigate("/");
     }
   };
 

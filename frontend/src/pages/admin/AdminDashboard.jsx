@@ -10,6 +10,8 @@ function AdminDashboard() {
     unsolved: 0,
   });
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   useEffect(() => {
     fetchUserCount();
     fetchPostCount();
@@ -20,16 +22,13 @@ function AdminDashboard() {
 
   const fetchUserCount = async () => {
     try {
-      const res = await fetch("http://localhost:8080/api/employees", {
+      const res = await fetch(`${API_BASE_URL}/api/employees`, {
         credentials: "include",
       });
       if (!res.ok) return;
 
       const users = await res.json();
-
-      // EXCLUDE ADMIN USERS
       const nonAdmins = users.filter((u) => u.role !== "ADMIN");
-
       setUserCount(nonAdmins.length);
     } catch (err) {
       console.error("Failed to fetch users", err);
@@ -40,7 +39,7 @@ function AdminDashboard() {
 
   const fetchPostCount = async () => {
     try {
-      const res = await fetch("http://localhost:8080/api/documents", {
+      const res = await fetch(`${API_BASE_URL}/api/documents`, {
         credentials: "include",
       });
       if (!res.ok) return;
@@ -56,7 +55,7 @@ function AdminDashboard() {
 
   const fetchFeedbackStats = async () => {
     try {
-      const res = await fetch("http://localhost:8080/api/feedback", {
+      const res = await fetch(`${API_BASE_URL}/api/feedback`, {
         credentials: "include",
       });
       if (!res.ok) return;
@@ -77,7 +76,6 @@ function AdminDashboard() {
     <div className="admin-dashboard">
       <h2 className="dashboard-title">📊 Admin Dashboard Overview</h2>
 
-      {/* ROW 1 */}
       <div className="dashboard-row two-cols">
         <div className="dashboard-card blue">
           <h1>{userCount}</h1>
@@ -90,7 +88,6 @@ function AdminDashboard() {
         </div>
       </div>
 
-      {/* ROW 2 */}
       <div className="dashboard-row three-cols">
         <div className="dashboard-card purple">
           <h1>{feedbackStats.total}</h1>

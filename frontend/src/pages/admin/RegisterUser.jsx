@@ -31,6 +31,8 @@ const RegisterUser = () => {
   const [selectedSkills, setSelectedSkills] = useState([]);
   const [filteredSkills, setFilteredSkills] = useState([]);
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   /* ================= SKILL LOGIC ================= */
 
   const handleSkillChange = (e) => {
@@ -83,7 +85,7 @@ const RegisterUser = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/api/employees/register",
+        `${API_BASE_URL}/api/employees/register`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

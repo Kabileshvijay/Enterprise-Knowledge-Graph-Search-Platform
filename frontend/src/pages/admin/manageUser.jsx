@@ -60,6 +60,8 @@ function ManageUser() {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   /* ================= FETCH USERS ================= */
 
   useEffect(() => {
@@ -68,7 +70,7 @@ function ManageUser() {
 
   const fetchUsers = async () => {
     try {
-      const res = await fetch("http://localhost:8080/api/employees", {
+      const res = await fetch(`${API_BASE_URL}/api/employees`, {
         method: "GET",
         credentials: "include",
       });
@@ -96,7 +98,7 @@ function ManageUser() {
 
     try {
       const res = await fetch(
-        `http://localhost:8080/api/employees/${email}`,
+        `${API_BASE_URL}/api/employees/${email}`,
         {
           method: "DELETE",
           credentials: "include",
