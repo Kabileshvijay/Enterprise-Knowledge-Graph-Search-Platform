@@ -32,7 +32,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                // Disable default auth
+                // Disable defaults
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
 
@@ -48,12 +48,12 @@ public class SecurityConfig {
                 // Authorization rules
                 .authorizeHttpRequests(auth -> auth
 
-                        // 🔓 Preflight requests
+                        // Preflight
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // 🔓 PUBLIC ENDPOINTS
+                        // Public
                         .requestMatchers(
-                                "/",                     // ✅ FIXED
+                                "/",
                                 "/error",
                                 "/actuator/health",
                                 "/api/employees/login",
@@ -63,22 +63,22 @@ public class SecurityConfig {
                                 "/ws/**"
                         ).permitAll()
 
-                        // 🔐 AUTHENTICATED USERS
+                        // ADMIN ONLY
+                        .requestMatchers(
+                                "/api/employees/**",
+                                "/api/feedback/**",
+                                "/api/admin/**",
+                                "/api/analytics/**"
+                        ).hasRole("ADMIN")
+
+                        // AUTHENTICATED USERS
                         .requestMatchers(
                                 "/api/employees/me",
                                 "/api/documents/**",
-                                "/api/feedback/**",
-                                "/api/analytics/**",
                                 "/api/comments/**",
                                 "/api/notifications/**",
                                 "/api/ai/**"
                         ).authenticated()
-
-                        // 🔐 ADMIN ONLY
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/employees/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/feedback").hasAuthority("ROLE_ADMIN")
-                        .requestMatchers("/api/feedback/*/solve").hasAuthority("ROLE_ADMIN")
 
                         .anyRequest().authenticated()
                 )
@@ -103,7 +103,8 @@ public class SecurityConfig {
 
         config.setAllowedOrigins(List.of(
                 "http://localhost:5173",
-                "https://entrograph.vercel.app" /// local dev
+                "https://enterprise-knowledge-graph-search.onrender.com",
+                "https://entrograph.vercel.app/"
         ));
 
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
