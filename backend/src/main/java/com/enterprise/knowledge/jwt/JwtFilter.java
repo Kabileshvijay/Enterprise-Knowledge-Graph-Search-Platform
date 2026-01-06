@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -23,14 +24,15 @@ public class JwtFilter extends OncePerRequestFilter {
         this.jwtUtil = jwtUtil;
     }
 
-    /* ✅ SKIP PUBLIC ENDPOINTS */
+    /* ✅ SKIP ONLY PUBLIC ENDPOINTS */
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
+
         return request.getMethod().equalsIgnoreCase("OPTIONS")
-                || path.startsWith("/api/employees/login")
-                || path.startsWith("/api/employees/register")
-                || path.startsWith("/api/employees/logout");
+                || path.equals("/api/employees/login")
+                || path.equals("/api/employees/register")
+                || path.equals("/api/employees/logout");
     }
 
     @Override
@@ -40,6 +42,7 @@ public class JwtFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
+        // Already authenticated
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             filterChain.doFilter(request, response);
             return;
@@ -48,8 +51,9 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = null;
 
         // 🔐 Extract JWT from HttpOnly cookie
-        if (request.getCookies() != null) {
-            for (Cookie cookie : request.getCookies()) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
                 if ("jwt".equals(cookie.getName())) {
                     token = cookie.getValue();
                     break;
@@ -57,6 +61,7 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
 
+        // No token or invalid token
         if (token == null || !jwtUtil.validateToken(token)) {
             filterChain.doFilter(request, response);
             return;
@@ -66,16 +71,10 @@ public class JwtFilter extends OncePerRequestFilter {
         String email = jwtUtil.extractUsername(token);
         String role = jwtUtil.extractRole(token);
 
-        // 🔍 DEBUG (keep for now)
-        System.out.println("JWT EMAIL = " + email);
-        System.out.println("JWT ROLE (from token) = " + role);
-
-        // 🔥 CRITICAL FIX: Spring Security requires ROLE_ prefix
-        if (!role.startsWith("ROLE_")) {
+        // 🔥 Ensure Spring Security compatible role
+        if (role != null && !role.startsWith("ROLE_")) {
             role = "ROLE_" + role;
         }
-
-        System.out.println("JWT ROLE (used by Spring) = " + role);
 
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(
@@ -83,6 +82,11 @@ public class JwtFilter extends OncePerRequestFilter {
                         null,
                         List.of(new SimpleGrantedAuthority(role))
                 );
+
+        // ✅ REQUIRED for authorization to work properly
+        authentication.setDetails(
+                new WebAuthenticationDetailsSource().buildDetails(request)
+        );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
