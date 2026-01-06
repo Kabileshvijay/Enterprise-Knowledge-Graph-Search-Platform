@@ -27,44 +27,46 @@ const People = () => {
   }, [API_BASE_URL, page]);
 
   return (
-    <div className="people-page">
+    <div id="people-page" className="people-page">
       <h2 className="people-title">People</h2>
 
       <div className="people-grid">
         {people.map((person) => (
           <div key={person.id} className="people-card">
-            <div className="avatar">
+            
+            <div className="people-avatar">
               {person.name?.charAt(0).toUpperCase()}
             </div>
 
-            <h3>{person.name}</h3>
-            <p className="team">{person.team}</p>
+            <h3 className="people-name">{person.name}</h3>
+            <p className="people-team">{person.team}</p>
 
-            <div className="skills">
+            <div className="people-skills">
               {person.skills?.length ? (
                 person.skills.map((skill) => (
-                  <span key={skill} className="skill-tag">
+                  <span key={skill} className="people-skill-tag">
                     {skill}
                   </span>
                 ))
               ) : (
-                <span className="skill-tag muted">No skills added</span>
+                <span className="people-skill-tag muted">
+                  No skills added
+                </span>
               )}
             </div>
 
-            <div className="stats">
+            <div className="people-stats">
               <span>📄 {person.documentCount} Docs</span>
               <span>❤️ {person.totalLikes} Likes</span>
             </div>
 
-            <div className="actions">
-              {/* ✅ OPEN POPUP */}
+            <div className="people-actions">
               <button onClick={() => setSelectedPerson(person)}>
                 View Profile
               </button>
 
               <button
-                className="secondary"
+                className="people-secondary-btn"
                 onClick={() =>
                   window.location.href = `/documents?author=${encodeURIComponent(
                     person.email
@@ -80,7 +82,7 @@ const People = () => {
 
       {/* ✅ PAGINATION */}
       {totalPages > 1 && (
-        <div className="pagination">
+        <div className="people-pagination">
           <button disabled={page === 0} onClick={() => setPage(page - 1)}>
             ← Previous
           </button>
@@ -100,33 +102,39 @@ const People = () => {
 
       {/* ✅ PROFILE MODAL */}
       {selectedPerson && (
-        <div className="modal-overlay" onClick={() => setSelectedPerson(null)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="people-modal-overlay"
+          onClick={() => setSelectedPerson(null)}
+        >
+          <div
+            className="people-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
-              className="close-btn"
+              className="people-modal-close"
               onClick={() => setSelectedPerson(null)}
             >
               ✕
             </button>
 
-            <div className="modal-avatar">
+            <div className="people-modal-avatar">
               {selectedPerson.name.charAt(0).toUpperCase()}
             </div>
 
             <h2>{selectedPerson.name}</h2>
-            <p className="team">{selectedPerson.team}</p>
+            <p className="people-team">{selectedPerson.team}</p>
 
-            <div className="modal-section">
+            <div className="people-modal-section">
               <strong>Email:</strong>
               <p>{selectedPerson.email}</p>
             </div>
 
-            <div className="modal-section">
+            <div className="people-modal-section">
               <strong>Skills:</strong>
-              <div className="skills">
+              <div className="people-skills">
                 {selectedPerson.skills?.length ? (
                   selectedPerson.skills.map((s) => (
-                    <span key={s} className="skill-tag">
+                    <span key={s} className="people-skill-tag">
                       {s}
                     </span>
                   ))
@@ -136,7 +144,7 @@ const People = () => {
               </div>
             </div>
 
-            <div className="modal-stats">
+            <div className="people-modal-stats">
               <span>📄 {selectedPerson.documentCount} Documents</span>
               <span>❤️ {selectedPerson.totalLikes} Likes</span>
             </div>

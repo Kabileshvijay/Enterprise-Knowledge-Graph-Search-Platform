@@ -6,9 +6,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableScheduling
 @SpringBootApplication
-public class KnowledgeApplication {
+public class KnowledgePlatformApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(KnowledgeApplication.class, args);
+		SpringApplication.run(KnowledgePlatformApplication.class, args);
 	}
 }
