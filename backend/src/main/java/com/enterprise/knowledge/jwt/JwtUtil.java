@@ -26,7 +26,7 @@ public class JwtUtil {
     public String generateToken(String email, String role) {
         return Jwts.builder()
                 .setSubject(email)
-                .claim("role", "ROLE_" + role) // ✅ REQUIRED
+                .claim("role", role)   // ✅ STORE RAW ROLE (ADMIN / USER)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -38,7 +38,7 @@ public class JwtUtil {
     private Claims getClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
-                .setAllowedClockSkewSeconds(60) // ✅ prevents edge-case expiry errors
+                .setAllowedClockSkewSeconds(60)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
