@@ -102,7 +102,8 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowedOrigins(List.of(
-                "http://localhost:5173"    // local dev
+                "http://localhost:5173",
+                "https://entrograph.vercel.app" /// local dev
         ));
 
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
