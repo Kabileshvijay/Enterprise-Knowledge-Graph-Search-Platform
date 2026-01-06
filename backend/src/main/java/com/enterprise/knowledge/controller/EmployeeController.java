@@ -49,10 +49,10 @@ public class EmployeeController {
 
         ResponseCookie cookie = ResponseCookie.from("jwt", token)
                 .httpOnly(true)
-                .secure(false)          // true in production
+                .secure(true)          // true in production
                 .path("/")
                 .maxAge(24 * 60 * 60)
-                .sameSite("Lax")        // IMPORTANT for localhost
+                .sameSite("None")        // IMPORTANT for localhost
                 .build();
 
         return ResponseEntity.ok()
