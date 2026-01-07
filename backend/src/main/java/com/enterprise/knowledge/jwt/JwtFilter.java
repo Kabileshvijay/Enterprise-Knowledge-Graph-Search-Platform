@@ -65,7 +65,7 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
 
-        // No token → continue (will be blocked by SecurityConfig if required)
+        // No token → continue
         if (token == null) {
             filterChain.doFilter(request, response);
             return;
@@ -94,6 +94,11 @@ public class JwtFilter extends OncePerRequestFilter {
                 );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // 🔍 TEMP DEBUG LOG (REMOVE AFTER CONFIRMATION)
+        System.out.println(
+                "JWT AUTH SET → email=" + email + ", role=" + role
+        );
 
         filterChain.doFilter(request, response);
     }
