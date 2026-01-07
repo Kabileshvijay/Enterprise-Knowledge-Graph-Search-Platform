@@ -32,12 +32,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
+                // ✅ MUST explicitly enable CORS (Spring Security 6)
+                .cors()
+                .and()
+
                 // Disable defaults
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
-
-                // CORS & CSRF
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
 
                 // Stateless JWT
@@ -48,10 +49,10 @@ public class SecurityConfig {
                 // Authorization rules
                 .authorizeHttpRequests(auth -> auth
 
-                        // Preflight
+                        // 🔥 Preflight (MUST be first)
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // Public
+                        // 🔓 Public endpoints
                         .requestMatchers(
                                 "/",
                                 "/error",
@@ -63,7 +64,7 @@ public class SecurityConfig {
                                 "/ws/**"
                         ).permitAll()
 
-                        // ✅ AUTHENTICATED USERS (MUST COME BEFORE /api/employees/**)
+                        // ✅ Authenticated users
                         .requestMatchers(
                                 "/api/employees/me",
                                 "/api/documents/**",
@@ -72,7 +73,7 @@ public class SecurityConfig {
                                 "/api/ai/**"
                         ).authenticated()
 
-                        // 🔐 ADMIN ONLY
+                        // 🔐 Admin only
                         .requestMatchers(
                                 "/api/employees/**",
                                 "/api/feedback/**",
@@ -106,9 +107,13 @@ public class SecurityConfig {
                 "https://entrograph.vercel.app"
         ));
 
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedMethods(List.of(
+                "GET", "POST", "PUT", "DELETE", "OPTIONS"
+        ));
+
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
+        config.setMaxAge(3600L); // cache preflight
 
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();

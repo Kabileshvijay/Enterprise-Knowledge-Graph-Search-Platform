@@ -26,14 +26,14 @@ public class JwtUtil {
     public String generateToken(String email, String role) {
         return Jwts.builder()
                 .setSubject(email)
-                .claim("role", role)   // ✅ STORE RAW ROLE (ADMIN / USER)
+                .claim("role", role) // ADMIN / USER
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    /* ================= EXTRACT CLAIMS ================= */
+    /* ================= CLAIM EXTRACTION ================= */
 
     private Claims getClaims(String token) {
         return Jwts.parserBuilder()
@@ -45,11 +45,19 @@ public class JwtUtil {
     }
 
     public String extractUsername(String token) {
-        return getClaims(token).getSubject();
+        try {
+            return getClaims(token).getSubject();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public String extractRole(String token) {
-        return getClaims(token).get("role", String.class);
+        try {
+            return getClaims(token).get("role", String.class);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /* ================= VALIDATION ================= */

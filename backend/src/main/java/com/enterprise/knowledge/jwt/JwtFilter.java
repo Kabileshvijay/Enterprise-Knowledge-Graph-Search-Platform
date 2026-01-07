@@ -24,17 +24,6 @@ public class JwtFilter extends OncePerRequestFilter {
         this.jwtUtil = jwtUtil;
     }
 
-    /* ✅ SKIP ONLY PUBLIC ENDPOINTS */
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
-        String path = request.getRequestURI();
-
-        return request.getMethod().equalsIgnoreCase("OPTIONS")
-                || path.equals("/api/employees/login")
-                || path.equals("/api/employees/register")
-                || path.equals("/api/employees/logout");
-    }
-
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
@@ -42,7 +31,7 @@ public class JwtFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        // Already authenticated
+        // If already authenticated, continue
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             filterChain.doFilter(request, response);
             return;
@@ -61,7 +50,7 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
 
-        // No token or invalid token
+        // If no token, continue without authentication
         if (token == null || !jwtUtil.validateToken(token)) {
             filterChain.doFilter(request, response);
             return;
@@ -71,8 +60,14 @@ public class JwtFilter extends OncePerRequestFilter {
         String email = jwtUtil.extractUsername(token);
         String role = jwtUtil.extractRole(token);
 
-        // 🔥 Ensure Spring Security compatible role
-        if (role != null && !role.startsWith("ROLE_")) {
+        // If token is malformed, stop authentication
+        if (email == null || role == null || role.isBlank()) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // 🔥 Ensure Spring Security role format
+        if (!role.startsWith("ROLE_")) {
             role = "ROLE_" + role;
         }
 
@@ -83,7 +78,6 @@ public class JwtFilter extends OncePerRequestFilter {
                         List.of(new SimpleGrantedAuthority(role))
                 );
 
-        // ✅ REQUIRED for authorization to work properly
         authentication.setDetails(
                 new WebAuthenticationDetailsSource().buildDetails(request)
         );
