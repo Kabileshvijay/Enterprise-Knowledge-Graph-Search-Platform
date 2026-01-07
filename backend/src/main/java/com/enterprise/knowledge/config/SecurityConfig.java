@@ -45,7 +45,7 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
 
-                // 🔐 AUTHORIZATION RULES
+                // 🔐 AUTHORIZATION RULES (ORDER IS CRITICAL)
                 .authorizeHttpRequests(auth -> auth
 
                         // 🔥 Preflight
@@ -63,21 +63,26 @@ public class SecurityConfig {
                                 "/ws/**"
                         ).permitAll()
 
-                        // 👤 AUTHENTICATED USERS (PATH-ONLY)
+                        // 👤 AUTHENTICATED USERS — EXACT MATCHES FIRST
                         .requestMatchers(
                                 "/api/employees/me",
+                                "/api/notifications/count"
+                        ).authenticated()
+
+                        // 👤 AUTHENTICATED USERS — GENERAL
+                        .requestMatchers(
                                 "/api/documents/**",
                                 "/api/comments/**",
                                 "/api/notifications/**",
                                 "/api/ai/**"
                         ).authenticated()
 
-                        // 👤 AUTHENTICATED USERS (METHOD-SPECIFIC)
+                        // 👤 AUTHENTICATED USERS — METHOD SPECIFIC
                         .requestMatchers(HttpMethod.POST, "/api/feedback").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/analytics/track").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/analytics/user").authenticated()
 
-                        // 🔐 ADMIN ONLY
+                        // 🔐 ADMIN ONLY — MUST BE LAST
                         .requestMatchers(
                                 "/api/employees/**",
                                 "/api/feedback/**",
