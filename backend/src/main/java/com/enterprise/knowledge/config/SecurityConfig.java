@@ -45,7 +45,7 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
 
-                // 🔐 AUTHORIZATION RULES (ORDER IS CRITICAL)
+                // 🔐 AUTHORIZATION RULES
                 .authorizeHttpRequests(auth -> auth
 
                         // 🔥 Preflight
@@ -63,13 +63,13 @@ public class SecurityConfig {
                                 "/ws/**"
                         ).permitAll()
 
-                        // 👤 AUTHENTICATED USERS — EXACT MATCHES FIRST
+                        // 👤 AUTHENTICATED USERS
                         .requestMatchers(
                                 "/api/employees/me",
-                                "/api/notifications/count"
+                                "/api/notifications/count",
+                                "/api/feedback"
                         ).authenticated()
 
-                        // 👤 AUTHENTICATED USERS — GENERAL
                         .requestMatchers(
                                 "/api/documents/**",
                                 "/api/comments/**",
@@ -77,17 +77,16 @@ public class SecurityConfig {
                                 "/api/ai/**"
                         ).authenticated()
 
-                        // 👤 AUTHENTICATED USERS — METHOD SPECIFIC
-                        .requestMatchers(HttpMethod.POST, "/api/feedback").authenticated()
+                        // 👤 AUTHENTICATED (METHOD SPECIFIC)
                         .requestMatchers(HttpMethod.POST, "/api/analytics/track").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/analytics/user").authenticated()
 
-                        // 🔐 ADMIN ONLY — MUST BE LAST
+                        // 🔐 ADMIN ONLY — EXPLICIT PATHS
                         .requestMatchers(
-                                "/api/employees/**",
-                                "/api/feedback/**",
-                                "/api/analytics/**",
-                                "/api/admin/**"
+                                "/api/employees",              // list users
+                                "/api/employees/*/role",       // change role
+                                "/api/admin/**",
+                                "/api/analytics/**"
                         ).hasRole("ADMIN")
 
                         .anyRequest().authenticated()
