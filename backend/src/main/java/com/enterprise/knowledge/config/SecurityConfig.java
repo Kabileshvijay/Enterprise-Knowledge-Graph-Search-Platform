@@ -37,21 +37,22 @@ public class SecurityConfig {
                 // ✅ Disable CSRF (JWT + HttpOnly cookies)
                 .csrf(csrf -> csrf.disable())
 
-                // ✅ Stateless (JWT)
+                // ✅ Stateless JWT
                 .sessionManagement(sm ->
                         sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
 
-                // ✅ AUTHORIZATION (ORDER MATTERS)
+                // ✅ AUTHORIZATION
                 .authorizeHttpRequests(auth -> auth
 
-                        // 🔥 CORS preflight
+                        // 🔥 Preflight
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // 🌍 PUBLIC ENDPOINTS
+                        // 🌍 PUBLIC
                         .requestMatchers(
+                                "/",
                                 "/error",
-                                "/actuator/health",
+                                "/actuator/**",
                                 "/api/employees/login",
                                 "/api/employees/register",
                                 "/api/employees/logout",
@@ -64,9 +65,9 @@ public class SecurityConfig {
                                 "/api/employees",
                                 "/api/admin/**",
                                 "/api/analytics/**"
-                        ).hasRole("ADMIN")   // ✅ FIXED
+                        ).hasRole("ADMIN")   // ✔ expects ROLE_ADMIN
 
-                        // 👤 AUTHENTICATED USERS (ADMIN + EMPLOYEE)
+                        // 👤 AUTHENTICATED USERS
                         .requestMatchers(
                                 "/api/employees/me",
                                 "/api/notifications/**",

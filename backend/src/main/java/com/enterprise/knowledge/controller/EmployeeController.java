@@ -63,17 +63,12 @@ public class EmployeeController {
                 employee.getRole()
         );
 
-        /*
-         * ✅ CRITICAL SETTINGS FOR VERCEL → RENDER
-         * - SameSite=None  (cross-site)
-         * - Secure=true    (HTTPS)
-         * - NO domain()    ← IMPORTANT (browser sets it correctly)
-         */
+        // ✅ FINAL COOKIE CONFIG (WORKS ON VERCEL → RENDER)
         ResponseCookie cookie = ResponseCookie.from("jwt", token)
                 .httpOnly(true)
-                .secure(true)
-                .sameSite("None")
-                .path("/")
+                .secure(true)          // REQUIRED (HTTPS)
+                .sameSite("None")      // REQUIRED (cross-site)
+                .path("/")             // REQUIRED
                 .maxAge(24 * 60 * 60)
                 .build();
 

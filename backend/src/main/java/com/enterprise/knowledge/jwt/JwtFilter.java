@@ -24,15 +24,15 @@ public class JwtFilter extends OncePerRequestFilter {
         this.jwtUtil = jwtUtil;
     }
 
-    // ✅ Skip ONLY public endpoints
+    // ✅ Skip ONLY truly public endpoints
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
 
         return request.getMethod().equalsIgnoreCase("OPTIONS")
-                || path.startsWith("/api/employees/login")
-                || path.startsWith("/api/employees/register")
-                || path.startsWith("/api/employees/logout")
+                || path.equals("/api/employees/login")
+                || path.equals("/api/employees/register")
+                || path.equals("/api/employees/logout")
                 || path.startsWith("/actuator")
                 || path.startsWith("/error");
     }
@@ -52,7 +52,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String token = null;
 
-        // 🔐 Read JWT from cookie
+        // 🔐 Extract JWT from HttpOnly cookie
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
@@ -63,15 +63,15 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
 
-        // ❗ No token → continue UNAUTHENTICATED
+        // ❌ No token → BLOCK (protected endpoint)
         if (token == null) {
-            filterChain.doFilter(request, response);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
-        // ❗ Invalid token → continue UNAUTHENTICATED
+        // ❌ Invalid token → BLOCK
         if (!jwtUtil.validateToken(token)) {
-            filterChain.doFilter(request, response);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
@@ -80,11 +80,11 @@ public class JwtFilter extends OncePerRequestFilter {
         String role = jwtUtil.extractRole(token); // ROLE_ADMIN / ROLE_EMPLOYEE
 
         if (email == null || role == null || role.isBlank()) {
-            filterChain.doFilter(request, response);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
-        // ✅ Build Authentication
+        // ✅ Create Authentication
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(
                         email,
@@ -93,8 +93,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 );
 
         authentication.setDetails(
-                new WebAuthenticationDetailsSource()
-                        .buildDetails(request)
+                new WebAuthenticationDetailsSource().buildDetails(request)
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
