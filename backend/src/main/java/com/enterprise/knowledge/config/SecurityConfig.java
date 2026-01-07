@@ -4,6 +4,7 @@ import com.enterprise.knowledge.jwt.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -16,6 +17,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Configuration
@@ -35,7 +37,7 @@ public class SecurityConfig {
                 // ✅ Enable CORS
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
-                // Disable defaults
+                // Disable defaults (API-only)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
@@ -45,13 +47,21 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
 
+                // 🔥 IMPORTANT: Explicit exception handling
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint((req, res, exAuth) ->
+                                res.sendError(HttpServletResponse.SC_UNAUTHORIZED))
+                        .accessDeniedHandler((req, res, exDenied) ->
+                                res.sendError(HttpServletResponse.SC_FORBIDDEN))
+                )
+
                 // 🔐 AUTHORIZATION RULES
                 .authorizeHttpRequests(auth -> auth
 
-                        // 🔥 Preflight
+                        // Preflight
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // 🌍 PUBLIC ENDPOINTS
+                        // Public
                         .requestMatchers(
                                 "/",
                                 "/error",
@@ -63,7 +73,7 @@ public class SecurityConfig {
                                 "/ws/**"
                         ).permitAll()
 
-                        // 👤 ANY AUTHENTICATED USER (ADMIN + EMPLOYEE)
+                        // Any authenticated user
                         .requestMatchers(
                                 "/api/employees/me",
                                 "/api/notifications/**",
@@ -73,14 +83,14 @@ public class SecurityConfig {
                                 "/api/feedback"
                         ).authenticated()
 
-                        // 👤 AUTHENTICATED (METHOD SPECIFIC)
+                        // Authenticated (method-specific)
                         .requestMatchers(HttpMethod.POST, "/api/analytics/track").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/analytics/user").authenticated()
 
-                        // 🔐 ADMIN ONLY (USING AUTHORITY — NOT ROLE)
+                        // Admin only
                         .requestMatchers(
-                                "/api/employees",        // list users
-                                "/api/employees/*/role", // change role
+                                "/api/employees",
+                                "/api/employees/*/role",
                                 "/api/admin/**",
                                 "/api/analytics/**"
                         ).hasAuthority("ADMIN")

@@ -7,13 +7,14 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
 
-    // 🔐 SECRET KEY (must be ≥ 256 bits)
+    // 🔐 SECRET KEY (from Render env: jwt.secret)
     @Value("${jwt.secret}")
     private String secret;
 
@@ -21,16 +22,17 @@ public class JwtUtil {
     private static final long EXPIRATION_TIME = 24 * 60 * 60 * 1000;
 
     private Key getSigningKey() {
-        return Keys.hmacShaKeyFor(secret.getBytes());
+        if (secret == null || secret.length() < 32) {
+            throw new IllegalStateException("JWT secret is missing or too short");
+        }
+        return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
     /* ================= GENERATE TOKEN ================= */
 
     public String generateToken(String email, String role) {
 
-        // ✅ DO NOT MODIFY ROLE
-        // role = ADMIN / EMPLOYEE (as stored in DB)
-
+        // ✅ ROLE IS USED AS-IS (ADMIN / EMPLOYEE)
         return Jwts.builder()
                 .setSubject(email)
                 .claim("role", role)
