@@ -45,13 +45,13 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
 
-                // 🔹 Authorization rules
+                // 🔹 Authorization rules (ORDER MATTERS!)
                 .authorizeHttpRequests(auth -> auth
 
-                        // ✅ ALLOW PREFLIGHT (CRITICAL FOR CORS)
+                        // ✅ PREFLIGHT
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // ✅ PUBLIC ENDPOINTS
+                        // ✅ PUBLIC
                         .requestMatchers(
                                 "/api/employees/login",
                                 "/api/employees/register",
@@ -61,7 +61,8 @@ public class SecurityConfig {
                                 "/error"
                         ).permitAll()
 
-                        // ✅ AUTHENTICATED
+                        // ✅ AUTHENTICATED (USER + ADMIN)
+                        // MUST COME BEFORE ADMIN-ONLY RULE
                         .requestMatchers(
                                 "/api/employees/me",
                                 "/api/documents/**",
@@ -72,10 +73,8 @@ public class SecurityConfig {
                                 "/api/ai/**"
                         ).authenticated()
 
-                        // 🔐 ADMIN ONLY
+                        // 🔐 ADMIN ONLY (KEEP THIS LAST)
                         .requestMatchers("/api/employees/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/feedback").hasAuthority("ROLE_ADMIN")
-                        .requestMatchers("/api/feedback/*/solve").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
                         .anyRequest().authenticated()
@@ -93,7 +92,7 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // 🌍 CORS CONFIG (FIXED FOR VERCEL + LOCAL)
+    // 🌍 CORS CONFIG (VERCEL + LOCAL)
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
@@ -101,7 +100,7 @@ public class SecurityConfig {
 
         config.setAllowedOrigins(List.of(
                 "http://localhost:5173",
-                "https://entrograph.vercel.app"   // ✅ ADD THIS
+                "https://entrograph.vercel.app"
         ));
 
         config.setAllowedMethods(List.of(
