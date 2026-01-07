@@ -17,18 +17,22 @@ public class JwtUtil {
             "mysecretkeymysecretkeymysecretkey123";
 
     // ⏰ Token validity (1 day)
-    private static final long EXPIRATION_TIME = 24 * 60 * 60 * 1000;
+    private static final long EXPIRATION_TIME =
+            24 * 60 * 60 * 1000;
 
-    private final Key key = Keys.hmacShaKeyFor(SECRET.getBytes());
+    private final Key key =
+            Keys.hmacShaKeyFor(SECRET.getBytes());
 
     /* ================= GENERATE TOKEN ================= */
 
     public String generateToken(String email, String role) {
         return Jwts.builder()
                 .setSubject(email)
-                .claim("role", "ROLE_" + role) // ✅ REQUIRED
+                .claim("role", role)   // ✅ FIXED (NO extra ROLE_)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .setExpiration(
+                        new Date(System.currentTimeMillis() + EXPIRATION_TIME)
+                )
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -38,7 +42,7 @@ public class JwtUtil {
     private Claims getClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
-                .setAllowedClockSkewSeconds(60) // ✅ prevents edge-case expiry errors
+                .setAllowedClockSkewSeconds(60)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
