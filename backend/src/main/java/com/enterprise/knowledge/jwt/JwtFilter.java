@@ -24,6 +24,19 @@ public class JwtFilter extends OncePerRequestFilter {
         this.jwtUtil = jwtUtil;
     }
 
+    // 🔥 Skip filter for public endpoints
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getRequestURI();
+
+        return path.startsWith("/api/employees/login")
+                || path.startsWith("/api/employees/register")
+                || path.startsWith("/api/employees/logout")
+                || path.startsWith("/actuator")
+                || path.startsWith("/error")
+                || request.getMethod().equalsIgnoreCase("OPTIONS");
+    }
+
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
@@ -31,7 +44,7 @@ public class JwtFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        // If already authenticated, continue
+        // Already authenticated
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             filterChain.doFilter(request, response);
             return;
@@ -50,8 +63,9 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
 
-        // If no token, continue without authentication
+        // No token → continue
         if (token == null || !jwtUtil.validateToken(token)) {
+            SecurityContextHolder.clearContext();
             filterChain.doFilter(request, response);
             return;
         }
@@ -60,29 +74,31 @@ public class JwtFilter extends OncePerRequestFilter {
         String email = jwtUtil.extractUsername(token);
         String role = jwtUtil.extractRole(token);
 
-        // If token is malformed, stop authentication
         if (email == null || role == null || role.isBlank()) {
+            SecurityContextHolder.clearContext();
             filterChain.doFilter(request, response);
             return;
         }
 
-        // 🔥 Ensure Spring Security role format
+        // 🔥 Ensure ROLE_ prefix
         if (!role.startsWith("ROLE_")) {
             role = "ROLE_" + role;
         }
 
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(
-                        email,
+                        email, // principal
                         null,
                         List.of(new SimpleGrantedAuthority(role))
                 );
 
         authentication.setDetails(
-                new WebAuthenticationDetailsSource().buildDetails(request)
+                new WebAuthenticationDetailsSource()
+                        .buildDetails(request)
         );
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        SecurityContextHolder.getContext()
+                .setAuthentication(authentication);
 
         filterChain.doFilter(request, response);
     }

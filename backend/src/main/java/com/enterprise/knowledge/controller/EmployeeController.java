@@ -16,13 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/employees")
-@CrossOrigin(
-        origins = {
-                "http://localhost:5173",
-                "https://entrograph.vercel.app"
-        },
-        allowCredentials = "true"
-)
 public class EmployeeController {
 
     private final EmployeeService service;
@@ -65,7 +58,7 @@ public class EmployeeController {
 
         ResponseCookie cookie = ResponseCookie.from("jwt", token)
                 .httpOnly(true)
-                .secure(true)       // REQUIRED on HTTPS (Render)
+                .secure(true)       // REQUIRED on Render
                 .sameSite("None")   // REQUIRED for Vercel → Render
                 .path("/")
                 .maxAge(24 * 60 * 60)
@@ -89,7 +82,9 @@ public class EmployeeController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        Employee employee = service.getEmployeeByEmail(authentication.getName());
+        Employee employee =
+                service.getEmployeeByEmail(authentication.getName());
+
         if (employee == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -138,7 +133,8 @@ public class EmployeeController {
     ) {
 
         // 🚫 Prevent admin from deleting self
-        if (authentication != null && authentication.getName().equals(email)) {
+        if (authentication != null &&
+                authentication.getName().equals(email)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("CANNOT_DELETE_SELF");
         }
