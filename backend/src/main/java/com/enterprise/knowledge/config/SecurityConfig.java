@@ -34,7 +34,7 @@ public class SecurityConfig {
                 // ✅ CORS
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
-                // ✅ Disable CSRF (JWT + cookies)
+                // ✅ Disable CSRF (JWT + HttpOnly cookies)
                 .csrf(csrf -> csrf.disable())
 
                 // ✅ Stateless
@@ -42,10 +42,10 @@ public class SecurityConfig {
                         sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
 
-                // ✅ AUTH RULES (ORDER MATTERS)
+                // ✅ AUTHORIZATION (ORDER MATTERS)
                 .authorizeHttpRequests(auth -> auth
 
-                        // 🔥 CORS PREFLIGHT (REQUIRED)
+                        // 🔥 PRE-FLIGHT
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
                         // 🌍 PUBLIC
@@ -58,12 +58,12 @@ public class SecurityConfig {
                                 "/api/employees/logout"
                         ).permitAll()
 
-                        // 🔐 ADMIN ONLY
+                        // 🔐 ADMIN ONLY (AUTHORITY — NOT ROLE)
                         .requestMatchers(
                                 "/api/employees",
                                 "/api/admin/**",
                                 "/api/analytics/**"
-                        ).hasRole("ADMIN")   // ✅ expects ROLE_ADMIN
+                        ).hasAuthority("ADMIN")
 
                         // 👤 AUTHENTICATED USERS
                         .requestMatchers(
