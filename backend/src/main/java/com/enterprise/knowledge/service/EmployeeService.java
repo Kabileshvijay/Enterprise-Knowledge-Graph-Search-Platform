@@ -13,7 +13,7 @@ import java.util.List;
 public class EmployeeService {
 
     private final EmployeeRepository repository;
-    private final PasswordEncoder passwordEncoder; // 🔹 added for encryption
+    private final PasswordEncoder passwordEncoder;
 
     public EmployeeService(EmployeeRepository repository,
                            PasswordEncoder passwordEncoder) {
@@ -26,7 +26,7 @@ public class EmployeeService {
     public Employee saveEmployee(EmployeeRequest request) {
 
         if (repository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("EMAIL_ALREADY_EXISTS");
+            return null; // controller handles response
         }
 
         Employee employee = new Employee();
@@ -35,10 +35,10 @@ public class EmployeeService {
         employee.setTeam(request.getTeam());
         employee.setSkills(request.getSkills());
 
-        // 🔐 Encrypt password (updated)
+        // 🔐 Encrypt password
         employee.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        // 🔹 Default role (added)
+        // 🔹 Default role
         employee.setRole("EMPLOYEE");
 
         return repository.save(employee);
@@ -49,12 +49,14 @@ public class EmployeeService {
     public Employee login(LoginRequest request) {
 
         Employee employee = repository.findByEmail(request.getEmail())
-                .orElseThrow(() ->
-                        new RuntimeException("EMPLOYEE_NOT_FOUND"));
+                .orElse(null);
 
-        // 🔐 Validate password (updated)
+        if (employee == null) {
+            return null;
+        }
+
         if (!passwordEncoder.matches(request.getPassword(), employee.getPassword())) {
-            throw new RuntimeException("INVALID_PASSWORD");
+            return null;
         }
 
         return employee;
@@ -63,17 +65,24 @@ public class EmployeeService {
     /* ================= GET EMPLOYEE BY EMAIL ================= */
 
     public Employee getEmployeeByEmail(String email) {
-        return repository.findByEmail(email)
-                .orElseThrow(() ->
-                        new RuntimeException("EMPLOYEE_NOT_FOUND"));
+        return repository.findByEmail(email).orElse(null);
     }
+
+    /* ================= GET ALL ================= */
 
     public List<Employee> getAllEmployees() {
         return repository.findAll();
     }
 
-    public void deleteByEmail(String email) {
-        repository.deleteByEmail(email);
-    }
+    /* ================= DELETE ================= */
 
+    public boolean deleteByEmail(String email) {
+
+        if (!repository.existsByEmail(email)) {
+            return false;
+        }
+
+        repository.deleteByEmail(email);
+        return true;
+    }
 }

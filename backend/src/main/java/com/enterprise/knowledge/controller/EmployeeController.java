@@ -6,7 +6,9 @@ import com.enterprise.knowledge.dto.LoginSuccessResponse;
 import com.enterprise.knowledge.entity.Employee;
 import com.enterprise.knowledge.jwt.JwtUtil;
 import com.enterprise.knowledge.service.EmployeeService;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -15,7 +17,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/employees")
 @CrossOrigin(
-        origins = "http://localhost:5173",
+        origins = {
+                "http://localhost:5173",
+                "https://entrograph.vercel.app"
+        },
         allowCredentials = "true"
 )
 public class EmployeeController {
@@ -28,19 +33,30 @@ public class EmployeeController {
         this.jwtUtil = jwtUtil;
     }
 
-    /* ================= REGISTER (UNCHANGED) ================= */
+    /* ================= REGISTER ================= */
 
     @PostMapping("/register")
-    public Employee registerEmployee(@RequestBody EmployeeRequest request) {
-        return service.saveEmployee(request);
+    public ResponseEntity<?> registerEmployee(@RequestBody EmployeeRequest request) {
+
+        Employee emp = service.saveEmployee(request);
+        if (emp == null) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("EMAIL_ALREADY_EXISTS");
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(emp);
     }
 
-    /* ================= LOGIN (UPDATED: JWT + COOKIE) ================= */
+    /* ================= LOGIN ================= */
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
 
         Employee employee = service.login(request);
+        if (employee == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("INVALID_CREDENTIALS");
+        }
 
         String token = jwtUtil.generateToken(
                 employee.getEmail(),
@@ -49,10 +65,10 @@ public class EmployeeController {
 
         ResponseCookie cookie = ResponseCookie.from("jwt", token)
                 .httpOnly(true)
-                .secure(true)          // true in production
+                .secure(true)       // REQUIRED on HTTPS (Render)
+                .sameSite("None")   // REQUIRED for Vercel → Render
                 .path("/")
                 .maxAge(24 * 60 * 60)
-                .sameSite("None")        // IMPORTANT for localhost
                 .build();
 
         return ResponseEntity.ok()
@@ -64,13 +80,19 @@ public class EmployeeController {
                 ));
     }
 
-    /* ================= GET LOGGED-IN USER (NEW) ================= */
+    /* ================= CURRENT USER ================= */
 
     @GetMapping("/me")
     public ResponseEntity<?> getLoggedInUser(Authentication authentication) {
 
-        String email = authentication.getName(); // extracted from JWT
-        Employee employee = service.getEmployeeByEmail(email);
+        if (authentication == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        Employee employee = service.getEmployeeByEmail(authentication.getName());
+        if (employee == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
 
         return ResponseEntity.ok(
                 new LoginSuccessResponse(
@@ -81,20 +103,15 @@ public class EmployeeController {
         );
     }
 
-    /* ================= GET EMPLOYEE BY EMAIL (UNCHANGED) ================= */
-
-    @GetMapping("/by-email")
-    public Employee getEmployeeByEmail(@RequestParam String email) {
-        return service.getEmployeeByEmail(email);
-    }
-
-    /* ================= LOGOUT (NEW) ================= */
+    /* ================= LOGOUT ================= */
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout() {
 
         ResponseCookie deleteCookie = ResponseCookie.from("jwt", "")
                 .httpOnly(true)
+                .secure(true)
+                .sameSite("None")
                 .path("/")
                 .maxAge(0)
                 .build();
@@ -114,10 +131,24 @@ public class EmployeeController {
     /* ================= ADMIN: DELETE EMPLOYEE ================= */
 
     @DeleteMapping("/{email}")
-    public ResponseEntity<?> deleteEmployee(@PathVariable String email) {
-        service.deleteByEmail(email);
+    @Transactional
+    public ResponseEntity<?> deleteEmployee(
+            @PathVariable String email,
+            Authentication authentication
+    ) {
+
+        // 🚫 Prevent admin from deleting self
+        if (authentication != null && authentication.getName().equals(email)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("CANNOT_DELETE_SELF");
+        }
+
+        boolean deleted = service.deleteByEmail(email);
+        if (!deleted) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("EMPLOYEE_NOT_FOUND");
+        }
+
         return ResponseEntity.ok("DELETED");
     }
 }
-
-
