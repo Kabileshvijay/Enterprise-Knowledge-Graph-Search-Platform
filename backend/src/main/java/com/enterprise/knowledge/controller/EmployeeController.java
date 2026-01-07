@@ -57,12 +57,14 @@ public class EmployeeController {
                     employee.getRole()
             );
 
+            // 🔴 CRITICAL FIX: cookie must belong to BACKEND domain
             ResponseCookie cookie = ResponseCookie.from("jwt", token)
                     .httpOnly(true)
-                    .secure(true)        // HTTPS (Render + Vercel)
+                    .secure(true) // HTTPS required for SameSite=None
+                    .sameSite("None")
                     .path("/")
+                    .domain("enterprise-knowledge-graph-search.onrender.com")
                     .maxAge(24 * 60 * 60)
-                    .sameSite("None")    // Cross-site cookie
                     .build();
 
             return ResponseEntity.ok()
@@ -83,7 +85,6 @@ public class EmployeeController {
                         .body("INVALID_CREDENTIALS");
             }
 
-            // Any other unexpected error
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("LOGIN_FAILED");
@@ -116,9 +117,10 @@ public class EmployeeController {
         ResponseCookie deleteCookie = ResponseCookie.from("jwt", "")
                 .httpOnly(true)
                 .secure(true)
-                .path("/")
-                .maxAge(0)
                 .sameSite("None")
+                .path("/")
+                .domain("enterprise-knowledge-graph-search.onrender.com")
+                .maxAge(0)
                 .build();
 
         return ResponseEntity.ok()
