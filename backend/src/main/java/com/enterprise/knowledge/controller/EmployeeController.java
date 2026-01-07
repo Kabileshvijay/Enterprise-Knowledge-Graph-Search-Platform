@@ -7,6 +7,7 @@ import com.enterprise.knowledge.entity.Employee;
 import com.enterprise.knowledge.jwt.JwtUtil;
 import com.enterprise.knowledge.service.EmployeeService;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -45,31 +46,48 @@ public class EmployeeController {
     /* ================= LOGIN (COOKIE-BASED JWT) ================= */
 
     @PostMapping("/login")
-    public ResponseEntity<LoginSuccessResponse> login(
+    public ResponseEntity<?> login(
             @RequestBody LoginRequest request
     ) {
-        Employee employee = service.login(request);
+        try {
+            Employee employee = service.login(request);
 
-        String token = jwtUtil.generateToken(
-                employee.getEmail(),
-                employee.getRole()
-        );
+            String token = jwtUtil.generateToken(
+                    employee.getEmail(),
+                    employee.getRole()
+            );
 
-        ResponseCookie cookie = ResponseCookie.from("jwt", token)
-                .httpOnly(true)
-                .secure(true)        // ✅ true for HTTPS (Render + Vercel)
-                .path("/")
-                .maxAge(24 * 60 * 60)
-                .sameSite("None")    // ✅ REQUIRED for cross-site cookies
-                .build();
+            ResponseCookie cookie = ResponseCookie.from("jwt", token)
+                    .httpOnly(true)
+                    .secure(true)        // HTTPS (Render + Vercel)
+                    .path("/")
+                    .maxAge(24 * 60 * 60)
+                    .sameSite("None")    // Cross-site cookie
+                    .build();
 
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(new LoginSuccessResponse(
-                        employee.getName(),
-                        employee.getEmail(),
-                        employee.getRole()
-                ));
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                    .body(new LoginSuccessResponse(
+                            employee.getName(),
+                            employee.getEmail(),
+                            employee.getRole()
+                    ));
+
+        } catch (RuntimeException ex) {
+
+            if ("INVALID_PASSWORD".equals(ex.getMessage())
+                    || "EMPLOYEE_NOT_FOUND".equals(ex.getMessage())) {
+
+                return ResponseEntity
+                        .status(HttpStatus.UNAUTHORIZED)
+                        .body("INVALID_CREDENTIALS");
+            }
+
+            // Any other unexpected error
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("LOGIN_FAILED");
+        }
     }
 
     /* ================= CURRENT USER ================= */

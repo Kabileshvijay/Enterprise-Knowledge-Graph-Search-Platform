@@ -26,7 +26,7 @@ public class EmployeeService {
     public Employee saveEmployee(EmployeeRequest request) {
 
         if (repository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("EMAIL_ALREADY_EXISTS");
+            throw new IllegalStateException("EMAIL_ALREADY_EXISTS");
         }
 
         Employee employee = new Employee();
@@ -35,10 +35,12 @@ public class EmployeeService {
         employee.setTeam(request.getTeam());
         employee.setSkills(request.getSkills());
 
-        // 🔐 BCrypt password
-        employee.setPassword(passwordEncoder.encode(request.getPassword()));
+        // 🔐 BCrypt encode password
+        employee.setPassword(
+                passwordEncoder.encode(request.getPassword())
+        );
 
-        // ⚠️ MUST include ROLE_
+        // ✅ Spring Security compatible role
         employee.setRole("ROLE_EMPLOYEE");
 
         return repository.save(employee);
@@ -49,13 +51,15 @@ public class EmployeeService {
     public Employee login(LoginRequest request) {
 
         Employee employee = repository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("EMPLOYEE_NOT_FOUND"));
+                .orElseThrow(() ->
+                        new IllegalArgumentException("EMPLOYEE_NOT_FOUND")
+                );
 
         if (!passwordEncoder.matches(
                 request.getPassword(),
                 employee.getPassword()
         )) {
-            throw new RuntimeException("INVALID_PASSWORD");
+            throw new IllegalArgumentException("INVALID_PASSWORD");
         }
 
         return employee;
@@ -65,7 +69,9 @@ public class EmployeeService {
 
     public Employee getEmployeeByEmail(String email) {
         return repository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("EMPLOYEE_NOT_FOUND"));
+                .orElseThrow(() ->
+                        new IllegalArgumentException("EMPLOYEE_NOT_FOUND")
+                );
     }
 
     public List<Employee> getAllEmployees() {
