@@ -45,20 +45,21 @@ public class SecurityConfig {
                 // ✅ AUTHORIZATION (ORDER MATTERS)
                 .authorizeHttpRequests(auth -> auth
 
-                        // 🔥 PRE-FLIGHT
+                        // 🔥 CORS PREFLIGHT
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // 🌍 PUBLIC
+                        // 🌍 PUBLIC ENDPOINTS
                         .requestMatchers(
-                                "/",
                                 "/error",
                                 "/actuator/health",
                                 "/api/employees/login",
                                 "/api/employees/register",
-                                "/api/employees/logout"
+                                "/api/employees/logout",
+                                "/ws/**",
+                                "/uploads/**"
                         ).permitAll()
 
-                        // 🔐 ADMIN ONLY (AUTHORITY — NOT ROLE)
+                        // 🔐 ADMIN ONLY
                         .requestMatchers(
                                 "/api/employees",
                                 "/api/admin/**",
