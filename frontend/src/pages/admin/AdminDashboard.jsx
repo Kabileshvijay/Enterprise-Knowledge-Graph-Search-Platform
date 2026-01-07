@@ -54,7 +54,7 @@ function AdminDashboard() {
       if (!res.ok) return;
 
       const users = await res.json();
-      const nonAdmins = users.filter((u) => u.role !== "ADMIN");
+      const nonAdmins = users.filter((u) => u.role !== "ROLE_ADMIN");
       setUserCount(nonAdmins.length);
     } catch (err) {
       console.error("Failed to fetch users", err);
