@@ -24,16 +24,6 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
-        String path = request.getRequestURI();
-        return request.getMethod().equalsIgnoreCase("OPTIONS")
-                || path.equals("/api/employees/login")
-                || path.equals("/api/employees/register")
-                || path.equals("/api/employees/logout")
-                || path.startsWith("/error");
-    }
-
-    @Override
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
@@ -62,7 +52,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         String email = jwtUtil.extractUsername(token);
-        String role = jwtUtil.extractRole(token); // 👈 ALREADY ROLE_ADMIN
+        String role = jwtUtil.extractRole(token); // already ROLE_*
 
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(
