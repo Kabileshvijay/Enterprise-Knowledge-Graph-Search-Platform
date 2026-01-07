@@ -14,10 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/feedback")
 @CrossOrigin(
-        origins = {
-                "http://localhost:5173",
-                "https://entrograph.vercel.app"
-        },
+        origins = "http://localhost:5173",
         allowCredentials = "true"
 )
 public class FeedbackController {

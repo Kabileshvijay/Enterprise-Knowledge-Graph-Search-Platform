@@ -10,10 +10,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/ai")
 @CrossOrigin(
-        origins = {
-                "http://localhost:5173",
-                "https://entrograph.vercel.app"
-        },
+        origins = "http://localhost:5173",
         allowCredentials = "true"
 )
 public class AISummaryController {

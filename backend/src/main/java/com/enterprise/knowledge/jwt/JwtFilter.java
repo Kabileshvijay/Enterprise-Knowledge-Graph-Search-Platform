@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -24,17 +23,14 @@ public class JwtFilter extends OncePerRequestFilter {
         this.jwtUtil = jwtUtil;
     }
 
-    // ✅ Skip ONLY truly public endpoints
+    /* ✅ SKIP PUBLIC ENDPOINTS */
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
-
         return request.getMethod().equalsIgnoreCase("OPTIONS")
-                || path.equals("/api/employees/login")
-                || path.equals("/api/employees/register")
-                || path.equals("/api/employees/logout")
-                || path.startsWith("/actuator")
-                || path.startsWith("/error");
+                || path.startsWith("/api/employees/login")
+                || path.startsWith("/api/employees/register")
+                || path.startsWith("/api/employees/logout");
     }
 
     @Override
@@ -44,7 +40,6 @@ public class JwtFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        // 🔐 If already authenticated → continue
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             filterChain.doFilter(request, response);
             return;
@@ -53,9 +48,8 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = null;
 
         // 🔐 Extract JWT from HttpOnly cookie
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
                 if ("jwt".equals(cookie.getName())) {
                     token = cookie.getValue();
                     break;
@@ -63,38 +57,32 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
 
-        // ❌ No token → BLOCK (protected endpoint)
-        if (token == null) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        if (token == null || !jwtUtil.validateToken(token)) {
+            filterChain.doFilter(request, response);
             return;
         }
 
-        // ❌ Invalid token → BLOCK
-        if (!jwtUtil.validateToken(token)) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-
-        // 🔐 Extract claims
+        // 🔐 Extract identity
         String email = jwtUtil.extractUsername(token);
-        String role = jwtUtil.extractRole(token); // ROLE_ADMIN / ROLE_EMPLOYEE
+        String role = jwtUtil.extractRole(token);
 
-        if (email == null || role == null || role.isBlank()) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
+        // 🔍 DEBUG (keep for now)
+        System.out.println("JWT EMAIL = " + email);
+        System.out.println("JWT ROLE (from token) = " + role);
+
+        // 🔥 CRITICAL FIX: Spring Security requires ROLE_ prefix
+        if (!role.startsWith("ROLE_")) {
+            role = "ROLE_" + role;
         }
 
-        // ✅ Create Authentication
+        System.out.println("JWT ROLE (used by Spring) = " + role);
+
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(
                         email,
                         null,
                         List.of(new SimpleGrantedAuthority(role))
                 );
-
-        authentication.setDetails(
-                new WebAuthenticationDetailsSource().buildDetails(request)
-        );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 

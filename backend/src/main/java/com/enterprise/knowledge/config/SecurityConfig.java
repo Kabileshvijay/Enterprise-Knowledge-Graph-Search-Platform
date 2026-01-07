@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -31,84 +32,77 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                // ✅ CORS
+                // 🔹 Disable defaults
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+
+                // 🔹 CORS & CSRF
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(AbstractHttpConfigurer::disable)
 
-                // ✅ Disable CSRF (JWT + HttpOnly cookies)
-                .csrf(csrf -> csrf.disable())
-
-                // ✅ Stateless JWT
-                .sessionManagement(sm ->
-                        sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                // 🔹 Stateless JWT
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
 
-                // ✅ AUTHORIZATION
+                // 🔹 Authorization rules
                 .authorizeHttpRequests(auth -> auth
 
-                        // 🔥 Preflight
+                        // ALLOW PREFLIGHT REQUESTS (REQUIRED FOR FILE UPLOAD)
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // 🌍 PUBLIC
+                        // ✅ PUBLIC
                         .requestMatchers(
-                                "/",
-                                "/error",
-                                "/actuator/**",
                                 "/api/employees/login",
                                 "/api/employees/register",
                                 "/api/employees/logout",
+                                "/uploads/**",
                                 "/ws/**",
-                                "/uploads/**"
+                                "/error"
                         ).permitAll()
 
-                        // 🔐 ADMIN ONLY
-                        .requestMatchers(
-                                "/api/employees",
-                                "/api/admin/**",
-                                "/api/analytics/**"
-                        ).hasRole("ADMIN")   // ✔ expects ROLE_ADMIN
-
-                        // 👤 AUTHENTICATED USERS
+                        // ✅ AUTHENTICATED USER
                         .requestMatchers(
                                 "/api/employees/me",
-                                "/api/notifications/**",
                                 "/api/documents/**",
+                                "/api/feedback/**",
+                                "/api/analytics/**",
                                 "/api/comments/**",
-                                "/api/feedback"
+                                "/api/notifications/**",
+                                "/api/ai/**"
                         ).authenticated()
 
+                        // 🔐 ADMIN ONLY
+                        .requestMatchers("/api/employees/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/feedback").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/api/feedback/*/solve").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
+                        // everything else
                         .anyRequest().authenticated()
                 )
 
-                // ✅ JWT FILTER
+                // 🔹 JWT Filter
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-    // 🔐 Password Encoder
+    // 🔐 Password encoder
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // 🌍 CORS CONFIG
+    // 🌍 CORS (cookies + multipart)
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
         CorsConfiguration config = new CorsConfiguration();
-
-        config.setAllowedOrigins(List.of(
-                "http://localhost:5173",
-                "https://entrograph.vercel.app"
-        ));
-
-        config.setAllowedMethods(List.of(
-                "GET", "POST", "PUT", "DELETE", "OPTIONS"
-        ));
-
+        config.setAllowedOrigins(List.of("http://localhost:5173"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
-        config.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();

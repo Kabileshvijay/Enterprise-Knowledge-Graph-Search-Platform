@@ -4,87 +4,52 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import jakarta.annotation.PostConstruct;
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
 
-    // 🔐 Loaded from Render ENV (JWT_SECRET)
-    @Value("${jwt.secret}")
-    private String secret;
+    // 🔐 SECRET KEY (min 256 bits for HS256)
+    private static final String SECRET =
+            "mysecretkeymysecretkeymysecretkey123";
 
-    private Key signingKey;
-
-    // ⏰ Token validity (24 hours)
+    // ⏰ Token validity (1 day)
     private static final long EXPIRATION_TIME = 24 * 60 * 60 * 1000;
 
-    // ✅ Initialize key ONCE at startup
-    @PostConstruct
-    public void init() {
-
-        if (secret == null || secret.trim().length() < 32) {
-            throw new IllegalStateException(
-                    "JWT_SECRET must be at least 32 characters long"
-            );
-        }
-
-        this.signingKey = Keys.hmacShaKeyFor(
-                secret.trim().getBytes(StandardCharsets.UTF_8)
-        );
-    }
+    private final Key key = Keys.hmacShaKeyFor(SECRET.getBytes());
 
     /* ================= GENERATE TOKEN ================= */
 
     public String generateToken(String email, String role) {
-
-        // DB → ADMIN / EMPLOYEE
-        // Spring Security → ROLE_ADMIN / ROLE_EMPLOYEE
-        String authority = role.startsWith("ROLE_")
-                ? role
-                : "ROLE_" + role;
-
         return Jwts.builder()
                 .setSubject(email)
-                .claim("role", authority)
+                .claim("role", "ROLE_" + role) // ✅ REQUIRED
                 .setIssuedAt(new Date())
-                .setExpiration(
-                        new Date(System.currentTimeMillis() + EXPIRATION_TIME)
-                )
-                .signWith(signingKey, SignatureAlgorithm.HS256)
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    /* ================= CLAIM EXTRACTION ================= */
+    /* ================= EXTRACT CLAIMS ================= */
 
     private Claims getClaims(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(signingKey)
-                .setAllowedClockSkewSeconds(60)
+                .setSigningKey(key)
+                .setAllowedClockSkewSeconds(60) // ✅ prevents edge-case expiry errors
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
     }
 
     public String extractUsername(String token) {
-        try {
-            return getClaims(token).getSubject();
-        } catch (Exception e) {
-            return null;
-        }
+        return getClaims(token).getSubject();
     }
 
     public String extractRole(String token) {
-        try {
-            return getClaims(token).get("role", String.class);
-        } catch (Exception e) {
-            return null;
-        }
+        return getClaims(token).get("role", String.class);
     }
 
     /* ================= VALIDATION ================= */
