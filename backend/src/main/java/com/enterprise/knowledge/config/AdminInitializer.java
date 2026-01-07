@@ -5,13 +5,16 @@ import com.enterprise.knowledge.repository.EmployeeRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class AdminInitializer {
 
     @Bean
-    CommandLineRunner createAdmin(EmployeeRepository employeeRepository) {
+    CommandLineRunner createAdmin(
+            EmployeeRepository employeeRepository,
+            PasswordEncoder passwordEncoder
+    ) {
         return args -> {
 
             boolean adminExists =
@@ -23,14 +26,15 @@ public class AdminInitializer {
                 admin.setName("Admin");
                 admin.setEmail("admin@gmail.com");
                 admin.setTeam("Admin Team");
-                admin.setRole("ADMIN");
 
-                // encrypted password
+                // ✅ MUST match Spring Security
+                admin.setRole("ROLE_ADMIN");
+
+                // ✅ Use shared PasswordEncoder bean
                 admin.setPassword(
-                        new BCryptPasswordEncoder().encode("123")
+                        passwordEncoder.encode("123")
                 );
 
-                // IMPORTANT: no skills for admin
                 admin.setSkills(null);
 
                 employeeRepository.save(admin);
