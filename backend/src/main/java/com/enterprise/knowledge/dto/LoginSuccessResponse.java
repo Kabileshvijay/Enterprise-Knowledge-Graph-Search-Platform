@@ -1,5 +1,7 @@
 package com.enterprise.knowledge.dto;
 
+import com.enterprise.knowledge.entity.Employee;
+
 public class LoginSuccessResponse {
 
     private String name;
@@ -10,6 +12,9 @@ public class LoginSuccessResponse {
         this.name = name;
         this.email = email;
         this.role = role;
+    }
+
+    public LoginSuccessResponse(String token, Employee employee) {
     }
 
     public String getName() {
