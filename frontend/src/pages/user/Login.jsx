@@ -22,31 +22,40 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(
+      /* 1️⃣ LOGIN (SETS COOKIE) */
+      const loginRes = await fetch(
         `${API_BASE_URL}/api/employees/login`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include", // 🔴 REQUIRED
           body: JSON.stringify({ email, password }),
         }
       );
 
-      if (!response.ok) {
+      if (!loginRes.ok) {
         throw new Error("LOGIN_FAILED");
       }
 
-      // 🔹 Only non-sensitive data
-      const data = await response.json();
+      /* 2️⃣ FETCH LOGGED-IN USER */
+      const meRes = await fetch(
+        `${API_BASE_URL}/api/employees/me`,
+        { credentials: "include" } // 🔴 REQUIRED
+      );
 
-      // 🔀 Navigate based on role
-      if (data.role === "ADMIN") {
+      if (!meRes.ok) {
+        throw new Error("AUTH_FAILED");
+      }
+
+      const user = await meRes.json();
+
+      /* 3️⃣ ROLE-BASED REDIRECT */
+      if (user.role === "ROLE_ADMIN") {
         navigate("/admin/dashboard");
       } else {
         navigate("/home");
       }
+
     } catch (error) {
       alert(
         "Invalid credentials or you are not authorised. Please contact admin."
