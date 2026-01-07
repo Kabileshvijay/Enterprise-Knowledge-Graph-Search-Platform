@@ -32,67 +32,64 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                // 🔹 Disable defaults
+                // Disable default auth
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
 
-                // 🔹 CORS & CSRF
+                // CORS & CSRF
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
 
-                // 🔹 Stateless JWT
+                // Stateless session (JWT)
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
 
-                // 🔹 Authorization rules (ORDER MATTERS!)
+                // Authorization (ORDER IS CRITICAL)
                 .authorizeHttpRequests(auth -> auth
 
-                        // ✅ PREFLIGHT
+                        // Preflight
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // ✅ PUBLIC
+                        // Public APIs
                         .requestMatchers(
                                 "/api/employees/login",
                                 "/api/employees/register",
                                 "/api/employees/logout",
-                                "/uploads/**",
-                                "/ws/**",
                                 "/error"
                         ).permitAll()
 
-                        // ✅ AUTHENTICATED (USER + ADMIN)
-                        // MUST COME BEFORE ADMIN-ONLY RULE
+                        // Authenticated (USER + ADMIN)
                         .requestMatchers(
                                 "/api/employees/me",
                                 "/api/documents/**",
                                 "/api/feedback/**",
-                                "/api/analytics/**",
                                 "/api/comments/**",
                                 "/api/notifications/**",
+                                "/api/analytics/**",
                                 "/api/ai/**"
                         ).authenticated()
 
-                        // 🔐 ADMIN ONLY (KEEP THIS LAST)
+                        // ADMIN ONLY (must be AFTER /me)
                         .requestMatchers("/api/employees/**").hasRole("ADMIN")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
                         .anyRequest().authenticated()
                 )
 
-                // 🔹 JWT Filter
+                // JWT filter
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-    // 🔐 Password encoder
+    // Password encoder
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // 🌍 CORS CONFIG (VERCEL + LOCAL)
+    // CORS (Vercel frontend → Render backend)
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 

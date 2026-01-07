@@ -23,21 +23,15 @@ public class JwtFilter extends OncePerRequestFilter {
         this.jwtUtil = jwtUtil;
     }
 
-    /* ================= SKIP PUBLIC ENDPOINTS ================= */
-
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-
         String path = request.getRequestURI();
-
         return request.getMethod().equalsIgnoreCase("OPTIONS")
                 || path.equals("/api/employees/login")
                 || path.equals("/api/employees/register")
                 || path.equals("/api/employees/logout")
                 || path.startsWith("/error");
     }
-
-    /* ================= FILTER ================= */
 
     @Override
     protected void doFilterInternal(
@@ -46,7 +40,6 @@ public class JwtFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        // If already authenticated, continue
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             filterChain.doFilter(request, response);
             return;
@@ -54,10 +47,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String token = null;
 
-        // 🔐 Extract JWT from HttpOnly cookie
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
                 if ("jwt".equals(cookie.getName())) {
                     token = cookie.getValue();
                     break;
@@ -65,26 +56,13 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
 
-        // No token → continue
-        if (token == null) {
+        if (token == null || !jwtUtil.validateToken(token)) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // Invalid token → continue
-        if (!jwtUtil.validateToken(token)) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        // 🔐 Extract user info from token
         String email = jwtUtil.extractUsername(token);
-        String role = jwtUtil.extractRole(token);
-
-        // ✅ Ensure Spring Security role format
-        if (!role.startsWith("ROLE_")) {
-            role = "ROLE_" + role;
-        }
+        String role = jwtUtil.extractRole(token); // 👈 ALREADY ROLE_ADMIN
 
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(
@@ -95,10 +73,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // 🔍 TEMP DEBUG LOG (REMOVE AFTER CONFIRMATION)
-        System.out.println(
-                "JWT AUTH SET → email=" + email + ", role=" + role
-        );
+        System.out.println("✅ AUTH OK → " + email + " | " + role);
 
         filterChain.doFilter(request, response);
     }
