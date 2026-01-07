@@ -12,10 +12,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/employees")
 @CrossOrigin(
-        origins = "http://localhost:5173",
+        origins = {
+                "http://localhost:5173",
+                "https://entrograph.vercel.app"
+        },
         allowCredentials = "true"
 )
 public class EmployeeController {
@@ -28,18 +33,21 @@ public class EmployeeController {
         this.jwtUtil = jwtUtil;
     }
 
-    /* ================= REGISTER (UNCHANGED) ================= */
+    /* ================= REGISTER ================= */
 
     @PostMapping("/register")
-    public Employee registerEmployee(@RequestBody EmployeeRequest request) {
-        return service.saveEmployee(request);
+    public ResponseEntity<Employee> register(
+            @RequestBody EmployeeRequest request
+    ) {
+        return ResponseEntity.ok(service.saveEmployee(request));
     }
 
-    /* ================= LOGIN (UPDATED: JWT + COOKIE) ================= */
+    /* ================= LOGIN (COOKIE-BASED JWT) ================= */
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-
+    public ResponseEntity<LoginSuccessResponse> login(
+            @RequestBody LoginRequest request
+    ) {
         Employee employee = service.login(request);
 
         String token = jwtUtil.generateToken(
@@ -49,10 +57,10 @@ public class EmployeeController {
 
         ResponseCookie cookie = ResponseCookie.from("jwt", token)
                 .httpOnly(true)
-                .secure(false)          // true in production
+                .secure(true)        // ✅ true for HTTPS (Render + Vercel)
                 .path("/")
                 .maxAge(24 * 60 * 60)
-                .sameSite("Lax")        // IMPORTANT for localhost
+                .sameSite("None")    // ✅ REQUIRED for cross-site cookies
                 .build();
 
         return ResponseEntity.ok()
@@ -64,12 +72,13 @@ public class EmployeeController {
                 ));
     }
 
-    /* ================= GET LOGGED-IN USER (NEW) ================= */
+    /* ================= CURRENT USER ================= */
 
     @GetMapping("/me")
-    public ResponseEntity<?> getLoggedInUser(Authentication authentication) {
-
-        String email = authentication.getName(); // extracted from JWT
+    public ResponseEntity<LoginSuccessResponse> me(
+            Authentication authentication
+    ) {
+        String email = authentication.getName();
         Employee employee = service.getEmployeeByEmail(email);
 
         return ResponseEntity.ok(
@@ -81,22 +90,17 @@ public class EmployeeController {
         );
     }
 
-    /* ================= GET EMPLOYEE BY EMAIL (UNCHANGED) ================= */
-
-    @GetMapping("/by-email")
-    public Employee getEmployeeByEmail(@RequestParam String email) {
-        return service.getEmployeeByEmail(email);
-    }
-
-    /* ================= LOGOUT (NEW) ================= */
+    /* ================= LOGOUT ================= */
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout() {
+    public ResponseEntity<String> logout() {
 
         ResponseCookie deleteCookie = ResponseCookie.from("jwt", "")
                 .httpOnly(true)
+                .secure(true)
                 .path("/")
                 .maxAge(0)
+                .sameSite("None")
                 .build();
 
         return ResponseEntity.ok()
@@ -104,17 +108,17 @@ public class EmployeeController {
                 .body("LOGOUT_SUCCESS");
     }
 
-    /* ================= ADMIN: GET ALL EMPLOYEES ================= */
+    /* ================= ADMIN ================= */
 
     @GetMapping
-    public ResponseEntity<?> getAllEmployees() {
+    public ResponseEntity<List<Employee>> getAllEmployees() {
         return ResponseEntity.ok(service.getAllEmployees());
     }
 
-    /* ================= ADMIN: DELETE EMPLOYEE ================= */
-
     @DeleteMapping("/{email}")
-    public ResponseEntity<?> deleteEmployee(@PathVariable String email) {
+    public ResponseEntity<String> deleteEmployee(
+            @PathVariable String email
+    ) {
         service.deleteByEmail(email);
         return ResponseEntity.ok("DELETED");
     }

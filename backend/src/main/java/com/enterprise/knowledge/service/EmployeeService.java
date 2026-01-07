@@ -2,10 +2,8 @@ package com.enterprise.knowledge.service;
 
 import com.enterprise.knowledge.dto.EmployeeRequest;
 import com.enterprise.knowledge.dto.LoginRequest;
-import com.enterprise.knowledge.dto.LoginSuccessResponse;
 import com.enterprise.knowledge.entity.Employee;
 import com.enterprise.knowledge.repository.EmployeeRepository;
-import com.enterprise.knowledge.jwt.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +14,11 @@ public class EmployeeService {
 
     private final EmployeeRepository repository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil;
 
     public EmployeeService(EmployeeRepository repository,
-                           PasswordEncoder passwordEncoder,
-                           JwtUtil jwtUtil) {
+                           PasswordEncoder passwordEncoder) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
-        this.jwtUtil = jwtUtil;
     }
 
     /* ================= REGISTER ================= */
@@ -40,12 +35,10 @@ public class EmployeeService {
         employee.setTeam(request.getTeam());
         employee.setSkills(request.getSkills());
 
-        // 🔐 Encrypt password (CORRECT)
-        employee.setPassword(
-                passwordEncoder.encode(request.getPassword())
-        );
+        // 🔐 BCrypt password
+        employee.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        // ✅ IMPORTANT: must match Spring Security rules
+        // ⚠️ MUST include ROLE_
         employee.setRole("ROLE_EMPLOYEE");
 
         return repository.save(employee);
@@ -53,13 +46,11 @@ public class EmployeeService {
 
     /* ================= LOGIN ================= */
 
-    public LoginSuccessResponse login(LoginRequest request) {
+    public Employee login(LoginRequest request) {
 
         Employee employee = repository.findByEmail(request.getEmail())
-                .orElseThrow(() ->
-                        new RuntimeException("EMPLOYEE_NOT_FOUND"));
+                .orElseThrow(() -> new RuntimeException("EMPLOYEE_NOT_FOUND"));
 
-        // 🔐 Correct password validation
         if (!passwordEncoder.matches(
                 request.getPassword(),
                 employee.getPassword()
@@ -67,22 +58,14 @@ public class EmployeeService {
             throw new RuntimeException("INVALID_PASSWORD");
         }
 
-        // 🔑 Generate JWT
-        String token = jwtUtil.generateToken(
-                employee.getEmail(),
-                employee.getRole()
-        );
-
-        // ✅ Return token + user
-        return new LoginSuccessResponse(token, employee);
+        return employee;
     }
 
-    /* ================= GET EMPLOYEE ================= */
+    /* ================= GET ================= */
 
     public Employee getEmployeeByEmail(String email) {
         return repository.findByEmail(email)
-                .orElseThrow(() ->
-                        new RuntimeException("EMPLOYEE_NOT_FOUND"));
+                .orElseThrow(() -> new RuntimeException("EMPLOYEE_NOT_FOUND"));
     }
 
     public List<Employee> getAllEmployees() {

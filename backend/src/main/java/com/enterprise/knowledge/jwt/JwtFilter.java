@@ -23,15 +23,21 @@ public class JwtFilter extends OncePerRequestFilter {
         this.jwtUtil = jwtUtil;
     }
 
-    /* ✅ SKIP PUBLIC ENDPOINTS */
+    /* ================= SKIP PUBLIC ENDPOINTS ================= */
+
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
+
         String path = request.getRequestURI();
+
         return request.getMethod().equalsIgnoreCase("OPTIONS")
-                || path.startsWith("/api/employees/login")
-                || path.startsWith("/api/employees/register")
-                || path.startsWith("/api/employees/logout");
+                || path.equals("/api/employees/login")
+                || path.equals("/api/employees/register")
+                || path.equals("/api/employees/logout")
+                || path.startsWith("/error");
     }
+
+    /* ================= FILTER ================= */
 
     @Override
     protected void doFilterInternal(
@@ -40,6 +46,7 @@ public class JwtFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
+        // If already authenticated, continue
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             filterChain.doFilter(request, response);
             return;
@@ -48,8 +55,9 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = null;
 
         // 🔐 Extract JWT from HttpOnly cookie
-        if (request.getCookies() != null) {
-            for (Cookie cookie : request.getCookies()) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
                 if ("jwt".equals(cookie.getName())) {
                     token = cookie.getValue();
                     break;
@@ -57,25 +65,26 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
 
-        if (token == null || !jwtUtil.validateToken(token)) {
+        // No token → continue (will be blocked by SecurityConfig if required)
+        if (token == null) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // 🔐 Extract identity
+        // Invalid token → continue
+        if (!jwtUtil.validateToken(token)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // 🔐 Extract user info from token
         String email = jwtUtil.extractUsername(token);
         String role = jwtUtil.extractRole(token);
 
-        // 🔍 DEBUG (keep for now)
-        System.out.println("JWT EMAIL = " + email);
-        System.out.println("JWT ROLE (from token) = " + role);
-
-        // 🔥 CRITICAL FIX: Spring Security requires ROLE_ prefix
+        // ✅ Ensure Spring Security role format
         if (!role.startsWith("ROLE_")) {
             role = "ROLE_" + role;
         }
-
-        System.out.println("JWT ROLE (used by Spring) = " + role);
 
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(
