@@ -8,15 +8,20 @@ const FeedbackModal = ({ onClose }) => {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   // Fetch logged-in user from backend using JWT cookie
   useEffect(() => {
-    fetch("http://localhost:8080/api/employees/me", {
+    fetch(`${API_BASE_URL}/api/employees/me`, {
       credentials: "include",
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error("Not authenticated");
+        return res.json();
+      })
       .then((data) => setUser(data))
       .catch(() => {});
-  }, []);
+  }, [API_BASE_URL]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,7 +51,7 @@ const FeedbackModal = ({ onClose }) => {
     }
 
     try {
-      const res = await fetch("http://localhost:8080/api/feedback", {
+      const res = await fetch(`${API_BASE_URL}/api/feedback`, {
         method: "POST",
         credentials: "include",
         body: formData,

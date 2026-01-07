@@ -10,13 +10,39 @@ function AdminDashboard() {
     unsolved: 0,
   });
 
+  const [loading, setLoading] = useState(true);
+
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
-    fetchUserCount();
-    fetchPostCount();
-    fetchFeedbackStats();
+    verifySessionAndLoad();
   }, []);
+
+  /* ================= SESSION CHECK ================= */
+
+  const verifySessionAndLoad = async () => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/employees/me`, {
+        credentials: "include",
+      });
+
+      if (!res.ok) {
+        console.error("User not authenticated");
+        return;
+      }
+
+      // ✅ Load dashboard data only after auth success
+      await Promise.all([
+        fetchUserCount(),
+        fetchPostCount(),
+        fetchFeedbackStats(),
+      ]);
+    } catch (err) {
+      console.error("Session verification failed", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   /* ================= USERS (EXCLUDE ADMIN) ================= */
 
@@ -71,6 +97,12 @@ function AdminDashboard() {
       console.error("Failed to fetch feedback stats", err);
     }
   };
+
+  /* ================= UI ================= */
+
+  if (loading) {
+    return <p style={{ textAlign: "center" }}>Loading dashboard...</p>;
+  }
 
   return (
     <div className="admin-dashboard">
