@@ -32,9 +32,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                // ✅ MUST explicitly enable CORS (Spring Security 6)
-                .cors()
-                .and()
+                // ✅ Enable CORS
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
                 // Disable defaults
                 .httpBasic(AbstractHttpConfigurer::disable)
@@ -46,13 +45,13 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
 
-                // Authorization rules
+                // 🔐 AUTHORIZATION RULES
                 .authorizeHttpRequests(auth -> auth
 
-                        // 🔥 Preflight (MUST be first)
+                        // 🔥 Preflight
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // 🔓 Public endpoints
+                        // 🌍 PUBLIC
                         .requestMatchers(
                                 "/",
                                 "/error",
@@ -64,7 +63,7 @@ public class SecurityConfig {
                                 "/ws/**"
                         ).permitAll()
 
-                        // ✅ Authenticated users
+                        // 👤 AUTHENTICATED USERS (PATH-ONLY)
                         .requestMatchers(
                                 "/api/employees/me",
                                 "/api/documents/**",
@@ -73,12 +72,17 @@ public class SecurityConfig {
                                 "/api/ai/**"
                         ).authenticated()
 
-                        // 🔐 Admin only
+                        // 👤 AUTHENTICATED USERS (METHOD-SPECIFIC)
+                        .requestMatchers(HttpMethod.POST, "/api/feedback").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/analytics/track").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/analytics/user").authenticated()
+
+                        // 🔐 ADMIN ONLY
                         .requestMatchers(
                                 "/api/employees/**",
                                 "/api/feedback/**",
-                                "/api/admin/**",
-                                "/api/analytics/**"
+                                "/api/analytics/**",
+                                "/api/admin/**"
                         ).hasRole("ADMIN")
 
                         .anyRequest().authenticated()
@@ -90,13 +94,13 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // Password Encoder
+    // 🔐 Password Encoder
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // 🌍 CORS CONFIG (LOCAL + PROD)
+    // 🌍 CORS CONFIG
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
@@ -113,7 +117,7 @@ public class SecurityConfig {
 
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
-        config.setMaxAge(3600L); // cache preflight
+        config.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
