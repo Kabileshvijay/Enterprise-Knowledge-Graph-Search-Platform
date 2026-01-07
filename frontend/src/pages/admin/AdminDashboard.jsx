@@ -26,8 +26,10 @@ function AdminDashboard() {
         credentials: "include",
       });
 
+      // ❌ Not logged in → redirect
       if (!res.ok) {
         console.error("User not authenticated");
+        window.location.href = "/";
         return;
       }
 
@@ -39,6 +41,7 @@ function AdminDashboard() {
       ]);
     } catch (err) {
       console.error("Session verification failed", err);
+      window.location.href = "/";
     } finally {
       setLoading(false);
     }
@@ -54,7 +57,9 @@ function AdminDashboard() {
       if (!res.ok) return;
 
       const users = await res.json();
-      const nonAdmins = users.filter((u) => u.role !== "ROLE_ADMIN");
+
+      // ✅ FIX: backend role is "ADMIN", not "ROLE_ADMIN"
+      const nonAdmins = users.filter((u) => u.role !== "ADMIN");
       setUserCount(nonAdmins.length);
     } catch (err) {
       console.error("Failed to fetch users", err);
