@@ -26,7 +26,7 @@ public class EmployeeService {
     public Employee saveEmployee(EmployeeRequest request) {
 
         if (repository.existsByEmail(request.getEmail())) {
-            return null; // controller handles response
+            return null;
         }
 
         Employee employee = new Employee();
@@ -35,11 +35,10 @@ public class EmployeeService {
         employee.setTeam(request.getTeam());
         employee.setSkills(request.getSkills());
 
-        // 🔐 Encrypt password
         employee.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        // 🔹 Default role
-        employee.setRole("EMPLOYEE");
+        // ✅ CORRECT ROLE
+        employee.setRole("ROLE_USER");
 
         return repository.save(employee);
     }
@@ -51,11 +50,12 @@ public class EmployeeService {
         Employee employee = repository.findByEmail(request.getEmail())
                 .orElse(null);
 
-        if (employee == null) {
-            return null;
-        }
+        if (employee == null) return null;
 
-        if (!passwordEncoder.matches(request.getPassword(), employee.getPassword())) {
+        if (!passwordEncoder.matches(
+                request.getPassword(),
+                employee.getPassword()
+        )) {
             return null;
         }
 
