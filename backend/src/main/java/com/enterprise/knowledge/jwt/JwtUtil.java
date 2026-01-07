@@ -28,10 +28,8 @@ public class JwtUtil {
 
     public String generateToken(String email, String role) {
 
-        // 🔥 Normalize role
-        if (!role.startsWith("ROLE_")) {
-            role = "ROLE_" + role;
-        }
+        // ✅ DO NOT MODIFY ROLE
+        // role = ADMIN / EMPLOYEE (as stored in DB)
 
         return Jwts.builder()
                 .setSubject(email)

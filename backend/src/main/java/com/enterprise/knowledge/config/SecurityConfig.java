@@ -51,7 +51,7 @@ public class SecurityConfig {
                         // 🔥 Preflight
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // 🌍 PUBLIC
+                        // 🌍 PUBLIC ENDPOINTS
                         .requestMatchers(
                                 "/",
                                 "/error",
@@ -63,31 +63,27 @@ public class SecurityConfig {
                                 "/ws/**"
                         ).permitAll()
 
-                        // 👤 AUTHENTICATED USERS
+                        // 👤 ANY AUTHENTICATED USER (ADMIN + EMPLOYEE)
                         .requestMatchers(
                                 "/api/employees/me",
-                                "/api/notifications/count",
-                                "/api/feedback"
-                        ).authenticated()
-
-                        .requestMatchers(
+                                "/api/notifications/**",
                                 "/api/documents/**",
                                 "/api/comments/**",
-                                "/api/notifications/**",
-                                "/api/ai/**"
+                                "/api/ai/**",
+                                "/api/feedback"
                         ).authenticated()
 
                         // 👤 AUTHENTICATED (METHOD SPECIFIC)
                         .requestMatchers(HttpMethod.POST, "/api/analytics/track").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/analytics/user").authenticated()
 
-                        // 🔐 ADMIN ONLY — EXPLICIT PATHS
+                        // 🔐 ADMIN ONLY (USING AUTHORITY — NOT ROLE)
                         .requestMatchers(
-                                "/api/employees",              // list users
-                                "/api/employees/*/role",       // change role
+                                "/api/employees",        // list users
+                                "/api/employees/*/role", // change role
                                 "/api/admin/**",
                                 "/api/analytics/**"
-                        ).hasRole("ADMIN")
+                        ).hasAuthority("ADMIN")
 
                         .anyRequest().authenticated()
                 )

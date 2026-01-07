@@ -44,7 +44,7 @@ public class JwtFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        // Already authenticated
+        // Already authenticated → continue
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             filterChain.doFilter(request, response);
             return;
@@ -63,16 +63,16 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
 
-        // No token → continue
+        // No token or invalid token → continue unauthenticated
         if (token == null || !jwtUtil.validateToken(token)) {
             SecurityContextHolder.clearContext();
             filterChain.doFilter(request, response);
             return;
         }
 
-        // 🔐 Extract identity
+        // 🔐 Extract identity from token
         String email = jwtUtil.extractUsername(token);
-        String role = jwtUtil.extractRole(token);
+        String role = jwtUtil.extractRole(token); // ADMIN / EMPLOYEE
 
         if (email == null || role == null || role.isBlank()) {
             SecurityContextHolder.clearContext();
@@ -80,14 +80,10 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
-        // 🔥 Ensure ROLE_ prefix
-        if (!role.startsWith("ROLE_")) {
-            role = "ROLE_" + role;
-        }
-
+        // ✅ USE ROLE AS-IS (NO ROLE_ PREFIX)
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(
-                        email, // principal
+                        email,
                         null,
                         List.of(new SimpleGrantedAuthority(role))
                 );
