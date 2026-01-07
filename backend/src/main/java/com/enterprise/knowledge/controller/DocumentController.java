@@ -15,7 +15,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/documents")
 @CrossOrigin(
-        origins = "http://localhost:5173",
+        origins = {
+                "http://localhost:5173",
+                "https://entrograph.vercel.app"
+        },
         allowCredentials = "true"
 )
 public class DocumentController {

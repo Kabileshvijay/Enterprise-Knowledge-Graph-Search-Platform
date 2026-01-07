@@ -14,7 +14,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/comments")
 @CrossOrigin(
-        origins = "http://localhost:5173",
+        origins = {
+                "http://localhost:5173",
+                "https://entrograph.vercel.app"
+        },
         allowCredentials = "true"
 )
 public class CommentController {

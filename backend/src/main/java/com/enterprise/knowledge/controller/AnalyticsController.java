@@ -12,7 +12,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/analytics")
 @CrossOrigin(
-        origins = "http://localhost:5173",
+        origins = {
+                "http://localhost:5173",
+                "https://entrograph.vercel.app"
+        },
         allowCredentials = "true"
 )
 public class AnalyticsController {

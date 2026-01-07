@@ -9,7 +9,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/notifications")
-@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
+@CrossOrigin(origins = {
+        "http://localhost:5173",
+        "https://entrograph.vercel.app"
+}, allowCredentials = "true")
 public class NotificationController {
 
     private final NotificationService service;
