@@ -7,31 +7,35 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
 
-    // 🔐 MUST come from Render ENV (≥ 256 bits)
+    // 🔐 Loaded from Render ENV
     @Value("${jwt.secret}")
     private String secret;
 
-    // ⏰ Token validity (24 hours)
+    // ⏰ 24 hours
     private static final long EXPIRATION_TIME = 24 * 60 * 60 * 1000;
 
     private Key getSigningKey() {
-        return Keys.hmacShaKeyFor(secret.getBytes());
+        return Keys.hmacShaKeyFor(
+                secret.trim().getBytes(StandardCharsets.UTF_8)
+        );
     }
 
     /* ================= GENERATE TOKEN ================= */
 
     public String generateToken(String email, String role) {
 
-        // 🔥 IMPORTANT:
-        // DB has: ADMIN / EMPLOYEE
-        // Spring Security needs: ROLE_ADMIN / ROLE_EMPLOYEE
-        String authority = "ROLE_" + role;
+        // DB → ADMIN / EMPLOYEE
+        // Spring → ROLE_ADMIN / ROLE_EMPLOYEE
+        String authority = role.startsWith("ROLE_")
+                ? role
+                : "ROLE_" + role;
 
         return Jwts.builder()
                 .setSubject(email)
@@ -49,7 +53,7 @@ public class JwtUtil {
     private Claims getClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
-                .setAllowedClockSkewSeconds(60) // avoids clock drift issues
+                .setAllowedClockSkewSeconds(60)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();

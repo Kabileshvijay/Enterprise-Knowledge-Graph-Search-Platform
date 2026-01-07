@@ -17,7 +17,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/employees")
 @CrossOrigin(
-        origins = "https://entrograph.vercel.app",
+        origins = {
+                "https://entrograph.vercel.app",
+                "http://localhost:5173"
+        },
         allowCredentials = "true"
 )
 public class EmployeeController {
@@ -60,12 +63,16 @@ public class EmployeeController {
                 employee.getRole()
         );
 
-        // ✅ CRITICAL FIX: domain added
+        /*
+         * ✅ CRITICAL SETTINGS FOR VERCEL → RENDER
+         * - SameSite=None  (cross-site)
+         * - Secure=true    (HTTPS)
+         * - NO domain()    ← IMPORTANT (browser sets it correctly)
+         */
         ResponseCookie cookie = ResponseCookie.from("jwt", token)
                 .httpOnly(true)
-                .secure(true)              // Render = HTTPS
-                .sameSite("None")          // Cross-site cookie
-                .domain("enterprise-knowledge-graph-search.onrender.com")
+                .secure(true)
+                .sameSite("None")
                 .path("/")
                 .maxAge(24 * 60 * 60)
                 .build();
@@ -113,7 +120,6 @@ public class EmployeeController {
                 .httpOnly(true)
                 .secure(true)
                 .sameSite("None")
-                .domain("enterprise-knowledge-graph-search.onrender.com")
                 .path("/")
                 .maxAge(0)
                 .build();

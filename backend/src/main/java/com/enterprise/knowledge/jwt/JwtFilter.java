@@ -30,9 +30,11 @@ public class JwtFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
 
         return request.getMethod().equalsIgnoreCase("OPTIONS")
-                || path.equals("/api/employees/login")
-                || path.equals("/api/employees/register")
-                || path.equals("/api/employees/logout");
+                || path.startsWith("/api/employees/login")
+                || path.startsWith("/api/employees/register")
+                || path.startsWith("/api/employees/logout")
+                || path.startsWith("/actuator")
+                || path.startsWith("/error");
     }
 
     @Override
@@ -42,43 +44,47 @@ public class JwtFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        // 🔴 If no cookies → NOT authenticated
-        Cookie[] cookies = request.getCookies();
-        if (cookies == null) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        // 🔐 If already authenticated → continue
+        if (SecurityContextHolder.getContext().getAuthentication() != null) {
+            filterChain.doFilter(request, response);
             return;
         }
 
         String token = null;
-        for (Cookie cookie : cookies) {
-            if ("jwt".equals(cookie.getName())) {
-                token = cookie.getValue();
-                break;
+
+        // 🔐 Read JWT from cookie
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("jwt".equals(cookie.getName())) {
+                    token = cookie.getValue();
+                    break;
+                }
             }
         }
 
-        // 🔴 If JWT cookie missing
+        // ❗ No token → continue UNAUTHENTICATED
         if (token == null) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            filterChain.doFilter(request, response);
             return;
         }
 
-        // 🔴 If token invalid
+        // ❗ Invalid token → continue UNAUTHENTICATED
         if (!jwtUtil.validateToken(token)) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            filterChain.doFilter(request, response);
             return;
         }
 
+        // 🔐 Extract claims
         String email = jwtUtil.extractUsername(token);
-        String role = jwtUtil.extractRole(token); // ADMIN / EMPLOYEE
+        String role = jwtUtil.extractRole(token); // ROLE_ADMIN / ROLE_EMPLOYEE
 
-        // 🔴 If token malformed
         if (email == null || role == null || role.isBlank()) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            filterChain.doFilter(request, response);
             return;
         }
 
-        // ✅ Authenticate
+        // ✅ Build Authentication
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(
                         email,
@@ -92,6 +98,7 @@ public class JwtFilter extends OncePerRequestFilter {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
         filterChain.doFilter(request, response);
     }
 }

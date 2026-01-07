@@ -40,8 +40,8 @@ public class EmployeeService {
         // 🔐 Encrypt password
         employee.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        // ✅ STORE ROLE WITHOUT PREFIX (VERY IMPORTANT)
-        // DB values must be: ADMIN / EMPLOYEE
+        // ✅ STORE ROLE WITHOUT PREFIX (CRITICAL)
+        // Allowed values in DB: ADMIN / EMPLOYEE
         employee.setRole("EMPLOYEE");
 
         return repository.save(employee);
