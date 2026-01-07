@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import "../../styles/admin/adminDashboard.css";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 function AdminDashboard() {
   const [userCount, setUserCount] = useState(0);
   const [postCount, setPostCount] = useState(0);
@@ -10,42 +12,11 @@ function AdminDashboard() {
     unsolved: 0,
   });
 
-  const [loading, setLoading] = useState(true);
-
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
   useEffect(() => {
-    verifySessionAndLoad();
+    fetchUserCount();
+    fetchPostCount();
+    fetchFeedbackStats();
   }, []);
-
-  /* ================= SESSION CHECK ================= */
-
-  const verifySessionAndLoad = async () => {
-    try {
-      const res = await fetch(`${API_BASE_URL}/api/employees/me`, {
-        credentials: "include",
-      });
-
-      // ❌ Not logged in → redirect
-      if (!res.ok) {
-        console.error("User not authenticated");
-        window.location.href = "/";
-        return;
-      }
-
-      // ✅ Load dashboard data only after auth success
-      await Promise.all([
-        fetchUserCount(),
-        fetchPostCount(),
-        fetchFeedbackStats(),
-      ]);
-    } catch (err) {
-      console.error("Session verification failed", err);
-      window.location.href = "/";
-    } finally {
-      setLoading(false);
-    }
-  };
 
   /* ================= USERS (EXCLUDE ADMIN) ================= */
 
@@ -57,8 +28,6 @@ function AdminDashboard() {
       if (!res.ok) return;
 
       const users = await res.json();
-
-      // ✅ FIX: backend role is "ADMIN", not "ROLE_ADMIN"
       const nonAdmins = users.filter((u) => u.role !== "ADMIN");
       setUserCount(nonAdmins.length);
     } catch (err) {
@@ -102,12 +71,6 @@ function AdminDashboard() {
       console.error("Failed to fetch feedback stats", err);
     }
   };
-
-  /* ================= UI ================= */
-
-  if (loading) {
-    return <p style={{ textAlign: "center" }}>Loading dashboard...</p>;
-  }
 
   return (
     <div className="admin-dashboard">
