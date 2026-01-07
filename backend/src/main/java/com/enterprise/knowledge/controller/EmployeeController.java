@@ -63,7 +63,6 @@ public class EmployeeController {
                     .secure(true) // HTTPS required for SameSite=None
                     .sameSite("None")
                     .path("/")
-                    .domain("enterprise-knowledge-graph-search.onrender.com")
                     .maxAge(24 * 60 * 60)
                     .build();
 
@@ -119,7 +118,6 @@ public class EmployeeController {
                 .secure(true)
                 .sameSite("None")
                 .path("/")
-                .domain("enterprise-knowledge-graph-search.onrender.com")
                 .maxAge(0)
                 .build();
 
