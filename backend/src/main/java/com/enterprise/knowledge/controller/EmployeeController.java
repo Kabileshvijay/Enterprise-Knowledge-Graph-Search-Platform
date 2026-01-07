@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/employees")
+@CrossOrigin(
+        origins = "https://entrograph.vercel.app",
+        allowCredentials = "true"
+)
 public class EmployeeController {
 
     private final EmployeeService service;
@@ -56,11 +60,13 @@ public class EmployeeController {
                 employee.getRole()
         );
 
+        // 🔐 IMPORTANT: domain + sameSite + secure
         ResponseCookie cookie = ResponseCookie.from("jwt", token)
                 .httpOnly(true)
-                .secure(true)       // REQUIRED on Render
-                .sameSite("None")   // REQUIRED for Vercel → Render
+                .secure(true)
+                .sameSite("None")
                 .path("/")
+                .domain("enterprise-knowledge-graph-search.onrender.com")
                 .maxAge(24 * 60 * 60)
                 .build();
 
@@ -103,11 +109,13 @@ public class EmployeeController {
     @PostMapping("/logout")
     public ResponseEntity<?> logout() {
 
+        // ❗ Must match login cookie attributes
         ResponseCookie deleteCookie = ResponseCookie.from("jwt", "")
                 .httpOnly(true)
                 .secure(true)
                 .sameSite("None")
                 .path("/")
+                .domain("enterprise-knowledge-graph-search.onrender.com")
                 .maxAge(0)
                 .build();
 
@@ -132,7 +140,6 @@ public class EmployeeController {
             Authentication authentication
     ) {
 
-        // 🚫 Prevent admin from deleting self
         if (authentication != null &&
                 authentication.getName().equals(email)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
