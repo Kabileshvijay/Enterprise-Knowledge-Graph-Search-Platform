@@ -48,10 +48,10 @@ public class SecurityConfig {
                 // 🔹 Authorization rules
                 .authorizeHttpRequests(auth -> auth
 
-                        // ALLOW PREFLIGHT REQUESTS (REQUIRED FOR FILE UPLOAD)
+                        // ✅ ALLOW PREFLIGHT (CRITICAL FOR CORS)
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-                        // ✅ PUBLIC
+                        // ✅ PUBLIC ENDPOINTS
                         .requestMatchers(
                                 "/api/employees/login",
                                 "/api/employees/register",
@@ -61,7 +61,7 @@ public class SecurityConfig {
                                 "/error"
                         ).permitAll()
 
-                        // ✅ AUTHENTICATED USER
+                        // ✅ AUTHENTICATED
                         .requestMatchers(
                                 "/api/employees/me",
                                 "/api/documents/**",
@@ -78,7 +78,6 @@ public class SecurityConfig {
                         .requestMatchers("/api/feedback/*/solve").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
-                        // everything else
                         .anyRequest().authenticated()
                 )
 
@@ -94,13 +93,21 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // 🌍 CORS (cookies + multipart)
+    // 🌍 CORS CONFIG (FIXED FOR VERCEL + LOCAL)
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:5173"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+
+        config.setAllowedOrigins(List.of(
+                "http://localhost:5173",
+                "https://entrograph.vercel.app"   // ✅ ADD THIS
+        ));
+
+        config.setAllowedMethods(List.of(
+                "GET", "POST", "PUT", "DELETE", "OPTIONS"
+        ));
+
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
 
