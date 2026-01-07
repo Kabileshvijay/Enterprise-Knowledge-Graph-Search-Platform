@@ -24,6 +24,17 @@ public class JwtFilter extends OncePerRequestFilter {
         this.jwtUtil = jwtUtil;
     }
 
+    // ✅ Skip ONLY public endpoints
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getRequestURI();
+
+        return request.getMethod().equalsIgnoreCase("OPTIONS")
+                || path.equals("/api/employees/login")
+                || path.equals("/api/employees/register")
+                || path.equals("/api/employees/logout");
+    }
+
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
@@ -31,39 +42,43 @@ public class JwtFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        // If already authenticated, continue
-        if (SecurityContextHolder.getContext().getAuthentication() != null) {
-            filterChain.doFilter(request, response);
+        // 🔴 If no cookies → NOT authenticated
+        Cookie[] cookies = request.getCookies();
+        if (cookies == null) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
         String token = null;
-
-        // 🔐 Extract JWT from cookie
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie c : cookies) {
-                if ("jwt".equals(c.getName())) {
-                    token = c.getValue();
-                    break;
-                }
+        for (Cookie cookie : cookies) {
+            if ("jwt".equals(cookie.getName())) {
+                token = cookie.getValue();
+                break;
             }
         }
 
-        // No token → continue (unauthenticated)
-        if (token == null || !jwtUtil.validateToken(token)) {
-            filterChain.doFilter(request, response);
+        // 🔴 If JWT cookie missing
+        if (token == null) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+
+        // 🔴 If token invalid
+        if (!jwtUtil.validateToken(token)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
         String email = jwtUtil.extractUsername(token);
         String role = jwtUtil.extractRole(token); // ADMIN / EMPLOYEE
 
-        if (email == null || role == null) {
-            filterChain.doFilter(request, response);
+        // 🔴 If token malformed
+        if (email == null || role == null || role.isBlank()) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
+        // ✅ Authenticate
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(
                         email,
@@ -72,11 +87,11 @@ public class JwtFilter extends OncePerRequestFilter {
                 );
 
         authentication.setDetails(
-                new WebAuthenticationDetailsSource().buildDetails(request)
+                new WebAuthenticationDetailsSource()
+                        .buildDetails(request)
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         filterChain.doFilter(request, response);
     }
 }

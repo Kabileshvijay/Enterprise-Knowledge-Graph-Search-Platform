@@ -15,8 +15,10 @@ public class EmployeeService {
     private final EmployeeRepository repository;
     private final PasswordEncoder passwordEncoder;
 
-    public EmployeeService(EmployeeRepository repository,
-                           PasswordEncoder passwordEncoder) {
+    public EmployeeService(
+            EmployeeRepository repository,
+            PasswordEncoder passwordEncoder
+    ) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -35,10 +37,12 @@ public class EmployeeService {
         employee.setTeam(request.getTeam());
         employee.setSkills(request.getSkills());
 
+        // 🔐 Encrypt password
         employee.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        // ✅ CORRECT ROLE
-        employee.setRole("ROLE_USER");
+        // ✅ STORE ROLE WITHOUT PREFIX (VERY IMPORTANT)
+        // DB values must be: ADMIN / EMPLOYEE
+        employee.setRole("EMPLOYEE");
 
         return repository.save(employee);
     }

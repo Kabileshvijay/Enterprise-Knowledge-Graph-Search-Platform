@@ -60,11 +60,12 @@ public class EmployeeController {
                 employee.getRole()
         );
 
-        // 🔐 IMPORTANT: domain + sameSite + secure
+        // ✅ CRITICAL FIX: domain added
         ResponseCookie cookie = ResponseCookie.from("jwt", token)
                 .httpOnly(true)
-                .secure(true)
-                .sameSite("None")
+                .secure(true)              // Render = HTTPS
+                .sameSite("None")          // Cross-site cookie
+                .domain("enterprise-knowledge-graph-search.onrender.com")
                 .path("/")
                 .maxAge(24 * 60 * 60)
                 .build();
@@ -108,11 +109,11 @@ public class EmployeeController {
     @PostMapping("/logout")
     public ResponseEntity<?> logout() {
 
-        // ❗ Must match login cookie attributes
         ResponseCookie deleteCookie = ResponseCookie.from("jwt", "")
                 .httpOnly(true)
                 .secure(true)
                 .sameSite("None")
+                .domain("enterprise-knowledge-graph-search.onrender.com")
                 .path("/")
                 .maxAge(0)
                 .build();

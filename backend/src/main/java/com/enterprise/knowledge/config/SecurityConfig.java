@@ -31,30 +31,41 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
+                // ✅ CORS
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+
+                // ✅ Disable CSRF (JWT + cookies)
                 .csrf(csrf -> csrf.disable())
+
+                // ✅ Stateless
                 .sessionManagement(sm ->
                         sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
 
+                // ✅ AUTH RULES (ORDER MATTERS)
                 .authorizeHttpRequests(auth -> auth
 
-                        // PUBLIC
+                        // 🔥 CORS PREFLIGHT (REQUIRED)
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                        // 🌍 PUBLIC
                         .requestMatchers(
+                                "/",
+                                "/error",
+                                "/actuator/health",
                                 "/api/employees/login",
                                 "/api/employees/register",
-                                "/api/employees/logout",
-                                "/actuator/health"
+                                "/api/employees/logout"
                         ).permitAll()
 
-                        // ADMIN
+                        // 🔐 ADMIN ONLY
                         .requestMatchers(
                                 "/api/employees",
                                 "/api/admin/**",
                                 "/api/analytics/**"
-                        ).hasAuthority("ADMIN")
+                        ).hasRole("ADMIN")   // ✅ expects ROLE_ADMIN
 
-                        // AUTHENTICATED
+                        // 👤 AUTHENTICATED USERS
                         .requestMatchers(
                                 "/api/employees/me",
                                 "/api/notifications/**",
@@ -66,29 +77,40 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
 
+                // ✅ JWT FILTER
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
+    // 🔐 Password Encoder
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    // 🌍 CORS CONFIG
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
+
         CorsConfiguration config = new CorsConfiguration();
+
         config.setAllowedOrigins(List.of(
                 "http://localhost:5173",
                 "https://entrograph.vercel.app"
         ));
-        config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
+
+        config.setAllowedMethods(List.of(
+                "GET", "POST", "PUT", "DELETE", "OPTIONS"
+        ));
+
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
+        config.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
+
         source.registerCorsConfiguration("/**", config);
         return source;
     }

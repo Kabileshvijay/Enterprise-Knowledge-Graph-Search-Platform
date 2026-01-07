@@ -7,35 +7,35 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
 
-    // 🔐 SECRET KEY (from Render env: jwt.secret)
+    // 🔐 MUST come from Render ENV (≥ 256 bits)
     @Value("${jwt.secret}")
     private String secret;
 
-    // ⏰ Token validity (1 day)
+    // ⏰ Token validity (24 hours)
     private static final long EXPIRATION_TIME = 24 * 60 * 60 * 1000;
 
     private Key getSigningKey() {
-        if (secret == null || secret.length() < 32) {
-            throw new IllegalStateException("JWT secret is missing or too short");
-        }
-        return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
     /* ================= GENERATE TOKEN ================= */
 
     public String generateToken(String email, String role) {
 
-        // ✅ ROLE IS USED AS-IS (ADMIN / EMPLOYEE)
+        // 🔥 IMPORTANT:
+        // DB has: ADMIN / EMPLOYEE
+        // Spring Security needs: ROLE_ADMIN / ROLE_EMPLOYEE
+        String authority = "ROLE_" + role;
+
         return Jwts.builder()
                 .setSubject(email)
-                .claim("role", role)
+                .claim("role", authority)
                 .setIssuedAt(new Date())
                 .setExpiration(
                         new Date(System.currentTimeMillis() + EXPIRATION_TIME)
@@ -49,7 +49,7 @@ public class JwtUtil {
     private Claims getClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
-                .setAllowedClockSkewSeconds(60)
+                .setAllowedClockSkewSeconds(60) // avoids clock drift issues
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
