@@ -50,13 +50,204 @@ html, body {
   }
 }
 
-@media (max-width: 768px) {
+/* ================= RESPONSIVE MEDIA QUERIES ================= */
+
+/* Large Desktop - 1400px and above */
+@media (min-width: 1400px) {
+  .admin-content {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+  }
+  
+  .page-content {
+    height: calc(100vh - 75px);
+    padding: 2rem;
+  }
+}
+
+/* Desktop - 1024px to 1399px */
+@media (min-width: 1024px) and (max-width: 1399px) {
+  .admin-content {
+    margin-left: 260px;
+    width: calc(100% - 260px);
+  }
+  
+  .page-content {
+    height: calc(100vh - 70px);
+    padding: 1.5rem;
+  }
+}
+
+/* Tablet (Landscape) - 768px to 1023px */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .admin-content {
+    margin-left: 240px;
+    width: calc(100% - 240px);
+  }
+  
+  .page-content {
+    height: calc(100vh - 65px);
+    padding: 1.25rem;
+  }
+}
+
+/* Tablet (Portrait) & Mobile - Below 768px */
+@media (max-width: 767px) {
   .admin-content {
     margin-left: 0;
     width: 100%;
   }
   
   .page-content {
+    height: calc(100vh - 60px);
     padding: 1rem;
+  }
+}
+
+/* Mobile (Small) - Below 480px */
+@media (max-width: 479px) {
+  .page-content {
+    height: calc(100vh - 56px);
+    padding: 0.875rem;
+  }
+}
+
+/* Extra Small Mobile - Below 360px */
+@media (max-width: 359px) {
+  .page-content {
+    height: calc(100vh - 52px);
+    padding: 0.75rem;
+  }
+}
+
+/* Landscape Orientation for Mobile Devices */
+@media (max-width: 767px) and (orientation: landscape) {
+  .admin-content {
+    margin-left: 0;
+    width: 100%;
+  }
+  
+  .page-content {
+    height: calc(100vh - 52px);
+    padding: 0.75rem;
+  }
+}
+
+/* When sidebar is visible on mobile (e.g., with .sidebar-open class) */
+@media (max-width: 767px) {
+  .admin-container.sidebar-open .admin-content {
+    margin-left: 0;
+  }
+}
+
+/* Tablet Landscape with visible sidebar */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .admin-container.sidebar-collapsed .admin-content {
+    margin-left: 60px;
+    width: calc(100% - 60px);
+  }
+}
+
+/* Desktop with collapsed sidebar */
+@media (min-width: 1024px) {
+  .admin-container.sidebar-collapsed .admin-content {
+    margin-left: 70px;
+    width: calc(100% - 70px);
+  }
+}
+
+/* Large Desktop with collapsed sidebar */
+@media (min-width: 1400px) {
+  .admin-container.sidebar-collapsed .admin-content {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+  }
+}
+
+/* High DPI Screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .admin-container {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Prevent scrolling issues on mobile */
+@media (max-width: 767px) {
+  html, body {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .admin-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+/* Accessibility - Reduce Motion */
+@media (prefers-reduced-motion: reduce) {
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .page-content {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Small Height Devices (like mobile landscape) */
+@media (max-height: 500px) {
+  .page-content {
+    padding: 0.5rem;
+    align-items: flex-start;
+  }
+}
+
+/* Very Small Height (e.g., iPhone in landscape) */
+@media (max-height: 400px) {
+  .page-content {
+    padding: 0.25rem;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .admin-content {
+    margin-left: 0;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  
+  .page-content {
+    height: auto;
+    overflow: visible;
+    padding: 0;
+  }
+}
+
+/* Dark Mode Support (if needed in future) */
+@media (prefers-color-scheme: dark) {
+  .admin-container {
+    background: linear-gradient(135deg, #1a1d29 0%, #0f111a 100%);
   }
 }

@@ -222,14 +222,11 @@
   padding: 16px;
   border-radius: 16px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
-
   width: 90%;
   max-width: 600px;
   max-height: 85vh;
-
   display: flex;
   flex-direction: column;
-
   animation: zoomIn 0.25s ease;
 }
 
@@ -239,7 +236,6 @@
   height: auto;
   max-height: 65vh;
   object-fit: contain;
-
   border-radius: 10px;
   margin-bottom: 12px;
 }
@@ -247,7 +243,6 @@
 /* CLOSE BUTTON */
 .image-modal button {
   align-self: flex-end;
-
   background: #0f172a;
   color: white;
   border: none;
@@ -256,6 +251,7 @@
   cursor: pointer;
   margin-top: auto;
 }
+
 .image-modal button:hover {
   background: #1e293b;
 }
@@ -273,17 +269,654 @@
   }
 }
 
-/* ================= RESPONSIVE ================= */
+/* ================= RESPONSIVE MEDIA QUERIES ================= */
 
-@media (max-width: 1024px) {
+/* Large Desktop - 1400px and above */
+@media (min-width: 1400px) {
   .feedback-admin-page {
-    margin-left: 0;        
-    padding: 24px;
+    padding: 40px;
+  }
+  
+  .feedback-admin-page h1 {
+    font-size: 30px;
+    margin-bottom: 32px;
+  }
+  
+  .stats-cards {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+  
+  .stat-card {
+    padding: 26px;
+    border-radius: 16px;
+  }
+  
+  .stat-card h3 {
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+  
+  .stat-card p {
+    font-size: 32px;
+  }
+  
+  .feedback-table thead th {
+    padding: 16px;
+    font-size: 14px;
+  }
+  
+  .feedback-table td {
+    padding: 16px;
+    font-size: 15px;
+  }
+  
+  .message-cell {
+    max-width: 400px;
+  }
+  
+  .status {
+    padding: 7px 16px;
+    font-size: 13px;
+  }
+  
+  .solve-btn {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+  
+  .pagination {
+    gap: 12px;
+    margin-top: 36px;
+  }
+  
+  .pagination button {
+    padding: 10px 16px;
+    font-size: 15px;
+  }
+  
+  .image-modal {
+    max-width: 700px;
+    padding: 20px;
   }
 }
 
-@media (max-width: 640px) {
+/* Desktop - 1024px to 1399px */
+@media (min-width: 1024px) and (max-width: 1399px) {
   .feedback-admin-page {
+    padding: 32px;
+  }
+  
+  .stats-cards {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+/* Tablet (Landscape) - 768px to 1023px */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .feedback-admin-page {
+    margin-left: 0;
+    padding: 28px;
+  }
+  
+  .feedback-admin-page h1 {
+    font-size: 24px;
+    margin-bottom: 24px;
+  }
+  
+  .stats-cards {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 18px;
+    margin-bottom: 28px;
+  }
+  
+  .stat-card {
+    padding: 20px;
+    border-radius: 12px;
+  }
+  
+  .stat-card h3 {
+    font-size: 13px;
+  }
+  
+  .stat-card p {
+    font-size: 26px;
+  }
+  
+  .feedback-table thead th {
+    padding: 12px;
+    font-size: 12px;
+  }
+  
+  .feedback-table td {
+    padding: 12px;
+    font-size: 13px;
+  }
+  
+  .message-cell {
+    max-width: 280px;
+  }
+  
+  .status {
+    padding: 5px 12px;
+    font-size: 11px;
+  }
+  
+  .solve-btn {
+    padding: 7px 12px;
+    font-size: 12px;
+  }
+  
+  .pagination {
+    gap: 8px;
+    margin-top: 24px;
+  }
+  
+  .pagination button {
+    padding: 7px 12px;
+    font-size: 13px;
+  }
+  
+  .image-modal {
+    max-width: 550px;
+    padding: 14px;
+  }
+  
+  .image-modal img {
+    max-height: 60vh;
+  }
+}
+
+/* Tablet (Portrait) - 600px to 767px */
+@media (min-width: 600px) and (max-width: 767px) {
+  .feedback-admin-page {
+    margin-left: 0;
+    padding: 24px;
+  }
+  
+  .feedback-admin-page h1 {
+    font-size: 22px;
+    margin-bottom: 22px;
+  }
+  
+  .stats-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  
+  .stat-card {
+    padding: 18px;
+    border-radius: 12px;
+  }
+  
+  .stat-card h3 {
+    font-size: 12px;
+  }
+  
+  .stat-card p {
+    font-size: 24px;
+  }
+  
+  /* Table becomes scrollable */
+  .feedback-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .feedback-table {
+    min-width: 600px;
+  }
+  
+  .feedback-table thead th {
+    padding: 11px;
+    font-size: 11px;
+  }
+  
+  .feedback-table td {
+    padding: 11px;
+    font-size: 13px;
+  }
+  
+  .message-cell {
+    max-width: 220px;
+  }
+  
+  .status {
+    padding: 5px 11px;
+    font-size: 11px;
+  }
+  
+  .solve-btn {
+    padding: 7px 11px;
+    font-size: 12px;
+  }
+  
+  .pagination {
+    gap: 7px;
+    margin-top: 22px;
+    flex-wrap: wrap;
+  }
+  
+  .pagination button {
+    padding: 7px 11px;
+    font-size: 13px;
+  }
+  
+  .image-overlay {
     padding: 16px;
+  }
+  
+  .image-modal {
+    max-width: 100%;
+    max-height: 80vh;
+    padding: 12px;
+  }
+  
+  .image-modal img {
+    max-height: 55vh;
+  }
+}
+
+/* Mobile (Large) - 480px to 599px */
+@media (min-width: 480px) and (max-width: 599px) {
+  .feedback-admin-page {
+    margin-left: 0;
+    padding: 20px;
+  }
+  
+  .feedback-admin-page h1 {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .stats-cards {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  
+  .stat-card {
+    padding: 16px;
+    border-radius: 10px;
+  }
+  
+  .stat-card h3 {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+  
+  .stat-card p {
+    font-size: 22px;
+  }
+  
+  /* Card-based layout for mobile */
+  .feedback-table {
+    display: block;
+  }
+  
+  .feedback-table thead {
+    display: none;
+  }
+  
+  .feedback-table tbody {
+    display: block;
+  }
+  
+  .feedback-table tbody tr {
+    display: block;
+    margin-bottom: 16px;
+    padding: 14px;
+    border-radius: 12px;
+  }
+  
+  .feedback-table td {
+    display: block;
+    padding: 8px 0;
+    border: none;
+    font-size: 13px;
+  }
+  
+  .feedback-table tbody tr td:first-child,
+  .feedback-table tbody tr td:last-child {
+    border-radius: 0;
+  }
+  
+  .feedback-table td::before {
+    content: attr(data-label);
+    display: inline-block;
+    font-weight: 700;
+    color: #475569;
+    margin-right: 8px;
+    min-width: 100px;
+  }
+  
+  .message-cell {
+    max-width: 100%;
+    white-space: normal;
+  }
+  
+  .pagination {
+    gap: 6px;
+    margin-top: 20px;
+  }
+  
+  .pagination button {
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+  
+  .image-overlay {
+    padding: 12px;
+  }
+  
+  .image-modal {
+    padding: 12px;
+    max-height: 75vh;
+  }
+  
+  .image-modal img {
+    max-height: 50vh;
+  }
+  
+  .image-modal button {
+    padding: 7px 14px;
+    font-size: 13px;
+  }
+}
+
+/* Mobile (Small) - Below 480px */
+@media (max-width: 479px) {
+  .feedback-admin-page {
+    margin-left: 0;
+    padding: 16px;
+  }
+  
+  .feedback-admin-page h1 {
+    font-size: 19px;
+    margin-bottom: 18px;
+  }
+  
+  .stats-cards {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  
+  .stat-card {
+    padding: 14px;
+    border-radius: 10px;
+  }
+  
+  .stat-card:hover {
+    transform: translateY(-2px);
+  }
+  
+  .stat-card h3 {
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
+  
+  .stat-card p {
+    font-size: 20px;
+  }
+  
+  /* Card-based layout */
+  .feedback-table {
+    display: block;
+  }
+  
+  .feedback-table thead {
+    display: none;
+  }
+  
+  .feedback-table tbody {
+    display: block;
+  }
+  
+  .feedback-table tbody tr {
+    display: block;
+    margin-bottom: 14px;
+    padding: 12px;
+    border-radius: 10px;
+  }
+  
+  .feedback-table tbody tr:hover {
+    transform: none;
+  }
+  
+  .feedback-table td {
+    display: block;
+    padding: 7px 0;
+    border: none;
+    font-size: 13px;
+  }
+  
+  .feedback-table tbody tr td:first-child,
+  .feedback-table tbody tr td:last-child {
+    border-radius: 0;
+  }
+  
+  .feedback-table td::before {
+    content: attr(data-label);
+    display: inline-block;
+    font-weight: 700;
+    color: #475569;
+    margin-right: 8px;
+    min-width: 90px;
+    font-size: 11px;
+  }
+  
+  .message-cell {
+    max-width: 100%;
+    white-space: normal;
+  }
+  
+  .status {
+    padding: 4px 10px;
+    font-size: 10px;
+  }
+  
+  .solve-btn {
+    padding: 7px 12px;
+    font-size: 12px;
+    width: 100%;
+    margin-top: 8px;
+  }
+  
+  .link-btn {
+    font-size: 13px;
+  }
+  
+  .pagination {
+    gap: 5px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+  }
+  
+  .pagination button {
+    padding: 6px 9px;
+    font-size: 12px;
+  }
+  
+  .image-overlay {
+    padding: 10px;
+  }
+  
+  .image-modal {
+    width: 95%;
+    padding: 10px;
+    max-height: 70vh;
+    border-radius: 12px;
+  }
+  
+  .image-modal img {
+    max-height: 45vh;
+    border-radius: 8px;
+  }
+  
+  .image-modal button {
+    padding: 7px 12px;
+    font-size: 12px;
+  }
+}
+
+/* Extra Small Mobile - Below 360px */
+@media (max-width: 359px) {
+  .feedback-admin-page {
+    padding: 14px;
+  }
+  
+  .feedback-admin-page h1 {
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+  
+  .stats-cards {
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  
+  .stat-card {
+    padding: 12px;
+  }
+  
+  .stat-card h3 {
+    font-size: 10px;
+  }
+  
+  .stat-card p {
+    font-size: 18px;
+  }
+  
+  .feedback-table tbody tr {
+    padding: 10px;
+    margin-bottom: 12px;
+  }
+  
+  .feedback-table td {
+    font-size: 12px;
+  }
+  
+  .feedback-table td::before {
+    min-width: 80px;
+    font-size: 10px;
+  }
+  
+  .pagination button {
+    padding: 5px 8px;
+    font-size: 11px;
+  }
+}
+
+/* Landscape Orientation for Mobile Devices */
+@media (max-width: 767px) and (orientation: landscape) {
+  .feedback-admin-page {
+    padding: 12px;
+  }
+  
+  .feedback-admin-page h1 {
+    font-size: 18px;
+    margin-bottom: 14px;
+  }
+  
+  .stats-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  
+  .stat-card {
+    padding: 12px;
+  }
+  
+  .stat-card h3 {
+    font-size: 11px;
+    margin-bottom: 4px;
+  }
+  
+  .stat-card p {
+    font-size: 20px;
+  }
+  
+  .image-modal {
+    max-height: 85vh;
+  }
+  
+  .image-modal img {
+    max-height: 60vh;
+  }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .stat-card:hover {
+    transform: none;
+  }
+  
+  .stat-card:active {
+    transform: scale(0.98);
+  }
+  
+  .feedback-table tbody tr:hover {
+    transform: none;
+  }
+  
+  .solve-btn,
+  .link-btn,
+  .pagination button {
+    min-height: 44px;
+  }
+  
+  .solve-btn:hover {
+    transform: none;
+  }
+  
+  .solve-btn:active {
+    opacity: 0.9;
+  }
+  
+  .image-modal button {
+    min-height: 44px;
+  }
+}
+
+/* High DPI Screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .feedback-admin-page {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Accessibility - Reduce Motion */
+@media (prefers-reduced-motion: reduce) {
+  .stat-card,
+  .feedback-table tbody tr,
+  .solve-btn,
+  .image-modal {
+    transition: none;
+    animation: none;
+  }
+  
+  .stat-card:hover,
+  .feedback-table tbody tr:hover,
+  .solve-btn:hover {
+    transform: none;
+  }
+  
+  @keyframes zoomIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+}
+
+/* Prevent body scroll when modal is open */
+@media (max-width: 767px) {
+  body.modal-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
   }
 }

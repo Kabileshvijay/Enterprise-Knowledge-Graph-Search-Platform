@@ -237,17 +237,469 @@
   background: #94a3b8;
 }
 
-@media (max-width: 768px) {
+/* ================= RESPONSIVE MEDIA QUERIES ================= */
+
+/* Large Desktop - 1400px and above */
+@media (min-width: 1400px) {
   .register-container {
-    padding: 2rem 1.5rem;
+    max-width: 550px;
+    padding: 2.5rem;
+    border-radius: 18px;
+  }
+  
+  .register-container h2 {
+    font-size: 2rem;
+    margin-bottom: 1.75rem;
+    padding-bottom: 0.875rem;
+  }
+  
+  .register-container h2::after {
+    width: 70px;
+    height: 5px;
+  }
+  
+  .register-form {
+    gap: 1.125rem;
+  }
+  
+  .register-form input,
+  .register-form select {
+    padding: 1rem 1.25rem;
+    font-size: 1rem;
+    border-radius: 11px;
+  }
+  
+  .register-form select {
+    padding-right: 2.75rem;
+  }
+  
+  .register-form button {
+    padding: 1rem;
+    font-size: 1.0625rem;
+    margin-top: 0.625rem;
+    border-radius: 11px;
+  }
+  
+  .skill-tag {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.9rem;
+  }
+  
+  .skill-tag button {
+    width: 20px;
+    height: 20px;
+    font-size: 1.35rem;
+  }
+  
+  .skill-suggestions {
+    max-height: 200px;
+  }
+  
+  .skill-suggestions li {
+    padding: 0.875rem 1.25rem;
+    font-size: 1rem;
+  }
+}
+
+/* Desktop - 1024px to 1399px */
+@media (min-width: 1024px) and (max-width: 1399px) {
+  .register-container {
+    max-width: 500px;
+    padding: 2rem;
+  }
+}
+
+/* Tablet (Landscape) - 768px to 1023px */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .register-container {
+    max-width: 480px;
+    padding: 2rem 1.75rem;
+    border-radius: 14px;
+  }
+  
+  .register-container h2 {
+    font-size: 1.625rem;
+    margin-bottom: 1.375rem;
+    padding-bottom: 0.625rem;
+  }
+  
+  .register-container h2::after {
+    width: 55px;
+  }
+  
+  .register-form {
+    gap: 0.9rem;
+  }
+  
+  .register-form input,
+  .register-form select {
+    padding: 0.8125rem 1.0625rem;
+    font-size: 0.9375rem;
+  }
+  
+  .register-form button {
+    padding: 0.8125rem;
+    font-size: 0.9375rem;
+    margin-top: 0.4375rem;
+  }
+  
+  .skill-tag {
+    padding: 0.375rem 0.6875rem;
+    font-size: 0.8125rem;
+  }
+  
+  .skill-suggestions {
+    max-height: 170px;
+  }
+  
+  .skill-suggestions li {
+    padding: 0.6875rem 1.0625rem;
+    font-size: 0.9375rem;
+  }
+}
+
+/* Tablet (Portrait) & Mobile - Below 768px */
+@media (max-width: 767px) {
+  .register-container {
     max-width: 90%;
+    padding: 2rem 1.5rem;
+    border-radius: 14px;
   }
   
   .register-container h2 {
     font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.625rem;
   }
   
-  .register-form input {
-    padding: 0.875rem 1rem;
+  .register-container h2::after {
+    width: 50px;
   }
+  
+  .register-form {
+    gap: 0.875rem;
+  }
+  
+  .register-form input,
+  .register-form select {
+    padding: 0.875rem 1rem;
+    font-size: 0.9375rem;
+  }
+  
+  .register-form select {
+    padding-right: 2.25rem;
+  }
+  
+  .register-form button {
+    padding: 0.875rem;
+    font-size: 0.9375rem;
+    margin-top: 0.5rem;
+  }
+  
+  .skill-tags {
+    gap: 0.4375rem;
+    margin-bottom: 0.4375rem;
+  }
+  
+  .skill-tag {
+    padding: 0.375rem 0.6875rem;
+    font-size: 0.8125rem;
+  }
+  
+  .skill-tag button {
+    width: 16px;
+    height: 16px;
+    font-size: 1.125rem;
+  }
+  
+  .skill-suggestions {
+    max-height: 160px;
+    border-radius: 0 0 8px 8px;
+  }
+  
+  .skill-suggestions li {
+    padding: 0.6875rem 1rem;
+    font-size: 0.9375rem;
+  }
+  
+  .skill-suggestions::-webkit-scrollbar {
+    width: 5px;
+  }
+}
+
+/* Mobile (Small) - Below 480px */
+@media (max-width: 479px) {
+  .register-container {
+    max-width: 95%;
+    padding: 1.75rem 1.25rem;
+    border-radius: 12px;
+  }
+  
+  .register-container h2 {
+    font-size: 1.375rem;
+    margin-bottom: 1.125rem;
+    padding-bottom: 0.5rem;
+  }
+  
+  .register-container h2::after {
+    width: 45px;
+    height: 3px;
+  }
+  
+  .register-form {
+    gap: 0.8125rem;
+  }
+  
+  .register-form input,
+  .register-form select {
+    padding: 0.8125rem 0.9375rem;
+    font-size: 0.875rem;
+    border-radius: 9px;
+  }
+  
+  .register-form select {
+    padding-right: 2rem;
+    background-position: right 0.75rem center;
+  }
+  
+  .register-form button {
+    padding: 0.8125rem;
+    font-size: 0.875rem;
+    margin-top: 0.4375rem;
+    border-radius: 9px;
+  }
+  
+  .skill-tags {
+    gap: 0.375rem;
+    margin-bottom: 0.375rem;
+  }
+  
+  .skill-tag {
+    padding: 0.3125rem 0.625rem;
+    font-size: 0.75rem;
+    border-radius: 5px;
+  }
+  
+  .skill-tag button {
+    width: 16px;
+    height: 16px;
+    font-size: 1.0625rem;
+  }
+  
+  .skill-suggestions {
+    max-height: 150px;
+    border-radius: 0 0 8px 8px;
+  }
+  
+  .skill-suggestions li {
+    padding: 0.625rem 0.9375rem;
+    font-size: 0.875rem;
+  }
+  
+  .skill-suggestions::-webkit-scrollbar {
+    width: 4px;
+  }
+}
+
+/* Extra Small Mobile - Below 360px */
+@media (max-width: 359px) {
+  .register-container {
+    max-width: 98%;
+    padding: 1.5rem 1rem;
+    border-radius: 12px;
+  }
+  
+  .register-container h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+  }
+  
+  .register-container h2::after {
+    width: 40px;
+    height: 3px;
+  }
+  
+  .register-form {
+    gap: 0.75rem;
+  }
+  
+  .register-form input,
+  .register-form select {
+    padding: 0.75rem 0.875rem;
+    font-size: 0.8125rem;
+    border-radius: 8px;
+  }
+  
+  .register-form select {
+    padding-right: 1.875rem;
+  }
+  
+  .register-form button {
+    padding: 0.75rem;
+    font-size: 0.8125rem;
+    margin-top: 0.375rem;
+    border-radius: 8px;
+  }
+  
+  .skill-tag {
+    padding: 0.3125rem 0.5625rem;
+    font-size: 0.6875rem;
+  }
+  
+  .skill-tag button {
+    width: 14px;
+    height: 14px;
+    font-size: 1rem;
+  }
+  
+  .skill-suggestions {
+    max-height: 140px;
+  }
+  
+  .skill-suggestions li {
+    padding: 0.5625rem 0.875rem;
+    font-size: 0.8125rem;
+  }
+}
+
+/* Landscape Orientation for Mobile Devices */
+@media (max-width: 767px) and (orientation: landscape) {
+  .register-container {
+    max-width: 80%;
+    padding: 1.5rem 1.25rem;
+    margin: 1rem auto;
+  }
+  
+  .register-container h2 {
+    font-size: 1.25rem;
+    margin-bottom: 0.875rem;
+    padding-bottom: 0.4375rem;
+  }
+  
+  .register-container h2::after {
+    width: 45px;
+    height: 3px;
+  }
+  
+  .register-form {
+    gap: 0.625rem;
+  }
+  
+  .register-form input,
+  .register-form select {
+    padding: 0.625rem 0.875rem;
+    font-size: 0.875rem;
+  }
+  
+  .register-form button {
+    padding: 0.625rem;
+    font-size: 0.875rem;
+    margin-top: 0.3125rem;
+  }
+  
+  .skill-suggestions {
+    max-height: 120px;
+  }
+  
+  .skill-suggestions li {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.875rem;
+  }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .register-form input,
+  .register-form select,
+  .register-form button {
+    min-height: 48px;
+  }
+  
+  .skill-tag button {
+    min-width: 24px;
+    min-height: 24px;
+  }
+  
+  .skill-suggestions li {
+    min-height: 44px;
+  }
+  
+  .register-form input:hover,
+  .register-form select:hover {
+    border-color: #e1e8ed;
+  }
+  
+  .register-form input:focus,
+  .register-form select:focus {
+    transform: none;
+  }
+  
+  .register-form button:hover {
+    transform: none;
+  }
+  
+  .register-form button:active {
+    opacity: 0.95;
+  }
+  
+  .skill-tag button:hover {
+    transform: none;
+  }
+  
+  .skill-tag button:active {
+    transform: scale(0.95);
+  }
+}
+
+/* High DPI Screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .register-container {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Accessibility - Reduce Motion */
+@media (prefers-reduced-motion: reduce) {
+  .register-container {
+    animation: none;
+  }
+  
+  @keyframes slideUp {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .register-form input:focus,
+  .register-form select:focus,
+  .register-form button:hover,
+  .register-form button:active,
+  .skill-tag button:hover,
+  .skill-tag button:active {
+    transform: none;
+  }
+}
+
+/* Focus visible styles for keyboard navigation */
+.register-form input:focus-visible,
+.register-form select:focus-visible {
+  outline: 3px solid rgba(102, 126, 234, 0.5);
+  outline-offset: 2px;
+}
+
+.register-form button:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+}
+
+.skill-tag button:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 1px;
+}
+
+.skill-suggestions li:focus {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+  outline: 2px solid #667eea;
+  outline-offset: -2px;
 }
