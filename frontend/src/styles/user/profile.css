@@ -174,16 +174,529 @@
   border-radius: 8px;
 }
 
-/* ================= RESPONSIVE ================= */
+/* ================= RESPONSIVE MEDIA QUERIES ================= */
 
-@media (max-width: 600px) {
+/* Large Desktop - 1400px and above */
+@media (min-width: 1400px) {
+  .profile-page {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 24px;
+  }
+  
+  .profile-page h2 {
+    margin-bottom: 36px;
+    font-size: 2em;
+  }
+  
+  .profile-card {
+    padding: 24px;
+    margin-bottom: 48px;
+  }
+  
+  .profile-card p {
+    font-size: 1.15em;
+    margin: 12px 0;
+  }
+  
+  .profile-page h3 {
+    margin: 36px 0 24px;
+    font-size: 1.6em;
+  }
+  
+  .doc-card {
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  
+  .doc-content h4 {
+    margin-bottom: 12px;
+    font-size: 1.3em;
+  }
+  
+  .doc-actions {
+    margin-left: 24px;
+    gap: 12px;
+  }
+  
+  .edit-btn,
+  .delete-btn {
+    padding: 10px 18px;
+    font-size: 1em;
+  }
+  
+  .doc-filter {
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  
+  .filter-btn {
+    padding: 9px 20px;
+    font-size: 0.95rem;
+  }
+  
+  .no-documents {
+    padding: 48px 24px;
+    font-size: 1.05rem;
+  }
+}
+
+/* Desktop - 1024px to 1399px */
+@media (min-width: 1024px) and (max-width: 1399px) {
+  .profile-page {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+  }
+}
+
+/* Tablet (Landscape) - 768px to 1023px */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .profile-page {
+    max-width: 100%;
+    margin: 32px auto;
+    padding: 18px;
+  }
+  
+  .profile-page h2 {
+    margin-bottom: 26px;
+    font-size: 1.7em;
+  }
+  
+  .profile-card {
+    padding: 18px;
+    margin-bottom: 36px;
+  }
+  
+  .profile-card p {
+    font-size: 1.05em;
+    margin: 9px 0;
+  }
+  
+  .profile-page h3 {
+    margin: 26px 0 18px;
+    font-size: 1.4em;
+  }
+  
+  .doc-card {
+    padding: 18px;
+    margin-bottom: 18px;
+  }
+  
+  .doc-content h4 {
+    margin-bottom: 9px;
+    font-size: 1.1em;
+  }
+  
+  .doc-content p {
+    font-size: 0.95em;
+  }
+  
+  .doc-actions {
+    margin-left: 18px;
+    gap: 9px;
+  }
+  
+  .edit-btn,
+  .delete-btn {
+    padding: 7px 14px;
+    font-size: 0.9em;
+  }
+  
+  .doc-filter {
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  
+  .filter-btn {
+    padding: 7px 16px;
+    font-size: 0.85rem;
+  }
+  
+  .no-documents {
+    padding: 36px 18px;
+    font-size: 0.95rem;
+  }
+}
+
+/* Tablet (Portrait) - 600px to 767px */
+@media (min-width: 600px) and (max-width: 767px) {
+  .profile-page {
+    max-width: 100%;
+    margin: 28px auto;
+    padding: 16px;
+  }
+  
+  .profile-page h2 {
+    margin-bottom: 24px;
+    font-size: 1.6em;
+  }
+  
+  .profile-card {
+    padding: 16px;
+    margin-bottom: 32px;
+  }
+  
+  .profile-card p {
+    font-size: 1em;
+    margin: 8px 0;
+  }
+  
+  .profile-page h3 {
+    margin: 24px 0 16px;
+    font-size: 1.3em;
+  }
+  
   .doc-card {
     flex-direction: column;
+    padding: 16px;
+    margin-bottom: 16px;
   }
-
+  
+  .doc-content h4 {
+    margin-bottom: 8px;
+    font-size: 1.05em;
+  }
+  
+  .doc-content p {
+    font-size: 0.9em;
+  }
+  
   .doc-actions {
     margin-left: 0;
-    margin-top: 15px;
+    margin-top: 14px;
     flex-direction: row;
+    gap: 10px;
+  }
+  
+  .edit-btn,
+  .delete-btn {
+    flex: 1;
+    padding: 8px 14px;
+    font-size: 0.9em;
+  }
+  
+  .doc-filter {
+    gap: 10px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  
+  .filter-btn {
+    padding: 7px 15px;
+    font-size: 0.85rem;
+  }
+  
+  .no-documents {
+    padding: 32px 16px;
+    font-size: 0.95rem;
+  }
+}
+
+/* Mobile (Large) - 480px to 599px */
+@media (min-width: 480px) and (max-width: 599px) {
+  .profile-page {
+    max-width: 100%;
+    margin: 24px auto;
+    padding: 16px;
+  }
+  
+  .profile-page h2 {
+    margin-bottom: 20px;
+    font-size: 1.5em;
+  }
+  
+  .profile-card {
+    padding: 16px;
+    margin-bottom: 28px;
+  }
+  
+  .profile-card p {
+    font-size: 1em;
+    margin: 8px 0;
+  }
+  
+  .profile-page h3 {
+    margin: 22px 0 14px;
+    font-size: 1.25em;
+  }
+  
+  .doc-card {
+    flex-direction: column;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .doc-content h4 {
+    margin-bottom: 8px;
+    font-size: 1em;
+  }
+  
+  .doc-content p {
+    font-size: 0.9em;
+  }
+  
+  .status-badge {
+    font-size: 0.75em;
+    padding: 4px 12px;
+  }
+  
+  .doc-time {
+    font-size: 0.85em;
+  }
+  
+  .doc-actions {
+    margin-left: 0;
+    margin-top: 14px;
+    flex-direction: row;
+    gap: 10px;
+  }
+  
+  .edit-btn,
+  .delete-btn {
+    flex: 1;
+    padding: 9px 14px;
+    font-size: 0.9em;
+  }
+  
+  .doc-filter {
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  
+  .filter-btn {
+    padding: 7px 14px;
+    font-size: 0.82rem;
+  }
+  
+  .no-documents {
+    padding: 28px 16px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile (Small) - Below 480px */
+@media (max-width: 479px) {
+  .profile-page {
+    max-width: 100%;
+    margin: 20px auto;
+    padding: 14px;
+  }
+  
+  .profile-page h2 {
+    margin-bottom: 18px;
+    font-size: 1.4em;
+  }
+  
+  .profile-card {
+    padding: 14px;
+    margin-bottom: 24px;
+    border-radius: 6px;
+  }
+  
+  .profile-card p {
+    font-size: 0.95em;
+    margin: 8px 0;
+  }
+  
+  .profile-page h3 {
+    margin: 20px 0 14px;
+    font-size: 1.2em;
+  }
+  
+  .doc-card {
+    flex-direction: column;
+    padding: 14px;
+    margin-bottom: 14px;
+    border-radius: 6px;
+  }
+  
+  .doc-content h4 {
+    margin-bottom: 8px;
+    font-size: 1em;
+  }
+  
+  .doc-content p {
+    font-size: 0.88em;
+    line-height: 1.4;
+  }
+  
+  .status-badge {
+    font-size: 0.72em;
+    padding: 3px 10px;
+  }
+  
+  .doc-time {
+    font-size: 0.82em;
+  }
+  
+  .doc-actions {
+    margin-left: 0;
+    margin-top: 12px;
+    flex-direction: row;
+    gap: 8px;
+  }
+  
+  .edit-btn,
+  .delete-btn {
+    flex: 1;
+    padding: 9px 12px;
+    font-size: 0.88em;
+  }
+  
+  .doc-filter {
+    gap: 8px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  
+  .filter-btn {
+    padding: 6px 13px;
+    font-size: 0.8rem;
+  }
+  
+  .no-documents {
+    padding: 24px 14px;
+    font-size: 0.88rem;
+  }
+}
+
+/* Extra Small Mobile - Below 360px */
+@media (max-width: 359px) {
+  .profile-page {
+    margin: 16px auto;
+    padding: 12px;
+  }
+  
+  .profile-page h2 {
+    margin-bottom: 16px;
+    font-size: 1.3em;
+  }
+  
+  .profile-card {
+    padding: 12px;
+    margin-bottom: 20px;
+  }
+  
+  .profile-card p {
+    font-size: 0.9em;
+  }
+  
+  .profile-page h3 {
+    margin: 18px 0 12px;
+    font-size: 1.15em;
+  }
+  
+  .doc-card {
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+  
+  .doc-content h4 {
+    font-size: 0.95em;
+  }
+  
+  .doc-content p {
+    font-size: 0.85em;
+  }
+  
+  .status-badge {
+    font-size: 0.7em;
+    padding: 3px 9px;
+  }
+  
+  .doc-actions {
+    gap: 7px;
+  }
+  
+  .edit-btn,
+  .delete-btn {
+    padding: 8px 10px;
+    font-size: 0.82em;
+  }
+  
+  .filter-btn {
+    padding: 6px 11px;
+    font-size: 0.78rem;
+  }
+  
+  .no-documents {
+    padding: 20px 12px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Landscape Orientation for Mobile Devices */
+@media (max-width: 767px) and (orientation: landscape) {
+  .profile-page {
+    margin: 16px auto;
+    padding: 14px;
+  }
+  
+  .profile-page h2 {
+    margin-bottom: 18px;
+    font-size: 1.4em;
+  }
+  
+  .profile-card {
+    padding: 14px;
+    margin-bottom: 24px;
+  }
+  
+  .profile-page h3 {
+    margin: 18px 0 12px;
+  }
+  
+  .doc-card {
+    padding: 14px;
+    margin-bottom: 14px;
+  }
+  
+  .doc-actions {
+    margin-top: 10px;
+    flex-direction: row;
+  }
+  
+  .no-documents {
+    padding: 24px 14px;
+  }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .edit-btn,
+  .delete-btn {
+    min-height: 44px;
+  }
+  
+  .filter-btn {
+    min-height: 44px;
+  }
+  
+  .edit-btn:hover,
+  .delete-btn:hover,
+  .filter-btn:hover {
+    transform: none;
+  }
+  
+  .edit-btn:active {
+    opacity: 0.9;
+  }
+  
+  .delete-btn:active {
+    opacity: 0.9;
+  }
+  
+  .filter-btn:active {
+    opacity: 0.95;
+  }
+}
+
+/* High DPI Screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .profile-page {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }

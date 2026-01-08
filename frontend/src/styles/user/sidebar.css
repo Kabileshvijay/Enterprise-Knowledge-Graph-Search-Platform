@@ -4,14 +4,11 @@
   top: 64px;
   width: 280px;
   height: calc(100vh - 64px);
-
   background-color: #2c3e5c;
   border-right: 1px solid #1e2a3a;
-
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
   overflow-y: auto;
   z-index: 100;
 }
@@ -26,11 +23,9 @@
   display: flex;
   align-items: center;
   gap: 12px;
-
   padding: 10px 12px;
   margin-bottom: 8px;
   border-radius: 4px;
-
   cursor: pointer;
   color: #b3c1d4;
   font-size: 14px;
@@ -58,10 +53,8 @@
 .wiki-sidebar-info {
   margin-top: 30px;
   padding: 15px;
-
   background-color: #3a4f6c;
   border-radius: 4px;
-
   font-size: 12px;
   color: #b3c1d4;
   line-height: 1.5;
@@ -72,10 +65,8 @@
   display: flex;
   align-items: center;
   gap: 12px;
-
   padding: 20px;
   border-top: 1px solid #1e2a3a;
-
   cursor: pointer;
   color: #b3c1d4;
 }
@@ -84,24 +75,19 @@
   background-color: #3a4f6c;
 }
 
-
 .space-tools-popup {
   position: absolute;
   bottom: 70px;
   left: 20px;
   width: 200px;
-
   background: rgba(31, 41, 55, 0.9);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-
   border-radius: 12px;
   padding: 10px;
-
   box-shadow:
     0 10px 30px rgba(0, 0, 0, 0.5),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
-
   animation: popupFadeIn 0.25s ease-out;
   z-index: 10000;
 }
@@ -122,14 +108,11 @@
   display: flex;
   align-items: center;
   gap: 12px;
-
   padding: 12px;
   border-radius: 8px;
-
   color: #e5e7eb;
   font-size: 14px;
   font-weight: 500;
-
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -150,4 +133,419 @@
 
 .space-tools-item:active {
   transform: scale(0.97);
+}
+
+/* ================= RESPONSIVE MEDIA QUERIES ================= */
+
+/* Large Desktop - 1400px and above */
+@media (min-width: 1400px) {
+  .wiki-sidebar {
+    width: 300px;
+  }
+  
+  .wiki-sidebar-top {
+    padding: 22px;
+  }
+  
+  .wiki-sidebar-item {
+    gap: 14px;
+    padding: 11px 14px;
+    margin-bottom: 9px;
+    font-size: 15px;
+  }
+  
+  .wiki-sidebar-title {
+    font-size: 12px;
+    margin: 22px 0 11px 14px;
+  }
+  
+  .wiki-sidebar-info {
+    margin-top: 32px;
+    padding: 16px;
+    font-size: 13px;
+  }
+  
+  .wiki-sidebar-bottom {
+    gap: 14px;
+    padding: 22px;
+  }
+  
+  .space-tools-popup {
+    width: 220px;
+    left: 22px;
+    bottom: 75px;
+  }
+  
+  .space-tools-item {
+    padding: 13px;
+    font-size: 15px;
+  }
+  
+  .space-tools-item svg {
+    font-size: 17px;
+  }
+}
+
+/* Desktop - 1024px to 1399px */
+@media (min-width: 1024px) and (max-width: 1399px) {
+  .wiki-sidebar {
+    width: 280px;
+  }
+}
+
+/* Tablet (Landscape) - 768px to 1023px */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .wiki-sidebar {
+    width: 260px;
+    top: 60px;
+    height: calc(100vh - 60px);
+  }
+  
+  .wiki-sidebar-top {
+    padding: 18px;
+  }
+  
+  .wiki-sidebar-item {
+    gap: 10px;
+    padding: 9px 11px;
+    margin-bottom: 7px;
+    font-size: 13px;
+  }
+  
+  .wiki-sidebar-title {
+    font-size: 10px;
+    margin: 18px 0 9px 11px;
+  }
+  
+  .wiki-sidebar-info {
+    margin-top: 26px;
+    padding: 13px;
+    font-size: 11px;
+  }
+  
+  .wiki-sidebar-bottom {
+    gap: 10px;
+    padding: 18px;
+    font-size: 13px;
+  }
+  
+  .space-tools-popup {
+    width: 180px;
+    left: 18px;
+    bottom: 65px;
+    padding: 9px;
+  }
+  
+  .space-tools-item {
+    padding: 10px;
+    font-size: 13px;
+    gap: 10px;
+  }
+  
+  .space-tools-item svg {
+    font-size: 15px;
+  }
+}
+
+/* Tablet (Portrait) & Mobile - Below 768px */
+@media (max-width: 767px) {
+  /* Hide sidebar by default on mobile */
+  .wiki-sidebar {
+    width: 280px;
+    top: 56px;
+    height: calc(100vh - 56px);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1001;
+  }
+  
+  /* Show sidebar when active/open class is added */
+  .wiki-sidebar.open {
+    transform: translateX(0);
+  }
+  
+  .wiki-sidebar-top {
+    padding: 16px;
+  }
+  
+  .wiki-sidebar-item {
+    gap: 10px;
+    padding: 10px 12px;
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+  
+  .wiki-sidebar-title {
+    font-size: 10px;
+    margin: 16px 0 8px 12px;
+  }
+  
+  .wiki-sidebar-info {
+    margin-top: 24px;
+    padding: 12px;
+    font-size: 11px;
+  }
+  
+  .wiki-sidebar-bottom {
+    gap: 10px;
+    padding: 16px;
+    font-size: 13px;
+  }
+  
+  .space-tools-popup {
+    width: 200px;
+    left: 16px;
+    bottom: 62px;
+    padding: 9px;
+  }
+  
+  .space-tools-item {
+    padding: 11px;
+    font-size: 13px;
+  }
+  
+  .space-tools-item svg {
+    font-size: 15px;
+  }
+}
+
+/* Mobile (Small) - Below 480px */
+@media (max-width: 479px) {
+  .wiki-sidebar {
+    width: 260px;
+    top: 52px;
+    height: calc(100vh - 52px);
+  }
+  
+  .wiki-sidebar-top {
+    padding: 14px;
+  }
+  
+  .wiki-sidebar-item {
+    gap: 9px;
+    padding: 9px 11px;
+    margin-bottom: 6px;
+    font-size: 13px;
+  }
+  
+  .wiki-sidebar-title {
+    font-size: 10px;
+    margin: 14px 0 8px 11px;
+  }
+  
+  .wiki-sidebar-info {
+    margin-top: 20px;
+    padding: 11px;
+    font-size: 11px;
+    line-height: 1.4;
+  }
+  
+  .wiki-sidebar-bottom {
+    gap: 9px;
+    padding: 14px;
+    font-size: 13px;
+  }
+  
+  .space-tools-popup {
+    width: 180px;
+    left: 14px;
+    bottom: 58px;
+    padding: 8px;
+  }
+  
+  .space-tools-item {
+    padding: 10px;
+    font-size: 13px;
+    gap: 10px;
+  }
+  
+  .space-tools-item svg {
+    font-size: 14px;
+  }
+}
+
+/* Extra Small Mobile - Below 360px */
+@media (max-width: 359px) {
+  .wiki-sidebar {
+    width: 240px;
+  }
+  
+  .wiki-sidebar-top {
+    padding: 12px;
+  }
+  
+  .wiki-sidebar-item {
+    gap: 8px;
+    padding: 8px 10px;
+    margin-bottom: 5px;
+    font-size: 13px;
+  }
+  
+  .wiki-sidebar-title {
+    font-size: 10px;
+    margin: 12px 0 7px 10px;
+  }
+  
+  .wiki-sidebar-info {
+    margin-top: 18px;
+    padding: 10px;
+    font-size: 10px;
+  }
+  
+  .wiki-sidebar-bottom {
+    gap: 8px;
+    padding: 12px;
+    font-size: 12px;
+  }
+  
+  .space-tools-popup {
+    width: 170px;
+    left: 12px;
+    bottom: 56px;
+  }
+  
+  .space-tools-item {
+    padding: 9px;
+    font-size: 12px;
+    gap: 9px;
+  }
+  
+  .space-tools-item svg {
+    font-size: 14px;
+  }
+}
+
+/* Landscape Orientation for Mobile Devices */
+@media (max-width: 767px) and (orientation: landscape) {
+  .wiki-sidebar {
+    width: 240px;
+    top: 48px;
+    height: calc(100vh - 48px);
+  }
+  
+  .wiki-sidebar-top {
+    padding: 12px;
+  }
+  
+  .wiki-sidebar-item {
+    padding: 8px 10px;
+    margin-bottom: 5px;
+    gap: 8px;
+  }
+  
+  .wiki-sidebar-title {
+    margin: 12px 0 6px 10px;
+    font-size: 10px;
+  }
+  
+  .wiki-sidebar-info {
+    margin-top: 16px;
+    padding: 10px;
+    font-size: 10px;
+  }
+  
+  .wiki-sidebar-bottom {
+    padding: 12px;
+  }
+  
+  .space-tools-popup {
+    bottom: 54px;
+  }
+}
+
+/* Overlay for mobile sidebar */
+@media (max-width: 767px) {
+  .wiki-sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    top: var(--navbar-height, 56px);
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  
+  .wiki-sidebar-overlay.open {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .wiki-sidebar-item,
+  .wiki-sidebar-bottom {
+    min-height: 44px;
+  }
+  
+  .space-tools-item {
+    min-height: 44px;
+  }
+  
+  .wiki-sidebar-item:hover,
+  .wiki-sidebar-bottom:hover,
+  .space-tools-item:hover {
+    transform: none;
+  }
+  
+  .wiki-sidebar-item:active {
+    opacity: 0.9;
+  }
+  
+  .space-tools-item:active {
+    transform: scale(0.97);
+  }
+}
+
+/* Scrollbar styling for different screen sizes */
+@media (min-width: 768px) {
+  .wiki-sidebar::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .wiki-sidebar::-webkit-scrollbar-track {
+    background: #1e2a3a;
+  }
+  
+  .wiki-sidebar::-webkit-scrollbar-thumb {
+    background: #3a4f6c;
+    border-radius: 3px;
+  }
+  
+  .wiki-sidebar::-webkit-scrollbar-thumb:hover {
+    background: #4a5f7c;
+  }
+}
+
+@media (max-width: 767px) {
+  .wiki-sidebar::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .wiki-sidebar::-webkit-scrollbar-track {
+    background: #1e2a3a;
+  }
+  
+  .wiki-sidebar::-webkit-scrollbar-thumb {
+    background: #3a4f6c;
+    border-radius: 2px;
+  }
+}
+
+/* High DPI Screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .wiki-sidebar {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Prevent body scroll when sidebar is open on mobile */
+@media (max-width: 767px) {
+  body.sidebar-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+  }
 }

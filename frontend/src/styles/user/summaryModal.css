@@ -27,7 +27,6 @@
   box-shadow:
     0 20px 40px rgba(0, 0, 0, 0.15),
     0 0 0 1px rgba(255, 255, 255, 0.6);
-
   animation: slideUp 0.35s ease-out;
   position: relative;
 }
@@ -132,4 +131,404 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* ================= RESPONSIVE MEDIA QUERIES ================= */
+
+/* Large Desktop - 1400px and above */
+@media (min-width: 1400px) {
+  .summary-modal {
+    max-width: 600px;
+    padding: 32px;
+    border-radius: 18px;
+  }
+  
+  .summary-modal h3 {
+    margin-bottom: 18px;
+    font-size: 20px;
+    gap: 10px;
+  }
+  
+  .summary-text {
+    font-size: 16px;
+    line-height: 1.75;
+    max-height: 320px;
+    padding-right: 8px;
+  }
+  
+  .summary-text::-webkit-scrollbar {
+    width: 7px;
+  }
+  
+  .summary-loading {
+    gap: 14px;
+    font-size: 16px;
+  }
+  
+  .loader {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .summary-modal button {
+    margin-top: 24px;
+    padding: 12px 16px;
+    font-size: 15px;
+    border-radius: 11px;
+  }
+}
+
+/* Desktop - 1024px to 1399px */
+@media (min-width: 1024px) and (max-width: 1399px) {
+  .summary-modal {
+    max-width: 520px;
+    padding: 28px;
+  }
+}
+
+/* Tablet (Landscape) - 768px to 1023px */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .summary-modal {
+    width: 85%;
+    max-width: 480px;
+    padding: 26px;
+    border-radius: 14px;
+  }
+  
+  .summary-modal h3 {
+    margin-bottom: 14px;
+    font-size: 17px;
+    gap: 7px;
+  }
+  
+  .summary-text {
+    font-size: 14px;
+    line-height: 1.65;
+    max-height: 260px;
+    padding-right: 5px;
+  }
+  
+  .summary-text::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  .summary-loading {
+    gap: 11px;
+    font-size: 14px;
+  }
+  
+  .loader {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .summary-modal button {
+    margin-top: 20px;
+    padding: 10px 13px;
+    font-size: 14px;
+    border-radius: 9px;
+  }
+}
+
+/* Tablet (Portrait) - 600px to 767px */
+@media (min-width: 600px) and (max-width: 767px) {
+  .summary-modal {
+    width: 90%;
+    max-width: 440px;
+    padding: 24px;
+    border-radius: 14px;
+  }
+  
+  .summary-modal h3 {
+    margin-bottom: 14px;
+    font-size: 17px;
+    gap: 7px;
+  }
+  
+  .summary-text {
+    font-size: 14px;
+    line-height: 1.65;
+    max-height: 240px;
+    padding-right: 5px;
+  }
+  
+  .summary-text::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  .summary-loading {
+    gap: 10px;
+    font-size: 14px;
+  }
+  
+  .loader {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .summary-modal button {
+    margin-top: 18px;
+    padding: 10px 12px;
+    font-size: 14px;
+    border-radius: 9px;
+  }
+}
+
+/* Mobile (Large) - 480px to 599px */
+@media (min-width: 480px) and (max-width: 599px) {
+  .summary-overlay {
+    padding: 16px;
+  }
+  
+  .summary-modal {
+    width: 92%;
+    max-width: none;
+    padding: 22px;
+    border-radius: 12px;
+  }
+  
+  .summary-modal h3 {
+    margin-bottom: 12px;
+    font-size: 16px;
+    gap: 7px;
+  }
+  
+  .summary-text {
+    font-size: 14px;
+    line-height: 1.6;
+    max-height: 220px;
+    padding-right: 4px;
+  }
+  
+  .summary-text::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .summary-loading {
+    gap: 10px;
+    font-size: 14px;
+  }
+  
+  .loader {
+    width: 20px;
+    height: 20px;
+    border-width: 2.5px;
+  }
+  
+  .summary-modal button {
+    margin-top: 18px;
+    padding: 10px 12px;
+    font-size: 14px;
+    border-radius: 8px;
+  }
+}
+
+/* Mobile (Small) - Below 480px */
+@media (max-width: 479px) {
+  .summary-overlay {
+    padding: 14px;
+    align-items: flex-start;
+    padding-top: 60px;
+  }
+  
+  .summary-modal {
+    width: calc(100% - 28px);
+    max-width: none;
+    padding: 20px;
+    border-radius: 12px;
+  }
+  
+  .summary-modal h3 {
+    margin-bottom: 12px;
+    font-size: 16px;
+    gap: 6px;
+  }
+  
+  .summary-text {
+    font-size: 14px;
+    line-height: 1.6;
+    max-height: 200px;
+    padding-right: 4px;
+  }
+  
+  .summary-text::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .summary-loading {
+    gap: 10px;
+    font-size: 14px;
+  }
+  
+  .loader {
+    width: 18px;
+    height: 18px;
+    border-width: 2.5px;
+  }
+  
+  .summary-modal button {
+    margin-top: 16px;
+    padding: 10px 12px;
+    font-size: 13px;
+    border-radius: 8px;
+  }
+}
+
+/* Extra Small Mobile - Below 360px */
+@media (max-width: 359px) {
+  .summary-overlay {
+    padding: 12px;
+    padding-top: 50px;
+  }
+  
+  .summary-modal {
+    width: calc(100% - 24px);
+    padding: 18px;
+    border-radius: 10px;
+  }
+  
+  .summary-modal h3 {
+    margin-bottom: 10px;
+    font-size: 15px;
+    gap: 6px;
+  }
+  
+  .summary-text {
+    font-size: 13px;
+    line-height: 1.55;
+    max-height: 180px;
+    padding-right: 3px;
+  }
+  
+  .summary-text::-webkit-scrollbar {
+    width: 3px;
+  }
+  
+  .summary-loading {
+    gap: 9px;
+    font-size: 13px;
+  }
+  
+  .loader {
+    width: 18px;
+    height: 18px;
+    border-width: 2px;
+  }
+  
+  .summary-modal button {
+    margin-top: 14px;
+    padding: 9px 11px;
+    font-size: 13px;
+    border-radius: 7px;
+  }
+}
+
+/* Landscape Orientation for Mobile Devices */
+@media (max-width: 767px) and (orientation: landscape) {
+  .summary-overlay {
+    padding: 10px;
+    padding-top: 20px;
+    overflow-y: auto;
+  }
+  
+  .summary-modal {
+    width: 90%;
+    max-width: 520px;
+    padding: 16px 20px;
+    margin: auto;
+  }
+  
+  .summary-modal h3 {
+    margin-bottom: 10px;
+    font-size: 15px;
+  }
+  
+  .summary-text {
+    font-size: 13px;
+    line-height: 1.5;
+    max-height: 150px;
+  }
+  
+  .summary-loading {
+    gap: 8px;
+    font-size: 13px;
+  }
+  
+  .loader {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .summary-modal button {
+    margin-top: 12px;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .summary-modal button {
+    min-height: 44px;
+    padding: 12px 14px;
+  }
+  
+  .summary-modal button:hover {
+    transform: none;
+  }
+  
+  .summary-modal button:active {
+    transform: scale(0.98);
+    opacity: 0.95;
+  }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .summary-modal {
+    border: 2px solid #1e293b;
+  }
+  
+  .summary-text {
+    color: #0f172a;
+  }
+}
+
+/* Reduce Motion for Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .summary-overlay,
+  .summary-modal {
+    animation: none;
+  }
+  
+  .summary-modal button:hover {
+    transform: none;
+  }
+  
+  .loader {
+    animation: none;
+    border-top-color: transparent;
+  }
+}
+
+/* High DPI Screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .summary-modal {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Prevent body scroll when modal is open */
+@media (max-width: 767px) {
+  body.modal-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+  }
+}
+
+/* Smooth scrolling for summary text */
+.summary-text {
+  scroll-behavior: smooth;
 }

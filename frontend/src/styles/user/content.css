@@ -36,7 +36,6 @@ body,
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-
   color: #1f2937;
   padding: 40px 50px;
   border-radius: 8px;
@@ -45,7 +44,6 @@ body,
   width: 100%;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
-
 
 /* TITLE */
 .welcome-card h1 {
@@ -111,4 +109,416 @@ body,
   color: #0052cc;
   font-size: 14px;
   font-weight: 500;
+}
+
+/* ================= RESPONSIVE MEDIA QUERIES ================= */
+
+/* Large Desktop - 1400px and above */
+@media (min-width: 1400px) {
+  .content-area {
+    padding: 32px 48px;
+  }
+  
+  .content-inner {
+    max-width: 1400px;
+  }
+  
+  .welcome-hero {
+    min-height: 400px;
+    padding: 50px 24px;
+    margin-bottom: 48px;
+  }
+  
+  .welcome-card {
+    padding: 50px 60px;
+    max-width: 800px;
+  }
+  
+  .welcome-card h1 {
+    font-size: 32px;
+    margin-bottom: 14px;
+  }
+  
+  .welcome-card p {
+    font-size: 17px;
+    margin-bottom: 28px;
+  }
+  
+  .primary-cta {
+    padding: 14px 28px;
+    font-size: 16px;
+  }
+  
+  .content-links {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+  
+  .link-card {
+    padding: 28px;
+  }
+  
+  .link-card h3 {
+    font-size: 18px;
+  }
+  
+  .link-card span {
+    font-size: 15px;
+  }
+}
+
+/* Desktop - 1024px to 1399px */
+@media (min-width: 1024px) and (max-width: 1399px) {
+  .content-area {
+    padding: 24px 32px;
+  }
+  
+  .content-inner {
+    max-width: 1200px;
+  }
+  
+  .welcome-hero {
+    min-height: 350px;
+    padding: 40px 20px;
+  }
+  
+  .welcome-card {
+    padding: 40px 50px;
+  }
+  
+  .content-links {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+}
+
+/* Tablet (Landscape) - 768px to 1023px */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .content-area {
+    padding: 20px 24px;
+  }
+  
+  .content-inner {
+    max-width: 100%;
+  }
+  
+  .welcome-hero {
+    min-height: 320px;
+    padding: 36px 18px;
+    margin-bottom: 32px;
+    border-radius: 8px;
+  }
+  
+  .welcome-card {
+    padding: 32px 40px;
+    max-width: 600px;
+  }
+  
+  .welcome-card h1 {
+    font-size: 26px;
+    margin-bottom: 10px;
+  }
+  
+  .welcome-card p {
+    font-size: 15px;
+    margin-bottom: 22px;
+    line-height: 1.5;
+  }
+  
+  .primary-cta {
+    padding: 11px 22px;
+    font-size: 14px;
+  }
+  
+  .content-links {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+  }
+  
+  .link-card {
+    padding: 20px;
+  }
+  
+  .link-card h3 {
+    font-size: 16px;
+    margin-bottom: 7px;
+  }
+  
+  .link-card span {
+    font-size: 13px;
+  }
+}
+
+/* Tablet (Portrait) - 600px to 767px */
+@media (min-width: 600px) and (max-width: 767px) {
+  .content-area {
+    padding: 18px 20px;
+  }
+  
+  .content-inner {
+    max-width: 100%;
+  }
+  
+  .welcome-hero {
+    min-height: 300px;
+    padding: 32px 16px;
+    margin-bottom: 28px;
+    border-radius: 8px;
+  }
+  
+  .welcome-card {
+    padding: 28px 36px;
+    max-width: 540px;
+  }
+  
+  .welcome-card h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .welcome-card p {
+    font-size: 15px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  
+  .primary-cta {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+  
+  .content-links {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  
+  .link-card {
+    padding: 18px;
+  }
+  
+  .link-card h3 {
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+  
+  .link-card span {
+    font-size: 13px;
+  }
+}
+
+/* Mobile (Large) - 480px to 599px */
+@media (min-width: 480px) and (max-width: 599px) {
+  .content-area {
+    padding: 16px 18px;
+  }
+  
+  .content-inner {
+    max-width: 100%;
+    margin: 0;
+  }
+  
+  .welcome-hero {
+    min-height: 280px;
+    padding: 28px 16px;
+    margin-bottom: 24px;
+    border-radius: 8px;
+  }
+  
+  .welcome-card {
+    padding: 24px 28px;
+    max-width: 100%;
+  }
+  
+  .welcome-card h1 {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+  
+  .welcome-card p {
+    font-size: 14px;
+    margin-bottom: 18px;
+    line-height: 1.5;
+  }
+  
+  .primary-cta {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+  
+  .content-links {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  
+  .link-card {
+    padding: 18px;
+  }
+  
+  .link-card h3 {
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+  
+  .link-card span {
+    font-size: 13px;
+  }
+}
+
+/* Mobile (Small) - Below 480px */
+@media (max-width: 479px) {
+  .content-area {
+    padding: 14px 16px;
+  }
+  
+  .content-inner {
+    max-width: 100%;
+    margin: 0;
+  }
+  
+  .welcome-hero {
+    min-height: 260px;
+    padding: 24px 12px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    background-position: center center;
+  }
+  
+  .welcome-card {
+    padding: 20px 24px;
+    max-width: 100%;
+    border-radius: 6px;
+  }
+  
+  .welcome-card h1 {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+  
+  .welcome-card p {
+    font-size: 14px;
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+  
+  .primary-cta {
+    padding: 9px 18px;
+    font-size: 13px;
+    border-radius: 4px;
+  }
+  
+  .content-links {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .link-card {
+    padding: 16px;
+    border-radius: 6px;
+  }
+  
+  .link-card h3 {
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+  
+  .link-card span {
+    font-size: 12px;
+  }
+}
+
+/* Extra Small Mobile - Below 360px */
+@media (max-width: 359px) {
+  .content-area {
+    padding: 12px 14px;
+  }
+  
+  .welcome-hero {
+    min-height: 240px;
+    padding: 20px 10px;
+    margin-bottom: 18px;
+  }
+  
+  .welcome-card {
+    padding: 18px 20px;
+  }
+  
+  .welcome-card h1 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  
+  .welcome-card p {
+    font-size: 13px;
+    margin-bottom: 14px;
+  }
+  
+  .primary-cta {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+  
+  .link-card {
+    padding: 14px;
+  }
+  
+  .link-card h3 {
+    font-size: 14px;
+  }
+  
+  .link-card span {
+    font-size: 12px;
+  }
+}
+
+/* Landscape Orientation for Mobile Devices */
+@media (max-width: 767px) and (orientation: landscape) {
+  .welcome-hero {
+    min-height: 220px;
+    padding: 20px 16px;
+    margin-bottom: 20px;
+  }
+  
+  .welcome-card {
+    padding: 20px 28px;
+  }
+  
+  .welcome-card h1 {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+  
+  .welcome-card p {
+    font-size: 13px;
+    margin-bottom: 14px;
+    line-height: 1.4;
+  }
+  
+  .primary-cta {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+  
+  .content-links {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .primary-cta {
+    min-height: 44px;
+  }
+  
+  .link-card {
+    min-height: 60px;
+  }
+  
+  .primary-cta:hover {
+    transform: none;
+  }
+  
+  .link-card:hover {
+    transform: none;
+  }
 }

@@ -167,3 +167,434 @@
   color: #111827;
   transform: rotate(90deg);
 }
+
+/* ================= RESPONSIVE MEDIA QUERIES ================= */
+
+/* Large Desktop - 1400px and above */
+@media (min-width: 1400px) {
+  .feedback-modal {
+    width: 500px;
+    max-width: calc(100% - 40px);
+    padding: 30px 32px;
+    border-radius: 16px;
+  }
+  
+  .feedback-modal h2 {
+    margin-bottom: 20px;
+    font-size: 22px;
+  }
+  
+  .feedback-modal label {
+    margin-top: 16px;
+    font-size: 14px;
+  }
+  
+  .feedback-modal input,
+  .feedback-modal select,
+  .feedback-modal textarea {
+    padding: 12px 14px;
+    font-size: 15px;
+  }
+  
+  .feedback-modal textarea {
+    min-height: 100px;
+  }
+  
+  .submit-btn {
+    margin-top: 24px;
+    padding: 14px;
+    font-size: 15px;
+  }
+  
+  .close-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+  }
+}
+
+/* Desktop - 1024px to 1399px */
+@media (min-width: 1024px) and (max-width: 1399px) {
+  .feedback-modal {
+    width: 440px;
+    max-width: calc(100% - 32px);
+  }
+}
+
+/* Tablet (Landscape) - 768px to 1023px */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .feedback-modal {
+    width: 420px;
+    max-width: calc(100% - 48px);
+    padding: 24px 26px;
+  }
+  
+  .feedback-modal h2 {
+    margin-bottom: 16px;
+    font-size: 19px;
+  }
+  
+  .feedback-modal label {
+    margin-top: 12px;
+    font-size: 13px;
+  }
+  
+  .feedback-modal input,
+  .feedback-modal select,
+  .feedback-modal textarea {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+  
+  .feedback-modal textarea {
+    min-height: 85px;
+  }
+  
+  .submit-btn {
+    margin-top: 18px;
+    padding: 11px;
+    font-size: 14px;
+  }
+  
+  .close-btn {
+    top: 12px;
+    right: 12px;
+    width: 30px;
+    height: 30px;
+    font-size: 17px;
+  }
+}
+
+/* Tablet (Portrait) - 600px to 767px */
+@media (min-width: 600px) and (max-width: 767px) {
+  .feedback-modal {
+    width: 400px;
+    max-width: calc(100% - 40px);
+    padding: 22px 24px;
+    border-radius: 12px;
+  }
+  
+  .feedback-modal h2 {
+    margin-bottom: 16px;
+    font-size: 18px;
+  }
+  
+  .feedback-modal label {
+    margin-top: 12px;
+    font-size: 13px;
+  }
+  
+  .feedback-modal input,
+  .feedback-modal select,
+  .feedback-modal textarea {
+    padding: 10px 11px;
+    font-size: 14px;
+  }
+  
+  .feedback-modal textarea {
+    min-height: 80px;
+  }
+  
+  .submit-btn {
+    margin-top: 18px;
+    padding: 11px;
+    font-size: 14px;
+    border-radius: 9px;
+  }
+  
+  .close-btn {
+    top: 12px;
+    right: 12px;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+  }
+}
+
+/* Mobile (Large) - 480px to 599px */
+@media (min-width: 480px) and (max-width: 599px) {
+  .feedback-overlay {
+    padding: 16px;
+  }
+  
+  .feedback-modal {
+    width: 100%;
+    max-width: calc(100% - 32px);
+    padding: 20px 22px;
+    border-radius: 12px;
+  }
+  
+  .feedback-modal h2 {
+    margin-bottom: 14px;
+    font-size: 18px;
+  }
+  
+  .feedback-modal label {
+    margin-top: 12px;
+    font-size: 13px;
+  }
+  
+  .feedback-modal input,
+  .feedback-modal select,
+  .feedback-modal textarea {
+    padding: 10px 11px;
+    font-size: 14px;
+    border-radius: 7px;
+  }
+  
+  .feedback-modal textarea {
+    min-height: 75px;
+  }
+  
+  .submit-btn {
+    margin-top: 16px;
+    padding: 11px;
+    font-size: 14px;
+    border-radius: 8px;
+  }
+  
+  .close-btn {
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+  }
+}
+
+/* Mobile (Small) - Below 480px */
+@media (max-width: 479px) {
+  .feedback-overlay {
+    padding: 12px;
+    align-items: flex-start;
+    padding-top: 60px;
+  }
+  
+  .feedback-modal {
+    width: 100%;
+    max-width: calc(100% - 24px);
+    padding: 18px 20px;
+    border-radius: 12px;
+  }
+  
+  .feedback-modal h2 {
+    margin-bottom: 14px;
+    font-size: 17px;
+  }
+  
+  .feedback-modal label {
+    margin-top: 10px;
+    font-size: 12px;
+  }
+  
+  .feedback-modal input,
+  .feedback-modal select,
+  .feedback-modal textarea {
+    margin-top: 5px;
+    padding: 9px 10px;
+    font-size: 14px;
+    border-radius: 7px;
+  }
+  
+  .feedback-modal textarea {
+    min-height: 70px;
+  }
+  
+  .submit-btn {
+    margin-top: 16px;
+    padding: 11px;
+    font-size: 14px;
+    border-radius: 8px;
+  }
+  
+  .close-btn {
+    top: 10px;
+    right: 10px;
+    width: 28px;
+    height: 28px;
+    font-size: 15px;
+  }
+}
+
+/* Extra Small Mobile - Below 360px */
+@media (max-width: 359px) {
+  .feedback-overlay {
+    padding: 8px;
+    padding-top: 50px;
+  }
+  
+  .feedback-modal {
+    width: 100%;
+    max-width: calc(100% - 16px);
+    padding: 16px 18px;
+    border-radius: 10px;
+  }
+  
+  .feedback-modal h2 {
+    margin-bottom: 12px;
+    font-size: 16px;
+  }
+  
+  .feedback-modal label {
+    margin-top: 10px;
+    font-size: 12px;
+  }
+  
+  .feedback-modal input,
+  .feedback-modal select,
+  .feedback-modal textarea {
+    margin-top: 5px;
+    padding: 9px 10px;
+    font-size: 13px;
+    border-radius: 6px;
+  }
+  
+  .feedback-modal textarea {
+    min-height: 65px;
+  }
+  
+  .submit-btn {
+    margin-top: 14px;
+    padding: 10px;
+    font-size: 13px;
+    border-radius: 7px;
+  }
+  
+  .close-btn {
+    top: 8px;
+    right: 8px;
+    width: 26px;
+    height: 26px;
+    font-size: 14px;
+  }
+}
+
+/* Landscape Orientation for Mobile Devices */
+@media (max-width: 767px) and (orientation: landscape) {
+  .feedback-overlay {
+    padding: 10px;
+    padding-top: 20px;
+    overflow-y: auto;
+  }
+  
+  .feedback-modal {
+    width: 100%;
+    max-width: 500px;
+    padding: 16px 20px;
+    margin: auto;
+  }
+  
+  .feedback-modal h2 {
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+  
+  .feedback-modal label {
+    margin-top: 8px;
+    font-size: 12px;
+  }
+  
+  .feedback-modal input,
+  .feedback-modal select,
+  .feedback-modal textarea {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+  
+  .feedback-modal textarea {
+    min-height: 60px;
+  }
+  
+  .submit-btn {
+    margin-top: 12px;
+    padding: 9px;
+    font-size: 13px;
+  }
+  
+  .close-btn {
+    top: 8px;
+    right: 8px;
+    width: 26px;
+    height: 26px;
+    font-size: 14px;
+  }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .feedback-modal input,
+  .feedback-modal select,
+  .feedback-modal textarea {
+    min-height: 44px;
+  }
+  
+  .submit-btn,
+  .close-btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .submit-btn:hover,
+  .close-btn:hover {
+    transform: none;
+  }
+  
+  .submit-btn:active {
+    opacity: 0.95;
+  }
+  
+  .close-btn:active {
+    opacity: 0.9;
+  }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .feedback-modal {
+    border: 2px solid #111827;
+  }
+  
+  .feedback-modal input,
+  .feedback-modal select,
+  .feedback-modal textarea {
+    border: 2px solid #374151;
+  }
+}
+
+/* Reduce Motion for Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .feedback-overlay,
+  .feedback-modal {
+    animation: none;
+  }
+  
+  .submit-btn:hover,
+  .close-btn:hover {
+    transform: none;
+  }
+  
+  .submit-btn,
+  .close-btn,
+  .feedback-modal input,
+  .feedback-modal select,
+  .feedback-modal textarea {
+    transition: none;
+  }
+}
+
+/* High DPI Screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .feedback-modal {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Prevent body scroll when modal is open (add this to your body/html) */
+@media (max-width: 767px) {
+  body.modal-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+  }
+}

@@ -43,3 +43,289 @@
   gap: 16px;
   font-size: 14px;
 }
+
+/* ================= RESPONSIVE MEDIA QUERIES ================= */
+
+/* Large Desktop - 1400px and above */
+@media (min-width: 1400px) {
+  .documents-page {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 0 24px;
+  }
+  
+  .documents-title {
+    font-size: 28px;
+    margin-bottom: 24px;
+  }
+  
+  .documents-list {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  .document-card {
+    padding: 18px;
+  }
+  
+  .category {
+    font-size: 15px;
+  }
+  
+  .doc-meta {
+    margin-top: 12px;
+    gap: 18px;
+    font-size: 15px;
+  }
+}
+
+/* Desktop - 1024px to 1399px */
+@media (min-width: 1024px) and (max-width: 1399px) {
+  .documents-page {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+  
+  .documents-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .documents-list {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+}
+
+/* Tablet (Landscape) - 768px to 1023px */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .documents-page {
+    max-width: 100%;
+    margin: 32px auto;
+    padding: 0 18px;
+  }
+  
+  .documents-title {
+    font-size: 22px;
+    margin-bottom: 18px;
+  }
+  
+  .documents-list {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
+  }
+  
+  .document-card {
+    padding: 14px;
+    border-radius: 8px;
+  }
+  
+  .document-card:hover {
+    transform: translateY(-1px);
+  }
+  
+  .category {
+    font-size: 13px;
+  }
+  
+  .doc-meta {
+    margin-top: 9px;
+    gap: 14px;
+    font-size: 13px;
+  }
+}
+
+/* Tablet (Portrait) - 600px to 767px */
+@media (min-width: 600px) and (max-width: 767px) {
+  .documents-page {
+    max-width: 100%;
+    margin: 28px auto;
+    padding: 0 16px;
+  }
+  
+  .documents-title {
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+  
+  .documents-list {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+  }
+  
+  .document-card {
+    padding: 14px;
+    border-radius: 8px;
+  }
+  
+  .document-card:hover {
+    transform: translateY(-1px);
+  }
+  
+  .category {
+    font-size: 13px;
+  }
+  
+  .doc-meta {
+    margin-top: 8px;
+    gap: 12px;
+    font-size: 13px;
+  }
+}
+
+/* Mobile (Large) - 480px to 599px */
+@media (min-width: 480px) and (max-width: 599px) {
+  .documents-page {
+    max-width: 100%;
+    margin: 24px auto;
+    padding: 0 16px;
+  }
+  
+  .documents-title {
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+  
+  .documents-list {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+  
+  .document-card {
+    padding: 14px;
+    border-radius: 8px;
+  }
+  
+  .document-card:hover {
+    transform: translateY(-1px);
+  }
+  
+  .category {
+    font-size: 13px;
+  }
+  
+  .doc-meta {
+    margin-top: 8px;
+    gap: 12px;
+    font-size: 13px;
+    flex-wrap: wrap;
+  }
+}
+
+/* Mobile (Small) - Below 480px */
+@media (max-width: 479px) {
+  .documents-page {
+    max-width: 100%;
+    margin: 20px auto;
+    padding: 0 14px;
+  }
+  
+  .documents-title {
+    font-size: 18px;
+    margin-bottom: 14px;
+  }
+  
+  .documents-list {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .document-card {
+    padding: 14px;
+    border-radius: 8px;
+  }
+  
+  .document-card:hover {
+    transform: translateY(-1px);
+  }
+  
+  .category {
+    font-size: 12px;
+  }
+  
+  .doc-meta {
+    margin-top: 8px;
+    gap: 10px;
+    font-size: 12px;
+    flex-wrap: wrap;
+  }
+}
+
+/* Extra Small Mobile - Below 360px */
+@media (max-width: 359px) {
+  .documents-page {
+    margin: 16px auto;
+    padding: 0 12px;
+  }
+  
+  .documents-title {
+    font-size: 17px;
+    margin-bottom: 12px;
+  }
+  
+  .documents-list {
+    gap: 10px;
+  }
+  
+  .document-card {
+    padding: 12px;
+    border-radius: 8px;
+  }
+  
+  .category {
+    font-size: 12px;
+  }
+  
+  .doc-meta {
+    margin-top: 7px;
+    gap: 8px;
+    font-size: 12px;
+  }
+}
+
+/* Landscape Orientation for Mobile Devices */
+@media (max-width: 767px) and (orientation: landscape) {
+  .documents-page {
+    margin: 20px auto;
+    padding: 0 16px;
+  }
+  
+  .documents-title {
+    font-size: 18px;
+    margin-bottom: 14px;
+  }
+  
+  .documents-list {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+  }
+  
+  .document-card {
+    padding: 12px;
+  }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .document-card {
+    min-height: 100px;
+  }
+  
+  .document-card:hover {
+    transform: none;
+  }
+  
+  .document-card:active {
+    transform: translateY(-1px);
+    opacity: 0.9;
+  }
+}
+
+/* High DPI Screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .documents-page {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
