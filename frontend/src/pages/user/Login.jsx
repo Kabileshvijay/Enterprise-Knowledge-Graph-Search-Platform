@@ -106,10 +106,10 @@ const Login = () => {
         {/* 🔐 CREDENTIALS INFO BOX */}
         <div className="credentials-box">
           <h4>⚠️ Important</h4>
-          <p className="cookie-warning">
+          {/* <p className="cookie-warning">
             Please <strong>enable third-party cookies</strong> in your browser
             before login.
-          </p>
+          </p> */}
 
           <div className="cred-section">
             <strong>Admin Credentials</strong>
