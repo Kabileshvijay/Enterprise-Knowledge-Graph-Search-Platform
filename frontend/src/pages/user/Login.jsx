@@ -127,7 +127,7 @@ const Login = () => {
               Email: <code>demo@gmail.com</code>
             </p>
             <p>
-              Password: <code>demo@12</code>
+              Password: <code>Demo@12</code>
             </p>
           </div>
         </div>
