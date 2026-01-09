@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../../styles/user/people.css";
 
 const People = () => {
@@ -10,6 +11,7 @@ const People = () => {
   const [selectedPerson, setSelectedPerson] = useState(null);
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const navigate = useNavigate(); // ✅ ADD THIS
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/people?page=${page}&size=6`, {
@@ -69,12 +71,13 @@ const People = () => {
                 View Profile
               </button>
 
+              {/* ✅ FIXED FOR DEPLOYMENT */}
               <button
                 className="people-secondary-btn"
                 onClick={() =>
-                  window.location.href = `/documents?author=${encodeURIComponent(
-                    person.email
-                  )}`
+                  navigate(
+                    `/documents?author=${encodeURIComponent(person.email)}`
+                  )
                 }
               >
                 View Docs
