@@ -20,7 +20,12 @@ const People = () => {
         return res.json();
       })
       .then((data) => {
-        setPeople(data.content);
+        // 🚫 EXCLUDE ADMIN USER
+        const filteredPeople = data.content.filter(
+          (person) => person.email !== "admin@gmail.com"
+        );
+
+        setPeople(filteredPeople);
         setTotalPages(data.totalPages);
       })
       .catch(console.error);
@@ -33,7 +38,6 @@ const People = () => {
       <div className="people-grid">
         {people.map((person) => (
           <div key={person.id} className="people-card">
-            
             <div className="people-avatar">
               {person.name?.charAt(0).toUpperCase()}
             </div>
