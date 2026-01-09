@@ -720,3 +720,40 @@ body, html {
     overflow-x: hidden;
   }
 }
+
+
+.credentials-box {
+  margin-top: 20px;
+  padding: 14px;
+  border-radius: 10px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  font-size: 13px;
+  color: #374151;
+}
+
+.credentials-box h4 {
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #dc2626;
+}
+
+.cookie-warning {
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.cred-section {
+  margin-bottom: 8px;
+}
+
+.cred-section strong {
+  color: #111827;
+}
+
+.credentials-box code {
+  background: #e5e7eb;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+}

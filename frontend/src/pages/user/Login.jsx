@@ -23,15 +23,12 @@ const Login = () => {
 
     try {
       /* 1️⃣ LOGIN (SETS COOKIE) */
-      const loginRes = await fetch(
-        `${API_BASE_URL}/api/employees/login`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include", // 🔴 REQUIRED
-          body: JSON.stringify({ email, password }),
-        }
-      );
+      const loginRes = await fetch(`${API_BASE_URL}/api/employees/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include", // 🔴 REQUIRED
+        body: JSON.stringify({ email, password }),
+      });
 
       if (!loginRes.ok) {
         throw new Error("LOGIN_FAILED");
@@ -55,7 +52,6 @@ const Login = () => {
       } else {
         navigate("/home");
       }
-
     } catch (error) {
       alert(
         "Invalid credentials or you are not authorised. Please contact admin."
@@ -106,6 +102,35 @@ const Login = () => {
             {loading ? "Logging in..." : "LOGIN"}
           </button>
         </form>
+
+        {/* 🔐 CREDENTIALS INFO BOX */}
+        <div className="credentials-box">
+          <h4>⚠️ Important</h4>
+          <p className="cookie-warning">
+            Please <strong>enable third-party cookies</strong> in your browser
+            before login.
+          </p>
+
+          <div className="cred-section">
+            <strong>Admin Credentials</strong>
+            <p>
+              Email: <code>admin@gmail.com</code>
+            </p>
+            <p>
+              Password: <code>123</code>
+            </p>
+          </div>
+
+          <div className="cred-section">
+            <strong>User Credentials</strong>
+            <p>
+              Email: <code>demo@gmail.com</code>
+            </p>
+            <p>
+              Password: <code>demo@12</code>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
