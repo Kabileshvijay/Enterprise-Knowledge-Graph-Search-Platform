@@ -1,4 +1,4 @@
-/* ================= FEEDBACK ADMIN PAGE - NO SCROLL VERSION ================= */
+/* ================= FEEDBACK ADMIN PAGE - BRIGHT LIGHT THEME ================= */
 
 .feedback-admin-page {
   max-width: 1400px;
@@ -93,7 +93,7 @@
   color: #ef4444;
 }
 
-/* ================= FEEDBACK TABLE - FIXED HEIGHT ================= */
+/* ================= FEEDBACK TABLE ================= */
 
 .feedback-table {
   width: 100%;
@@ -105,7 +105,6 @@
   overflow: hidden;
   margin-bottom: 24px;
   box-shadow: var(--shadow-sm);
-  table-layout: fixed;
 }
 
 .feedback-table thead {
@@ -121,20 +120,9 @@
   text-transform: uppercase;
   letter-spacing: 0.8px;
   border-bottom: 1px solid var(--border-light);
-  white-space: nowrap;
 }
 
-/* Fixed column widths */
-.feedback-table th:nth-child(1) { width: 10%; }  /* User */
-.feedback-table th:nth-child(2) { width: 15%; }  /* Email */
-.feedback-table th:nth-child(3) { width: 10%; }  /* Type */
-.feedback-table th:nth-child(4) { width: 30%; }  /* Message */
-.feedback-table th:nth-child(5) { width: 10%; }  /* Screenshot */
-.feedback-table th:nth-child(6) { width: 10%; }  /* Status */
-.feedback-table th:nth-child(7) { width: 15%; }  /* Action */
-
 .feedback-table tbody tr {
-  height: 65px;
   border-bottom: 1px solid var(--border-light);
   transition: var(--transition);
 }
@@ -157,28 +145,16 @@
 }
 
 .feedback-table td {
-  padding: 12px 14px;
+  padding: 16px 14px;
   color: var(--text-primary);
   font-size: 14px;
-  vertical-align: middle;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* Message cell - allow 2 lines */
-.feedback-table td:nth-child(4) {
-  white-space: normal;
-  line-height: 1.4;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 .message-cell {
-  color: var(--text-secondary);
-  font-size: 13px;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* ================= STATUS BADGE ================= */
@@ -191,7 +167,6 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  white-space: nowrap;
 }
 
 .status.solved {
@@ -219,7 +194,6 @@
   cursor: pointer;
   transition: var(--transition);
   font-family: inherit;
-  white-space: nowrap;
 }
 
 .link-btn:hover {
@@ -239,7 +213,6 @@
   cursor: pointer;
   transition: var(--transition);
   font-family: inherit;
-  white-space: nowrap;
 }
 
 .solve-btn:hover {
@@ -255,7 +228,7 @@
   justify-content: center;
   align-items: center;
   gap: 8px;
-  padding: 20px 0;
+  padding: 20px;
 }
 
 .pagination button {
@@ -372,21 +345,10 @@
 
 /* ================= RESPONSIVE ================= */
 
-@media (max-width: 1200px) {
-  .feedback-table th:nth-child(4),
-  .feedback-table td:nth-child(4) {
-    max-width: 250px;
-  }
-}
-
 @media (max-width: 1024px) {
   .feedback-table {
     display: block;
     overflow-x: auto;
-  }
-  
-  .stats-cards {
-    grid-template-columns: 1fr;
   }
 }
 
@@ -396,24 +358,17 @@
     margin-bottom: 20px;
   }
   
-  .feedback-table {
-    font-size: 12px;
+  .stats-cards {
+    grid-template-columns: 1fr;
   }
   
   .feedback-table th,
   .feedback-table td {
-    padding: 10px 8px;
-    font-size: 12px;
+    padding: 12px 10px;
+    font-size: 13px;
   }
   
-  .link-btn,
-  .solve-btn {
-    padding: 6px 10px;
-    font-size: 11px;
-  }
-  
-  .status {
-    padding: 4px 10px;
-    font-size: 10px;
+  .message-cell {
+    max-width: 150px;
   }
 }

@@ -54,16 +54,6 @@ function FeedBack() {
     startIndex + ITEMS_PER_PAGE
   );
 
-  // Always create exactly 5 rows
-  const displayRows = [];
-  for (let i = 0; i < ITEMS_PER_PAGE; i++) {
-    if (currentItems[i]) {
-      displayRows.push(currentItems[i]);
-    } else {
-      displayRows.push(null); // Empty placeholder
-    }
-  }
-
   return (
     <div className="feedback-admin-page">
       <h1>Feedback Management</h1>
@@ -84,7 +74,7 @@ function FeedBack() {
         </div>
       </div>
 
-      {/* 📋 TABLE - ALWAYS 5 ROWS */}
+      {/* 📋 TABLE */}
       <table className="feedback-table">
         <thead>
           <tr>
@@ -99,67 +89,45 @@ function FeedBack() {
         </thead>
 
         <tbody>
-          {displayRows.map((f, index) => {
-            if (f === null) {
-              // Empty row
-              return (
-                <tr key={`empty-${index}`}>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                </tr>
-              );
-            }
+          {currentItems.map((f) => (
+            <tr
+              key={f.id}
+              className={f.status === "UNSOLVED" ? "row-unsolved" : ""}
+            >
+              <td>{f.name}</td>
+              <td>{f.email}</td>
+              <td>{f.type}</td>
+              <td className="message-cell">{f.message}</td>
 
-            // Regular feedback row
-            return (
-              <tr
-                key={f.id}
-                className={f.status === "UNSOLVED" ? "row-unsolved" : ""}
-              >
-                <td>{f.name}</td>
-                <td>{f.email}</td>
-                <td>{f.type}</td>
-                <td className="message-cell">{f.message}</td>
+              <td>
+                {f.screenshotPath ? (
+                  <button
+                    className="link-btn"
+                    onClick={() => setSelectedImage(f.screenshotPath)}
+                  >
+                    View
+                  </button>
+                ) : "—"}
+              </td>
 
-                <td>
-                  {f.screenshotPath ? (
-                    <button
-                      className="link-btn"
-                      onClick={() => setSelectedImage(f.screenshotPath)}
-                    >
-                      View
-                    </button>
-                  ) : (
-                    "—"
-                  )}
-                </td>
+              <td>
+                <span className={`status ${f.status.toLowerCase()}`}>
+                  {f.status}
+                </span>
+              </td>
 
-                <td>
-                  <span className={`status ${f.status.toLowerCase()}`}>
-                    {f.status}
-                  </span>
-                </td>
-
-                <td>
-                  {f.status === "UNSOLVED" ? (
-                    <button
-                      className="solve-btn"
-                      onClick={() => markAsSolved(f.id)}
-                    >
-                      Mark Solved
-                    </button>
-                  ) : (
-                    "—"
-                  )}
-                </td>
-              </tr>
-            );
-          })}
+              <td>
+                {f.status === "UNSOLVED" ? (
+                  <button
+                    className="solve-btn"
+                    onClick={() => markAsSolved(f.id)}
+                  >
+                    Mark Solved
+                  </button>
+                ) : "—"}
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
 
@@ -195,8 +163,11 @@ function FeedBack() {
       {/* 🖼️ IMAGE POPUP */}
       {selectedImage && (
         <div className="image-overlay" onClick={() => setSelectedImage(null)}>
-          <div className="image-modal" onClick={(e) => e.stopPropagation()}>
-            <img src={`${API_BASE_URL}${selectedImage}`} alt="Screenshot" />
+          <div className="image-modal">
+            <img
+              src={`${API_BASE_URL}${selectedImage}`}
+              alt="Screenshot"
+            />
             <button onClick={() => setSelectedImage(null)}>Close</button>
           </div>
         </div>
