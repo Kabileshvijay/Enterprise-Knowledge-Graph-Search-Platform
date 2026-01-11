@@ -54,8 +54,15 @@ function FeedBack() {
     startIndex + ITEMS_PER_PAGE
   );
 
-  // Create empty rows to fill up to ITEMS_PER_PAGE
-  const emptyRows = ITEMS_PER_PAGE - currentItems.length;
+  // Always create exactly 5 rows
+  const displayRows = [];
+  for (let i = 0; i < ITEMS_PER_PAGE; i++) {
+    if (currentItems[i]) {
+      displayRows.push(currentItems[i]);
+    } else {
+      displayRows.push(null); // Empty placeholder
+    }
+  }
 
   return (
     <div className="feedback-admin-page">
@@ -77,7 +84,7 @@ function FeedBack() {
         </div>
       </div>
 
-      {/* 📋 TABLE */}
+      {/* 📋 TABLE - ALWAYS 5 ROWS */}
       <table className="feedback-table">
         <thead>
           <tr>
@@ -92,58 +99,67 @@ function FeedBack() {
         </thead>
 
         <tbody>
-          {currentItems.map((f) => (
-            <tr
-              key={f.id}
-              className={f.status === "UNSOLVED" ? "row-unsolved" : ""}
-            >
-              <td>{f.name}</td>
-              <td>{f.email}</td>
-              <td>{f.type}</td>
-              <td className="message-cell">{f.message}</td>
+          {displayRows.map((f, index) => {
+            if (f === null) {
+              // Empty row
+              return (
+                <tr key={`empty-${index}`}>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                </tr>
+              );
+            }
 
-              <td>
-                {f.screenshotPath ? (
-                  <button
-                    className="link-btn"
-                    onClick={() => setSelectedImage(f.screenshotPath)}
-                  >
-                    View
-                  </button>
-                ) : "—"}
-              </td>
+            // Regular feedback row
+            return (
+              <tr
+                key={f.id}
+                className={f.status === "UNSOLVED" ? "row-unsolved" : ""}
+              >
+                <td>{f.name}</td>
+                <td>{f.email}</td>
+                <td>{f.type}</td>
+                <td className="message-cell">{f.message}</td>
 
-              <td>
-                <span className={`status ${f.status.toLowerCase()}`}>
-                  {f.status}
-                </span>
-              </td>
+                <td>
+                  {f.screenshotPath ? (
+                    <button
+                      className="link-btn"
+                      onClick={() => setSelectedImage(f.screenshotPath)}
+                    >
+                      View
+                    </button>
+                  ) : (
+                    "—"
+                  )}
+                </td>
 
-              <td>
-                {f.status === "UNSOLVED" ? (
-                  <button
-                    className="solve-btn"
-                    onClick={() => markAsSolved(f.id)}
-                  >
-                    Mark Solved
-                  </button>
-                ) : "—"}
-              </td>
-            </tr>
-          ))}
-          
-          {/* EMPTY ROWS TO MAINTAIN CONSISTENT HEIGHT */}
-          {emptyRows > 0 && [...Array(emptyRows)].map((_, i) => (
-            <tr key={`empty-${i}`} style={{ visibility: 'hidden' }}>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-              <td>-</td>
-            </tr>
-          ))}
+                <td>
+                  <span className={`status ${f.status.toLowerCase()}`}>
+                    {f.status}
+                  </span>
+                </td>
+
+                <td>
+                  {f.status === "UNSOLVED" ? (
+                    <button
+                      className="solve-btn"
+                      onClick={() => markAsSolved(f.id)}
+                    >
+                      Mark Solved
+                    </button>
+                  ) : (
+                    "—"
+                  )}
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
 
@@ -180,10 +196,7 @@ function FeedBack() {
       {selectedImage && (
         <div className="image-overlay" onClick={() => setSelectedImage(null)}>
           <div className="image-modal" onClick={(e) => e.stopPropagation()}>
-            <img
-              src={`${API_BASE_URL}${selectedImage}`}
-              alt="Screenshot"
-            />
+            <img src={`${API_BASE_URL}${selectedImage}`} alt="Screenshot" />
             <button onClick={() => setSelectedImage(null)}>Close</button>
           </div>
         </div>
