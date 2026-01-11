@@ -1,4 +1,4 @@
-/* ================= NAVBAR - LIGHT THEME ================= */
+/* ================= NAVBAR - BRIGHT LIGHT THEME ================= */
 
 .navbar {
   position: fixed;
@@ -6,12 +6,12 @@
   left: var(--sidebar-width);
   right: 0;
   height: var(--navbar-height);
-  background: var(--bg-white);
-  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-light);
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding: 0 30px;
+  padding: 0 32px;
   z-index: 999;
   box-shadow: var(--shadow-sm);
 }
@@ -29,37 +29,37 @@
 }
 
 .profile-icon {
-  width: 45px;
-  height: 45px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
-  background: var(--primary-gradient);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 18px;
   cursor: pointer;
-  transition: var(--transition-smooth);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  transition: var(--transition);
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.25);
 }
 
 .profile-icon:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+  transform: scale(1.08);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
 }
 
 .dropdown {
   position: absolute;
-  top: calc(100% + 15px);
+  top: calc(100% + 12px);
   right: 0;
-  background: var(--bg-white);
-  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
   border-radius: 12px;
-  min-width: 200px;
+  min-width: 180px;
   box-shadow: var(--shadow-lg);
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-10px);
-  transition: var(--transition-smooth);
+  transform: translateY(-8px);
+  transition: var(--transition);
   overflow: hidden;
 }
 
@@ -72,20 +72,20 @@
 .dropdown::before {
   content: '';
   position: absolute;
-  top: -8px;
-  right: 20px;
-  width: 16px;
-  height: 16px;
-  background: var(--bg-white);
-  border-left: 1px solid var(--border-color);
-  border-top: 1px solid var(--border-color);
+  top: -6px;
+  right: 16px;
+  width: 12px;
+  height: 12px;
+  background: var(--bg-primary);
+  border-left: 1px solid var(--border-light);
+  border-top: 1px solid var(--border-light);
   transform: rotate(45deg);
 }
 
 .dropdown a,
 .dropdown button {
   display: block;
-  padding: 14px 20px;
+  padding: 12px 18px;
   color: var(--text-secondary);
   text-decoration: none;
   border: none;
@@ -95,46 +95,23 @@
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: var(--transition-smooth);
+  transition: var(--transition);
   font-family: inherit;
-  position: relative;
-}
-
-.dropdown a::before,
-.dropdown button::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 3px;
-  height: 100%;
-  background: var(--primary-gradient);
-  transform: scaleX(0);
-  transition: transform 0.3s ease;
 }
 
 .dropdown a:hover,
 .dropdown button:hover {
   color: var(--text-primary);
-  background: rgba(102, 126, 234, 0.06);
-  padding-left: 25px;
-}
-
-.dropdown a:hover::before,
-.dropdown button:hover::before {
-  transform: scaleX(1);
+  background: var(--bg-hover);
 }
 
 .dropdown button {
-  color: #f5576c;
+  color: #ef4444;
+  border-top: 1px solid var(--border-light);
 }
 
 .dropdown button:hover {
-  background: rgba(245, 87, 108, 0.06);
-}
-
-.dropdown button:hover::before {
-  background: var(--secondary-gradient);
+  background: rgba(239, 68, 68, 0.05);
 }
 
 /* ================= RESPONSIVE NAVBAR ================= */
@@ -146,8 +123,8 @@
   }
   
   .profile-icon {
-    width: 40px;
-    height: 40px;
-    font-size: 18px;
+    width: 38px;
+    height: 38px;
+    font-size: 16px;
   }
 }

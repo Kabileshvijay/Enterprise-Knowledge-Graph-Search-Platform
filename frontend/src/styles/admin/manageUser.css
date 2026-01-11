@@ -1,128 +1,12 @@
-/* ================= MANAGE USER PAGE - LIGHT THEME ================= */
+/* ================= MANAGE USER PAGE - BRIGHT LIGHT THEME ================= */
 
 .manage-user-page {
   max-width: 1400px;
   margin: 0 auto;
-  animation: fadeSlideUp 0.6s ease-out;
+  animation: fadeSlideUp 0.5s ease-out;
 }
 
 @keyframes fadeSlideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.manage-user-page h2 {
-  font-size: 36px;
-  font-weight: 700;
-  margin-bottom: 35px;
-  background: linear-gradient(135deg, #1a1a2e 0%, #6b7280 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -1px;
-}
-
-/* ================= FILTER BAR ================= */
-
-.filter-bar {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr auto;
-  gap: 15px;
-  margin-bottom: 30px;
-  padding: 25px;
-  background: var(--bg-white);
-  border: 1px solid var(--border-color);
-  border-radius: 16px;
-  animation: slideDown 0.5s ease-out 0.2s backwards;
-  box-shadow: var(--shadow-sm);
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.filter-bar input,
-.filter-bar select {
-  padding: 14px 18px;
-  background: var(--bg-light);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  color: var(--text-primary);
-  font-size: 14px;
-  font-family: inherit;
-  transition: var(--transition-smooth);
-  outline: none;
-}
-
-.filter-bar input::placeholder {
-  color: var(--text-secondary);
-}
-
-.filter-bar input:focus,
-.filter-bar select:focus {
-  border-color: rgba(102, 126, 234, 0.4);
-  background: var(--bg-white);
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.08);
-}
-
-.filter-bar select {
-  cursor: pointer;
-}
-
-.filter-bar select option {
-  background: var(--bg-white);
-  color: var(--text-primary);
-}
-
-.clear-btn {
-  padding: 14px 24px;
-  background: rgba(245, 87, 108, 0.08);
-  border: 1px solid rgba(245, 87, 108, 0.2);
-  border-radius: 10px;
-  color: #f5576c;
-  font-weight: 600;
-  font-size: 14px;
-  cursor: pointer;
-  transition: var(--transition-smooth);
-  font-family: inherit;
-  white-space: nowrap;
-}
-
-.clear-btn:hover {
-  background: rgba(245, 87, 108, 0.15);
-  border-color: rgba(245, 87, 108, 0.3);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(245, 87, 108, 0.2);
-}
-
-/* ================= USER TABLE ================= */
-
-.user-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  background: var(--bg-white);
-  border: 1px solid var(--border-color);
-  border-radius: 16px;
-  overflow: hidden;
-  animation: tableSlideUp 0.6s ease-out 0.3s backwards;
-  box-shadow: var(--shadow-sm);
-}
-
-@keyframes tableSlideUp {
   from {
     opacity: 0;
     transform: translateY(20px);
@@ -133,24 +17,112 @@
   }
 }
 
+.manage-user-page h2 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 28px;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+
+/* ================= FILTER BAR ================= */
+
+.filter-bar {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr auto;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding: 20px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+}
+
+.filter-bar input,
+.filter-bar select {
+  padding: 12px 16px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: inherit;
+  transition: var(--transition);
+  outline: none;
+}
+
+.filter-bar input::placeholder {
+  color: var(--text-muted);
+}
+
+.filter-bar input:focus,
+.filter-bar select:focus {
+  border-color: var(--primary-color);
+  background: var(--bg-primary);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.filter-bar select {
+  cursor: pointer;
+}
+
+.filter-bar select option {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.clear-btn {
+  padding: 12px 20px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.clear-btn:hover {
+  background: var(--bg-primary);
+  border-color: var(--border-medium);
+  color: var(--text-primary);
+}
+
+/* ================= USER TABLE ================= */
+
+.user-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
 .user-table thead {
-  background: var(--bg-light);
+  background: var(--bg-secondary);
 }
 
 .user-table th {
-  padding: 20px 20px;
+  padding: 16px 18px;
   text-align: left;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--text-secondary);
   text-transform: uppercase;
-  letter-spacing: 1px;
-  border-bottom: 1px solid var(--border-color);
+  letter-spacing: 0.8px;
+  border-bottom: 1px solid var(--border-light);
 }
 
 .user-table tbody tr {
-  border-bottom: 1px solid var(--border-color);
-  transition: var(--transition-smooth);
+  border-bottom: 1px solid var(--border-light);
+  transition: var(--transition);
 }
 
 .user-table tbody tr:last-child {
@@ -158,11 +130,11 @@
 }
 
 .user-table tbody tr:hover {
-  background: var(--bg-hover);
+  background: var(--bg-secondary);
 }
 
 .user-table td {
-  padding: 20px 20px;
+  padding: 16px 18px;
   color: var(--text-primary);
   font-size: 14px;
 }
@@ -172,23 +144,22 @@
 }
 
 .delete-btn {
-  padding: 10px 20px;
-  background: rgba(245, 87, 108, 0.08);
-  border: 1px solid rgba(245, 87, 108, 0.2);
-  border-radius: 8px;
-  color: #f5576c;
+  padding: 8px 16px;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 6px;
+  color: #ef4444;
   font-weight: 600;
   font-size: 13px;
   cursor: pointer;
-  transition: var(--transition-smooth);
+  transition: var(--transition);
   font-family: inherit;
 }
 
 .delete-btn:hover {
-  background: rgba(245, 87, 108, 0.15);
-  border-color: rgba(245, 87, 108, 0.3);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(245, 87, 108, 0.2);
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.4);
+  transform: translateY(-1px);
 }
 
 /* ================= PAGINATION ================= */
@@ -197,36 +168,29 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 12px;
-  margin-top: 30px;
+  gap: 10px;
+  margin-top: 24px;
   padding: 20px;
-  animation: fadeIn 0.5s ease-out 0.5s backwards;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 .pagination button {
-  padding: 12px 20px;
-  background: var(--bg-white);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
+  padding: 10px 16px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
   color: var(--text-primary);
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
-  transition: var(--transition-smooth);
+  transition: var(--transition);
   font-family: inherit;
   box-shadow: var(--shadow-sm);
 }
 
 .pagination button:hover:not(:disabled) {
-  background: rgba(102, 126, 234, 0.08);
-  border-color: rgba(102, 126, 234, 0.3);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
 }
 
 .pagination button:disabled {
@@ -245,7 +209,7 @@
 @media (max-width: 1024px) {
   .filter-bar {
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: 10px;
   }
   
   .filter-bar input:first-child {
@@ -255,13 +219,13 @@
 
 @media (max-width: 768px) {
   .manage-user-page h2 {
-    font-size: 28px;
-    margin-bottom: 25px;
+    font-size: 26px;
+    margin-bottom: 20px;
   }
   
   .filter-bar {
     grid-template-columns: 1fr;
-    padding: 20px;
+    padding: 16px;
   }
   
   .filter-bar input:first-child {
@@ -275,7 +239,7 @@
   
   .user-table th,
   .user-table td {
-    padding: 15px;
+    padding: 12px 14px;
     font-size: 13px;
   }
 }

@@ -1,4 +1,4 @@
-/* ================= SIDEBAR - LIGHT THEME ================= */
+/* ================= SIDEBAR - BRIGHT LIGHT THEME ================= */
 
 .sidebar {
   position: fixed;
@@ -6,16 +6,16 @@
   top: 0;
   width: var(--sidebar-width);
   height: 100vh;
-  background: var(--bg-white);
-  border-right: 1px solid var(--border-color);
-  padding: 30px 0;
+  background: var(--bg-primary);
+  border-right: 1px solid var(--border-light);
+  padding: 32px 0;
   z-index: 1000;
   overflow-y: auto;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sm);
 }
 
 .sidebar::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 
 .sidebar::-webkit-scrollbar-track {
@@ -23,107 +23,88 @@
 }
 
 .sidebar::-webkit-scrollbar-thumb {
-  background: rgba(102, 126, 234, 0.3);
+  background: var(--border-medium);
   border-radius: 10px;
 }
 
 .sidebar::-webkit-scrollbar-thumb:hover {
-  background: rgba(102, 126, 234, 0.5);
+  background: var(--text-muted);
 }
 
 .sidebar h2 {
-  padding: 0 30px 30px;
-  font-size: 28px;
+  padding: 0 24px 24px;
+  font-size: 24px;
   font-weight: 700;
-  background: var(--primary-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--primary-color);
   letter-spacing: -0.5px;
   position: relative;
+  margin-bottom: 8px;
 }
 
 .sidebar h2::after {
   content: '';
   position: absolute;
-  bottom: 15px;
-  left: 30px;
-  width: 60px;
-  height: 4px;
-  background: var(--primary-gradient);
-  border-radius: 2px;
+  bottom: 12px;
+  left: 24px;
+  width: 50px;
+  height: 3px;
+  background: var(--primary-color);
+  border-radius: 3px;
 }
 
 .sidebar ul {
   list-style: none;
-  padding: 0 15px;
+  padding: 0 16px;
 }
 
 .sidebar li {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .sidebar a {
   display: flex;
   align-items: center;
-  padding: 16px 20px;
+  padding: 14px 16px;
   color: var(--text-secondary);
   text-decoration: none;
-  border-radius: 12px;
+  border-radius: 10px;
   font-weight: 500;
   font-size: 15px;
-  transition: var(--transition-smooth);
+  transition: var(--transition);
   position: relative;
-  overflow: hidden;
 }
 
 .sidebar a::before {
   content: '';
   position: absolute;
   left: 0;
-  top: 0;
-  width: 4px;
-  height: 100%;
-  background: var(--primary-gradient);
-  transform: scaleY(0);
-  transition: transform 0.3s ease;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 0;
+  background: var(--primary-color);
+  border-radius: 0 3px 3px 0;
+  transition: height 0.3s ease;
 }
 
 .sidebar a:hover {
   color: var(--text-primary);
-  background: rgba(102, 126, 234, 0.08);
-  transform: translateX(5px);
+  background: var(--bg-hover);
+  padding-left: 20px;
 }
 
 .sidebar a:hover::before {
-  transform: scaleY(1);
+  height: 60%;
 }
 
 .sidebar a.active {
-  color: var(--text-primary);
-  background: rgba(102, 126, 234, 0.12);
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
+  color: var(--primary-color);
+  background: rgba(102, 126, 234, 0.08);
+  font-weight: 600;
 }
 
 .sidebar a.active::before {
-  transform: scaleY(1);
-}
-
-/* Add icons indicator */
-.sidebar a::after {
-  content: '';
-  margin-left: auto;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: currentColor;
-  opacity: 0;
-  transition: var(--transition-smooth);
-}
-
-.sidebar a:hover::after,
-.sidebar a.active::after {
-  opacity: 1;
+  height: 60%;
 }
 
 /* ================= RESPONSIVE SIDEBAR ================= */
