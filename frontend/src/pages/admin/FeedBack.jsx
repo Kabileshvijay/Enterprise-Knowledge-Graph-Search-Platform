@@ -54,6 +54,9 @@ function FeedBack() {
     startIndex + ITEMS_PER_PAGE
   );
 
+  // Create empty rows to fill up to ITEMS_PER_PAGE
+  const emptyRows = ITEMS_PER_PAGE - currentItems.length;
+
   return (
     <div className="feedback-admin-page">
       <h1>Feedback Management</h1>
@@ -128,6 +131,19 @@ function FeedBack() {
               </td>
             </tr>
           ))}
+          
+          {/* EMPTY ROWS TO MAINTAIN CONSISTENT HEIGHT */}
+          {emptyRows > 0 && [...Array(emptyRows)].map((_, i) => (
+            <tr key={`empty-${i}`} style={{ visibility: 'hidden' }}>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+            </tr>
+          ))}
         </tbody>
       </table>
 
@@ -163,7 +179,7 @@ function FeedBack() {
       {/* 🖼️ IMAGE POPUP */}
       {selectedImage && (
         <div className="image-overlay" onClick={() => setSelectedImage(null)}>
-          <div className="image-modal">
+          <div className="image-modal" onClick={(e) => e.stopPropagation()}>
             <img
               src={`${API_BASE_URL}${selectedImage}`}
               alt="Screenshot"
