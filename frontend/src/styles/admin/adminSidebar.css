@@ -1,4 +1,4 @@
-/* ================= SIDEBAR ================= */
+/* ================= SIDEBAR - LIGHT THEME ================= */
 
 .sidebar {
   position: fixed;
@@ -6,14 +6,12 @@
   top: 0;
   width: var(--sidebar-width);
   height: 100vh;
-  background: rgba(26, 26, 46, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: var(--bg-white);
   border-right: 1px solid var(--border-color);
   padding: 30px 0;
   z-index: 1000;
   overflow-y: auto;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md);
 }
 
 .sidebar::-webkit-scrollbar {
@@ -25,12 +23,12 @@
 }
 
 .sidebar::-webkit-scrollbar-thumb {
-  background: rgba(102, 126, 234, 0.5);
+  background: rgba(102, 126, 234, 0.3);
   border-radius: 10px;
 }
 
 .sidebar::-webkit-scrollbar-thumb:hover {
-  background: rgba(102, 126, 234, 0.8);
+  background: rgba(102, 126, 234, 0.5);
 }
 
 .sidebar h2 {
@@ -93,7 +91,7 @@
 
 .sidebar a:hover {
   color: var(--text-primary);
-  background: rgba(102, 126, 234, 0.15);
+  background: rgba(102, 126, 234, 0.08);
   transform: translateX(5px);
 }
 
@@ -103,15 +101,15 @@
 
 .sidebar a.active {
   color: var(--text-primary);
-  background: rgba(102, 126, 234, 0.2);
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  background: rgba(102, 126, 234, 0.12);
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
 }
 
 .sidebar a.active::before {
   transform: scaleY(1);
 }
 
-/* Add icons before menu items */
+/* Add icons indicator */
 .sidebar a::after {
   content: '';
   margin-left: auto;

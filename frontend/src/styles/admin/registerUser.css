@@ -1,4 +1,4 @@
-/* ================= REGISTER USER PAGE ================= */
+/* ================= REGISTER USER PAGE - LIGHT THEME ================= */
 
 .register-container {
   max-width: 700px;
@@ -21,7 +21,7 @@
   font-size: 36px;
   font-weight: 700;
   margin-bottom: 35px;
-  background: linear-gradient(135deg, #ffffff 0%, #a0a0c0 100%);
+  background: linear-gradient(135deg, #1a1a2e 0%, #6b7280 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -32,13 +32,11 @@
 /* ================= REGISTER FORM ================= */
 
 .register-form {
-  background: rgba(26, 26, 46, 0.6);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: var(--bg-white);
   border: 1px solid var(--border-color);
   border-radius: 20px;
   padding: 40px;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md);
 }
 
 .register-form input,
@@ -46,7 +44,7 @@
   width: 100%;
   padding: 16px 20px;
   margin-bottom: 20px;
-  background: rgba(15, 15, 30, 0.5);
+  background: var(--bg-light);
   border: 1px solid var(--border-color);
   border-radius: 12px;
   color: var(--text-primary);
@@ -62,9 +60,9 @@
 
 .register-form input:focus,
 .register-form select:focus {
-  border-color: rgba(102, 126, 234, 0.5);
-  background: rgba(15, 15, 30, 0.8);
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: rgba(102, 126, 234, 0.4);
+  background: var(--bg-white);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.08);
   transform: translateY(-2px);
 }
 
@@ -73,7 +71,7 @@
 }
 
 .register-form select option {
-  background: var(--bg-card);
+  background: var(--bg-white);
   color: var(--text-primary);
 }
 
@@ -82,7 +80,7 @@
 .skill-box {
   position: relative;
   margin-bottom: 20px;
-  background: rgba(15, 15, 30, 0.5);
+  background: var(--bg-light);
   border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 12px;
@@ -90,9 +88,9 @@
 }
 
 .skill-box:focus-within {
-  border-color: rgba(102, 126, 234, 0.5);
-  background: rgba(15, 15, 30, 0.8);
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: rgba(102, 126, 234, 0.4);
+  background: var(--bg-white);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.08);
 }
 
 .skill-tags {
@@ -115,6 +113,7 @@
   font-weight: 600;
   color: white;
   animation: tagPopIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.25);
 }
 
 @keyframes tagPopIn {
@@ -129,7 +128,7 @@
 }
 
 .skill-tag button {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.25);
   border: none;
   border-radius: 50%;
   width: 20px;
@@ -171,9 +170,7 @@
   right: 0;
   max-height: 200px;
   overflow-y: auto;
-  background: rgba(26, 26, 46, 0.95);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: var(--bg-white);
   border: 1px solid var(--border-color);
   border-radius: 12px;
   list-style: none;
@@ -204,7 +201,7 @@
 }
 
 .skill-suggestions::-webkit-scrollbar-thumb {
-  background: rgba(102, 126, 234, 0.5);
+  background: rgba(102, 126, 234, 0.3);
   border-radius: 10px;
 }
 
@@ -218,7 +215,7 @@
 }
 
 .skill-suggestions li:hover {
-  background: rgba(102, 126, 234, 0.15);
+  background: rgba(102, 126, 234, 0.08);
   color: var(--text-primary);
   transform: translateX(5px);
 }
@@ -239,13 +236,13 @@
   font-family: inherit;
   text-transform: uppercase;
   letter-spacing: 1px;
-  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
   margin-top: 10px;
 }
 
 .register-form button[type="submit"]:hover {
   transform: translateY(-3px);
-  box-shadow: 0 6px 30px rgba(102, 126, 234, 0.6);
+  box-shadow: 0 6px 24px rgba(102, 126, 234, 0.4);
 }
 
 .register-form button[type="submit"]:active {

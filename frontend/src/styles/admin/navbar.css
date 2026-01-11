@@ -1,4 +1,4 @@
-/* ================= NAVBAR ================= */
+/* ================= NAVBAR - LIGHT THEME ================= */
 
 .navbar {
   position: fixed;
@@ -6,16 +6,14 @@
   left: var(--sidebar-width);
   right: 0;
   height: var(--navbar-height);
-  background: rgba(26, 26, 46, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: var(--bg-white);
   border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: flex-end;
   padding: 0 30px;
   z-index: 999;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sm);
 }
 
 .navbar-right {
@@ -41,21 +39,19 @@
   font-size: 20px;
   cursor: pointer;
   transition: var(--transition-smooth);
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
 .profile-icon:hover {
   transform: scale(1.1);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
 }
 
 .dropdown {
   position: absolute;
   top: calc(100% + 15px);
   right: 0;
-  background: rgba(26, 26, 46, 0.95);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: var(--bg-white);
   border: 1px solid var(--border-color);
   border-radius: 12px;
   min-width: 200px;
@@ -80,7 +76,7 @@
   right: 20px;
   width: 16px;
   height: 16px;
-  background: rgba(26, 26, 46, 0.95);
+  background: var(--bg-white);
   border-left: 1px solid var(--border-color);
   border-top: 1px solid var(--border-color);
   transform: rotate(45deg);
@@ -120,7 +116,7 @@
 .dropdown a:hover,
 .dropdown button:hover {
   color: var(--text-primary);
-  background: rgba(102, 126, 234, 0.1);
+  background: rgba(102, 126, 234, 0.06);
   padding-left: 25px;
 }
 
@@ -134,7 +130,7 @@
 }
 
 .dropdown button:hover {
-  background: rgba(245, 87, 108, 0.1);
+  background: rgba(245, 87, 108, 0.06);
 }
 
 .dropdown button:hover::before {

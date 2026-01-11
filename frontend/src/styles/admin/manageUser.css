@@ -1,4 +1,4 @@
-/* ================= MANAGE USER PAGE ================= */
+/* ================= MANAGE USER PAGE - LIGHT THEME ================= */
 
 .manage-user-page {
   max-width: 1400px;
@@ -21,7 +21,7 @@
   font-size: 36px;
   font-weight: 700;
   margin-bottom: 35px;
-  background: linear-gradient(135deg, #ffffff 0%, #a0a0c0 100%);
+  background: linear-gradient(135deg, #1a1a2e 0%, #6b7280 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -36,12 +36,11 @@
   gap: 15px;
   margin-bottom: 30px;
   padding: 25px;
-  background: rgba(26, 26, 46, 0.6);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: var(--bg-white);
   border: 1px solid var(--border-color);
   border-radius: 16px;
   animation: slideDown 0.5s ease-out 0.2s backwards;
+  box-shadow: var(--shadow-sm);
 }
 
 @keyframes slideDown {
@@ -58,7 +57,7 @@
 .filter-bar input,
 .filter-bar select {
   padding: 14px 18px;
-  background: rgba(15, 15, 30, 0.5);
+  background: var(--bg-light);
   border: 1px solid var(--border-color);
   border-radius: 10px;
   color: var(--text-primary);
@@ -74,9 +73,9 @@
 
 .filter-bar input:focus,
 .filter-bar select:focus {
-  border-color: rgba(102, 126, 234, 0.5);
-  background: rgba(15, 15, 30, 0.8);
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: rgba(102, 126, 234, 0.4);
+  background: var(--bg-white);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.08);
 }
 
 .filter-bar select {
@@ -84,14 +83,14 @@
 }
 
 .filter-bar select option {
-  background: var(--bg-card);
+  background: var(--bg-white);
   color: var(--text-primary);
 }
 
 .clear-btn {
   padding: 14px 24px;
-  background: rgba(245, 87, 108, 0.15);
-  border: 1px solid rgba(245, 87, 108, 0.3);
+  background: rgba(245, 87, 108, 0.08);
+  border: 1px solid rgba(245, 87, 108, 0.2);
   border-radius: 10px;
   color: #f5576c;
   font-weight: 600;
@@ -103,10 +102,10 @@
 }
 
 .clear-btn:hover {
-  background: rgba(245, 87, 108, 0.25);
-  border-color: rgba(245, 87, 108, 0.5);
+  background: rgba(245, 87, 108, 0.15);
+  border-color: rgba(245, 87, 108, 0.3);
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
+  box-shadow: 0 4px 12px rgba(245, 87, 108, 0.2);
 }
 
 /* ================= USER TABLE ================= */
@@ -115,13 +114,12 @@
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  background: rgba(26, 26, 46, 0.6);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: var(--bg-white);
   border: 1px solid var(--border-color);
   border-radius: 16px;
   overflow: hidden;
   animation: tableSlideUp 0.6s ease-out 0.3s backwards;
+  box-shadow: var(--shadow-sm);
 }
 
 @keyframes tableSlideUp {
@@ -136,9 +134,7 @@
 }
 
 .user-table thead {
-  background: rgba(102, 126, 234, 0.1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: var(--bg-light);
 }
 
 .user-table th {
@@ -162,7 +158,7 @@
 }
 
 .user-table tbody tr:hover {
-  background: rgba(102, 126, 234, 0.08);
+  background: var(--bg-hover);
 }
 
 .user-table td {
@@ -177,8 +173,8 @@
 
 .delete-btn {
   padding: 10px 20px;
-  background: rgba(245, 87, 108, 0.15);
-  border: 1px solid rgba(245, 87, 108, 0.3);
+  background: rgba(245, 87, 108, 0.08);
+  border: 1px solid rgba(245, 87, 108, 0.2);
   border-radius: 8px;
   color: #f5576c;
   font-weight: 600;
@@ -189,10 +185,10 @@
 }
 
 .delete-btn:hover {
-  background: rgba(245, 87, 108, 0.25);
-  border-color: rgba(245, 87, 108, 0.5);
+  background: rgba(245, 87, 108, 0.15);
+  border-color: rgba(245, 87, 108, 0.3);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(245, 87, 108, 0.4);
+  box-shadow: 0 4px 12px rgba(245, 87, 108, 0.2);
 }
 
 /* ================= PAGINATION ================= */
@@ -214,9 +210,7 @@
 
 .pagination button {
   padding: 12px 20px;
-  background: rgba(26, 26, 46, 0.6);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: var(--bg-white);
   border: 1px solid var(--border-color);
   border-radius: 10px;
   color: var(--text-primary);
@@ -225,12 +219,14 @@
   cursor: pointer;
   transition: var(--transition-smooth);
   font-family: inherit;
+  box-shadow: var(--shadow-sm);
 }
 
 .pagination button:hover:not(:disabled) {
-  background: rgba(102, 126, 234, 0.2);
-  border-color: rgba(102, 126, 234, 0.5);
+  background: rgba(102, 126, 234, 0.08);
+  border-color: rgba(102, 126, 234, 0.3);
   transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .pagination button:disabled {
