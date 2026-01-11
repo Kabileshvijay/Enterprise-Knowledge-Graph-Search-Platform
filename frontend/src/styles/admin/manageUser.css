@@ -1,109 +1,198 @@
-/* ================= PAGE CONTAINER ================= */
+/* ================= MANAGE USER PAGE ================= */
 
 .manage-user-page {
-  max-width: 1100px;
-  margin: 40px auto;
-  background: #ffffff;
-  padding: 28px;
-  border-radius: 12px;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  max-width: 1400px;
+  margin: 0 auto;
+  animation: fadeSlideUp 0.6s ease-out;
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .manage-user-page h2 {
-  margin-bottom: 22px;
-  color: #111827;
-  font-size: 22px;
-  font-weight: 600;
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 35px;
+  background: linear-gradient(135deg, #ffffff 0%, #a0a0c0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -1px;
 }
 
 /* ================= FILTER BAR ================= */
 
 .filter-bar {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr auto;
+  gap: 15px;
+  margin-bottom: 30px;
+  padding: 25px;
+  background: rgba(26, 26, 46, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  animation: slideDown 0.5s ease-out 0.2s backwards;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .filter-bar input,
 .filter-bar select {
-  padding: 10px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
+  padding: 14px 18px;
+  background: rgba(15, 15, 30, 0.5);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  color: var(--text-primary);
   font-size: 14px;
-  background: #ffffff;
-  min-width: 180px;
+  font-family: inherit;
+  transition: var(--transition-smooth);
+  outline: none;
+}
+
+.filter-bar input::placeholder {
+  color: var(--text-secondary);
 }
 
 .filter-bar input:focus,
 .filter-bar select:focus {
-  outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+  border-color: rgba(102, 126, 234, 0.5);
+  background: rgba(15, 15, 30, 0.8);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.filter-bar select {
+  cursor: pointer;
+}
+
+.filter-bar select option {
+  background: var(--bg-card);
+  color: var(--text-primary);
 }
 
 .clear-btn {
-  padding: 10px 16px;
-  border-radius: 8px;
-  background: #f3f4f6;
-  border: 1px solid #d1d5db;
+  padding: 14px 24px;
+  background: rgba(245, 87, 108, 0.15);
+  border: 1px solid rgba(245, 87, 108, 0.3);
+  border-radius: 10px;
+  color: #f5576c;
+  font-weight: 600;
   font-size: 14px;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: var(--transition-smooth);
+  font-family: inherit;
+  white-space: nowrap;
 }
 
 .clear-btn:hover {
-  background: #e5e7eb;
+  background: rgba(245, 87, 108, 0.25);
+  border-color: rgba(245, 87, 108, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
 }
 
-/* ================= TABLE ================= */
+/* ================= USER TABLE ================= */
 
 .user-table {
   width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: rgba(26, 26, 46, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  overflow: hidden;
+  animation: tableSlideUp 0.6s ease-out 0.3s backwards;
 }
 
-.user-table th,
-.user-table td {
-  padding: 14px 16px;
-  border-bottom: 1px solid #e5e7eb;
-  text-align: left;
-  color: #374151;
+@keyframes tableSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.user-table thead {
+  background: rgba(102, 126, 234, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .user-table th {
-  background: #f9fafb;
+  padding: 20px 20px;
+  text-align: left;
+  font-size: 13px;
   font-weight: 600;
-  color: #111827;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.user-table tbody tr {
+  border-bottom: 1px solid var(--border-color);
+  transition: var(--transition-smooth);
+}
+
+.user-table tbody tr:last-child {
+  border-bottom: none;
 }
 
 .user-table tbody tr:hover {
-  background: #f9fafb;
+  background: rgba(102, 126, 234, 0.08);
 }
 
-/* ================= EMPLOYMENT DURATION ================= */
-
-.user-table td:nth-child(4) {
-  font-weight: 500;
-  color: #1f2937;
+.user-table td {
+  padding: 20px 20px;
+  color: var(--text-primary);
+  font-size: 14px;
 }
 
-/* ================= DELETE BUTTON ================= */
+.user-table td:first-child {
+  font-weight: 600;
+}
 
 .delete-btn {
-  padding: 6px 14px;
-  background: #ef4444;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+  padding: 10px 20px;
+  background: rgba(245, 87, 108, 0.15);
+  border: 1px solid rgba(245, 87, 108, 0.3);
+  border-radius: 8px;
+  color: #f5576c;
+  font-weight: 600;
   font-size: 13px;
-  transition: background 0.2s ease;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  font-family: inherit;
 }
 
 .delete-btn:hover {
-  background: #dc2626;
+  background: rgba(245, 87, 108, 0.25);
+  border-color: rgba(245, 87, 108, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 87, 108, 0.4);
 }
 
 /* ================= PAGINATION ================= */
@@ -112,624 +201,85 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 14px;
-  margin-top: 22px;
+  gap: 12px;
+  margin-top: 30px;
+  padding: 20px;
+  animation: fadeIn 0.5s ease-out 0.5s backwards;
 }
 
-.pagination span {
-  font-size: 14px;
-  color: #374151;
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .pagination button {
-  padding: 6px 14px;
-  border-radius: 6px;
-  border: 1px solid #d1d5db;
-  background: #ffffff;
-  cursor: pointer;
+  padding: 12px 20px;
+  background: rgba(26, 26, 46, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  color: var(--text-primary);
+  font-weight: 600;
   font-size: 14px;
-  transition: background 0.2s ease;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  font-family: inherit;
 }
 
 .pagination button:hover:not(:disabled) {
-  background: #f3f4f6;
+  background: rgba(102, 126, 234, 0.2);
+  border-color: rgba(102, 126, 234, 0.5);
+  transform: translateY(-2px);
 }
 
 .pagination button:disabled {
-  opacity: 0.5;
+  opacity: 0.4;
   cursor: not-allowed;
 }
 
-/* ================= RESPONSIVE MEDIA QUERIES ================= */
-
-/* Large Desktop - 1400px and above */
-@media (min-width: 1400px) {
-  .manage-user-page {
-    max-width: 1300px;
-    margin: 50px auto;
-    padding: 32px;
-    border-radius: 14px;
-  }
-  
-  .manage-user-page h2 {
-    margin-bottom: 26px;
-    font-size: 26px;
-  }
-  
-  .filter-bar {
-    gap: 14px;
-    margin-bottom: 24px;
-  }
-  
-  .filter-bar input,
-  .filter-bar select {
-    padding: 11px 14px;
-    font-size: 15px;
-    min-width: 200px;
-  }
-  
-  .clear-btn {
-    padding: 11px 18px;
-    font-size: 15px;
-  }
-  
-  .user-table {
-    font-size: 15px;
-  }
-  
-  .user-table th,
-  .user-table td {
-    padding: 16px 18px;
-  }
-  
-  .delete-btn {
-    padding: 7px 16px;
-    font-size: 14px;
-  }
-  
-  .pagination {
-    gap: 16px;
-    margin-top: 26px;
-  }
-  
-  .pagination span {
-    font-size: 15px;
-  }
-  
-  .pagination button {
-    padding: 7px 16px;
-    font-size: 15px;
-  }
+.pagination span {
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
 }
 
-/* Desktop - 1024px to 1399px */
-@media (min-width: 1024px) and (max-width: 1399px) {
-  .manage-user-page {
-    max-width: 1100px;
-    margin: 40px auto;
-    padding: 28px;
-  }
-  
-  .filter-bar input,
-  .filter-bar select {
-    min-width: 180px;
-  }
-}
+/* ================= RESPONSIVE ================= */
 
-/* Tablet (Landscape) - 768px to 1023px */
-@media (min-width: 768px) and (max-width: 1023px) {
-  .manage-user-page {
-    max-width: 100%;
-    margin: 32px 20px;
-    padding: 24px;
-  }
-  
-  .manage-user-page h2 {
-    margin-bottom: 20px;
-    font-size: 20px;
-  }
-  
+@media (max-width: 1024px) {
   .filter-bar {
-    gap: 10px;
-    margin-bottom: 18px;
-  }
-  
-  .filter-bar input,
-  .filter-bar select {
-    padding: 9px 11px;
-    font-size: 13px;
-    min-width: 160px;
-    flex: 1;
-  }
-  
-  .clear-btn {
-    padding: 9px 14px;
-    font-size: 13px;
-  }
-  
-  .user-table {
-    font-size: 13px;
-  }
-  
-  .user-table th,
-  .user-table td {
-    padding: 12px 14px;
-  }
-  
-  .delete-btn {
-    padding: 6px 12px;
-    font-size: 12px;
-  }
-  
-  .pagination {
+    grid-template-columns: 1fr 1fr;
     gap: 12px;
-    margin-top: 20px;
   }
   
-  .pagination span {
-    font-size: 13px;
-  }
-  
-  .pagination button {
-    padding: 6px 12px;
-    font-size: 13px;
+  .filter-bar input:first-child {
+    grid-column: 1 / -1;
   }
 }
 
-/* Tablet (Portrait) - 600px to 767px */
-@media (min-width: 600px) and (max-width: 767px) {
-  .manage-user-page {
-    margin: 28px 16px;
-    padding: 22px;
-    border-radius: 10px;
-  }
-  
+@media (max-width: 768px) {
   .manage-user-page h2 {
-    margin-bottom: 18px;
-    font-size: 20px;
+    font-size: 28px;
+    margin-bottom: 25px;
   }
   
   .filter-bar {
-    gap: 10px;
-    margin-bottom: 18px;
+    grid-template-columns: 1fr;
+    padding: 20px;
   }
   
-  .filter-bar input,
-  .filter-bar select {
-    padding: 10px 12px;
-    font-size: 14px;
-    min-width: 0;
-    flex: 1 1 calc(50% - 6px);
-  }
-  
-  .clear-btn {
-    padding: 10px 14px;
-    font-size: 14px;
-    flex: 1 1 100%;
-  }
-  
-  /* Scrollable table wrapper */
-  .table-wrapper {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+  .filter-bar input:first-child {
+    grid-column: auto;
   }
   
   .user-table {
-    min-width: 600px;
-    font-size: 13px;
+    display: block;
+    overflow-x: auto;
   }
   
   .user-table th,
   .user-table td {
-    padding: 12px;
-  }
-  
-  .delete-btn {
-    padding: 6px 12px;
-    font-size: 12px;
-  }
-  
-  .pagination {
-    gap: 10px;
-    margin-top: 18px;
-    flex-wrap: wrap;
-  }
-  
-  .pagination span {
+    padding: 15px;
     font-size: 13px;
-  }
-  
-  .pagination button {
-    padding: 6px 12px;
-    font-size: 13px;
-  }
-}
-
-/* Mobile (Large) - 480px to 599px */
-@media (min-width: 480px) and (max-width: 599px) {
-  .manage-user-page {
-    margin: 24px 14px;
-    padding: 20px;
-    border-radius: 10px;
-  }
-  
-  .manage-user-page h2 {
-    margin-bottom: 16px;
-    font-size: 19px;
-  }
-  
-  .filter-bar {
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 16px;
-  }
-  
-  .filter-bar input,
-  .filter-bar select,
-  .clear-btn {
-    width: 100%;
-    min-width: 0;
-    padding: 10px 12px;
-  }
-  
-  /* Card-based layout for mobile */
-  .user-table {
-    display: block;
-    font-size: 13px;
-  }
-  
-  .user-table thead {
-    display: none;
-  }
-  
-  .user-table tbody {
-    display: block;
-  }
-  
-  .user-table tbody tr {
-    display: block;
-    margin-bottom: 16px;
-    padding: 14px;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    background: #ffffff;
-  }
-  
-  .user-table tbody tr:hover {
-    background: #f9fafb;
-  }
-  
-  .user-table td {
-    display: block;
-    padding: 8px 0;
-    border: none;
-    text-align: left;
-  }
-  
-  .user-table td::before {
-    content: attr(data-label);
-    display: inline-block;
-    font-weight: 600;
-    color: #111827;
-    margin-right: 10px;
-    min-width: 120px;
-  }
-  
-  .user-table td:last-child {
-    margin-top: 8px;
-  }
-  
-  .delete-btn {
-    width: 100%;
-    padding: 10px;
-    font-size: 13px;
-  }
-  
-  .pagination {
-    gap: 8px;
-    margin-top: 18px;
-    flex-wrap: wrap;
-  }
-  
-  .pagination span {
-    font-size: 13px;
-    width: 100%;
-    text-align: center;
-  }
-  
-  .pagination button {
-    padding: 8px 14px;
-    font-size: 13px;
-  }
-}
-
-/* Mobile (Small) - Below 480px */
-@media (max-width: 479px) {
-  .manage-user-page {
-    margin: 20px 12px;
-    padding: 18px;
-    border-radius: 10px;
-  }
-  
-  .manage-user-page h2 {
-    margin-bottom: 16px;
-    font-size: 18px;
-  }
-  
-  .filter-bar {
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 16px;
-  }
-  
-  .filter-bar input,
-  .filter-bar select,
-  .clear-btn {
-    width: 100%;
-    min-width: 0;
-    padding: 10px 12px;
-    font-size: 14px;
-  }
-  
-  /* Card-based layout */
-  .user-table {
-    display: block;
-    font-size: 13px;
-  }
-  
-  .user-table thead {
-    display: none;
-  }
-  
-  .user-table tbody {
-    display: block;
-  }
-  
-  .user-table tbody tr {
-    display: block;
-    margin-bottom: 14px;
-    padding: 12px;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    background: #ffffff;
-  }
-  
-  .user-table td {
-    display: block;
-    padding: 7px 0;
-    border: none;
-    font-size: 13px;
-  }
-  
-  .user-table td::before {
-    content: attr(data-label);
-    display: inline-block;
-    font-weight: 600;
-    color: #111827;
-    margin-right: 8px;
-    min-width: 110px;
-    font-size: 12px;
-  }
-  
-  .user-table td:last-child {
-    margin-top: 10px;
-  }
-  
-  .delete-btn {
-    width: 100%;
-    padding: 10px;
-    font-size: 13px;
-  }
-  
-  .pagination {
-    gap: 6px;
-    margin-top: 16px;
-    flex-wrap: wrap;
-  }
-  
-  .pagination span {
-    font-size: 12px;
-    width: 100%;
-    text-align: center;
-    margin-bottom: 4px;
-  }
-  
-  .pagination button {
-    padding: 8px 12px;
-    font-size: 12px;
-    flex: 1;
-  }
-}
-
-/* Extra Small Mobile - Below 360px */
-@media (max-width: 359px) {
-  .manage-user-page {
-    margin: 16px 10px;
-    padding: 16px;
-  }
-  
-  .manage-user-page h2 {
-    margin-bottom: 14px;
-    font-size: 17px;
-  }
-  
-  .filter-bar {
-    gap: 8px;
-    margin-bottom: 14px;
-  }
-  
-  .filter-bar input,
-  .filter-bar select,
-  .clear-btn {
-    padding: 9px 10px;
-    font-size: 13px;
-  }
-  
-  .user-table tbody tr {
-    padding: 10px;
-    margin-bottom: 12px;
-  }
-  
-  .user-table td {
-    padding: 6px 0;
-    font-size: 12px;
-  }
-  
-  .user-table td::before {
-    min-width: 100px;
-    font-size: 11px;
-  }
-  
-  .delete-btn {
-    padding: 9px;
-    font-size: 12px;
-  }
-  
-  .pagination button {
-    padding: 7px 10px;
-    font-size: 11px;
-  }
-  
-  .pagination span {
-    font-size: 11px;
-  }
-}
-
-/* Landscape Orientation for Mobile Devices */
-@media (max-width: 767px) and (orientation: landscape) {
-  .manage-user-page {
-    margin: 16px 12px;
-    padding: 16px;
-  }
-  
-  .manage-user-page h2 {
-    font-size: 18px;
-    margin-bottom: 12px;
-  }
-  
-  .filter-bar {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 14px;
-  }
-  
-  .filter-bar input,
-  .filter-bar select {
-    flex: 1 1 calc(33.333% - 6px);
-    min-width: 0;
-  }
-  
-  .clear-btn {
-    flex: 0 0 auto;
-  }
-  
-  /* Use scrollable table in landscape */
-  .user-table {
-    display: table;
-    min-width: 600px;
-  }
-  
-  .user-table thead {
-    display: table-header-group;
-  }
-  
-  .user-table tbody {
-    display: table-row-group;
-  }
-  
-  .user-table tbody tr {
-    display: table-row;
-    margin: 0;
-    padding: 0;
-    border: none;
-  }
-  
-  .user-table td {
-    display: table-cell;
-    padding: 10px 12px;
-    border-bottom: 1px solid #e5e7eb;
-  }
-  
-  .user-table td::before {
-    display: none;
-  }
-  
-  .delete-btn {
-    width: auto;
-    padding: 5px 12px;
-    font-size: 12px;
-  }
-}
-
-/* Touch Device Optimizations */
-@media (hover: none) and (pointer: coarse) {
-  .filter-bar input,
-  .filter-bar select,
-  .clear-btn {
-    min-height: 44px;
-  }
-  
-  .delete-btn {
-    min-height: 44px;
-  }
-  
-  .pagination button {
-    min-height: 44px;
-    min-width: 44px;
-  }
-  
-  .clear-btn:hover,
-  .delete-btn:hover,
-  .pagination button:hover {
-    transform: none;
-  }
-  
-  .clear-btn:active {
-    opacity: 0.9;
-  }
-  
-  .delete-btn:active {
-    opacity: 0.9;
-  }
-}
-
-/* High DPI Screens */
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-  .manage-user-page {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-}
-
-/* Accessibility - Reduce Motion */
-@media (prefers-reduced-motion: reduce) {
-  .clear-btn,
-  .delete-btn,
-  .pagination button {
-    transition: none;
-  }
-  
-  .user-table tbody tr:hover {
-    background: #f9fafb;
-  }
-}
-
-/* Print Styles */
-@media print {
-  .manage-user-page {
-    box-shadow: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .filter-bar,
-  .delete-btn,
-  .pagination {
-    display: none;
-  }
-  
-  .user-table {
-    border: 1px solid #e5e7eb;
   }
 }
