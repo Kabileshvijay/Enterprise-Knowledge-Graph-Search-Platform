@@ -1,7 +1,7 @@
 /* ================= REGISTER USER PAGE - BRIGHT LIGHT THEME ================= */
 
 .register-container {
-  max-width: 600px;
+  max-width: 550px;
   margin: 0 auto;
   animation: scaleIn 0.5s ease-out;
 }
@@ -20,11 +20,32 @@
 .register-container h2 {
   font-size: 32px;
   font-weight: 700;
-  margin-bottom: 28px;
+  margin-bottom: 20px;
   color: var(--text-primary);
   letter-spacing: -0.5px;
   text-align: center;
 }
+
+.page-title {
+  position: relative;
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 36px;
+}
+
+/* underline */
+.page-title::after {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 4px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 4px;
+  margin: 12px auto 0;
+}
+
 
 /* ================= REGISTER FORM ================= */
 
@@ -32,7 +53,7 @@
   background: var(--bg-primary);
   border: 1px solid var(--border-light);
   border-radius: 16px;
-  padding: 42px;
+  padding: 36px;
   box-shadow: var(--shadow-md);
 }
 
@@ -207,6 +228,13 @@
   color: var(--text-secondary);
   transition: var(--transition);
 }
+
+.skill-suggestions li.active {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
 
 .skill-suggestions li:hover {
   background: var(--bg-secondary);

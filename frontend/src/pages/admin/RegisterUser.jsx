@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../../styles/admin/registerUser.css";
 
 const teams = [
@@ -30,6 +30,7 @@ const RegisterUser = () => {
   const [skillInput, setSkillInput] = useState("");
   const [selectedSkills, setSelectedSkills] = useState([]);
   const [filteredSkills, setFilteredSkills] = useState([]);
+  const [activeIndex, setActiveIndex] = useState(-1);
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -41,6 +42,7 @@ const RegisterUser = () => {
 
     if (!value.trim()) {
       setFilteredSkills([]);
+      setActiveIndex(-1);
       return;
     }
 
@@ -53,16 +55,50 @@ const RegisterUser = () => {
     setFilteredSkills(filtered);
   };
 
+  // ✅ AUTO-SELECT FIRST ITEM WHEN LIST OPENS
+  useEffect(() => {
+    if (filteredSkills.length > 0) {
+      setActiveIndex(0);
+    }
+  }, [filteredSkills]);
+
   const addSkill = (skill) => {
-    setSelectedSkills([...selectedSkills, skill]);
+    setSelectedSkills((prev) => [...prev, skill]);
     setSkillInput("");
     setFilteredSkills([]);
+    setActiveIndex(-1);
   };
 
   const removeSkill = (skillToRemove) => {
     setSelectedSkills(
       selectedSkills.filter((skill) => skill !== skillToRemove)
     );
+  };
+
+  // ✅ KEYBOARD NAVIGATION (FIXED)
+  const handleSkillKeyDown = (e) => {
+    if (!filteredSkills.length) return;
+
+    if (["ArrowDown", "ArrowUp", "Enter"].includes(e.key)) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    if (e.key === "ArrowDown") {
+      setActiveIndex((prev) =>
+        prev < filteredSkills.length - 1 ? prev + 1 : 0
+      );
+    }
+
+    if (e.key === "ArrowUp") {
+      setActiveIndex((prev) =>
+        prev > 0 ? prev - 1 : filteredSkills.length - 1
+      );
+    }
+
+    if (e.key === "Enter" && activeIndex >= 0) {
+      addSkill(filteredSkills[activeIndex]);
+    }
   };
 
   /* ================= SUBMIT ================= */
@@ -93,19 +129,18 @@ const RegisterUser = () => {
         }
       );
 
-      if (!response.ok) {
-        throw new Error("Registration failed");
-      }
+      if (!response.ok) throw new Error("Registration failed");
 
       alert("Employee Registered Successfully");
 
-      // Reset form
       setName("");
       setEmail("");
       setTeam("");
       setPassword("");
       setSelectedSkills([]);
       setSkillInput("");
+      setFilteredSkills([]);
+      setActiveIndex(-1);
     } catch (error) {
       alert("Error registering employee");
       console.error(error);
@@ -116,9 +151,17 @@ const RegisterUser = () => {
 
   return (
     <div className="register-container">
-      <h2>Register Employee</h2>
+      <h2 className="page-title">Register Employee</h2>
 
-      <form className="register-form" onSubmit={handleSubmit}>
+      <form
+        className="register-form"
+        onSubmit={handleSubmit}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && filteredSkills.length > 0) {
+            e.preventDefault(); // ✅ stop focus jump
+          }
+        }}
+      >
         <input
           type="text"
           placeholder="Employee Name"
@@ -135,12 +178,7 @@ const RegisterUser = () => {
           required
         />
 
-        {/* Team */}
-        <select
-          value={team}
-          onChange={(e) => setTeam(e.target.value)}
-          required
-        >
+        <select value={team} onChange={(e) => setTeam(e.target.value)} required>
           <option value="">Select Team</option>
           {teams.map((team, index) => (
             <option key={index} value={team}>
@@ -155,10 +193,7 @@ const RegisterUser = () => {
             {selectedSkills.map((skill, index) => (
               <span key={index} className="skill-tag">
                 {skill}
-                <button
-                  type="button"
-                  onClick={() => removeSkill(skill)}
-                >
+                <button type="button" onClick={() => removeSkill(skill)}>
                   ×
                 </button>
               </span>
@@ -170,13 +205,18 @@ const RegisterUser = () => {
             placeholder="Add Skills"
             value={skillInput}
             onChange={handleSkillChange}
+            onKeyDown={handleSkillKeyDown}
             autoComplete="off"
           />
 
           {filteredSkills.length > 0 && (
             <ul className="skill-suggestions">
               {filteredSkills.map((skill, index) => (
-                <li key={index} onClick={() => addSkill(skill)}>
+                <li
+                  key={index}
+                  className={index === activeIndex ? "active" : ""}
+                  onClick={() => addSkill(skill)}
+                >
                   {skill}
                 </li>
               ))}
