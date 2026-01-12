@@ -4,6 +4,7 @@ import com.enterprise.knowledge.dto.EmployeeRequest;
 import com.enterprise.knowledge.dto.LoginRequest;
 import com.enterprise.knowledge.entity.Employee;
 import com.enterprise.knowledge.repository.EmployeeRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -78,7 +79,14 @@ public class EmployeeService {
         return repository.findAll();
     }
 
+    /* ================= DELETE ================= */
+
+    @Transactional
     public void deleteByEmail(String email) {
+        if (!repository.existsByEmail(email)) {
+            throw new IllegalArgumentException("EMPLOYEE_NOT_FOUND");
+        }
+
         repository.deleteByEmail(email);
     }
 }
