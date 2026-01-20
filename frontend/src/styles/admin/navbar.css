@@ -33,6 +33,7 @@
   height: 42px;
   border-radius: 50%;
   background: white;
+  border: linear-gradient(135deg, #667eea 0%, #764ba2 100%) 2px solid;
   display: flex;
   align-items: center;
   justify-content: center;
